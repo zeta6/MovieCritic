@@ -5,115 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="resoureces/css/common.css"/>
 <style>
-#site_layout{
-	margin: -8px;
-	padding : 0;
-}
-
-#top_menu_wrapper{
-	margin:0 auto;
-	
-}
-
-#top_menu{
-	margin:0;
-	width:100%;
-	height:60px;
-	display:flex;
-	justify-content:space-around;
-	align-items:center;
-	background:black;
-
-	
-}
-
-#left_menu{
-	list-style-type:none;
-	
-}
-
-.left_menu{
-	float:left;
-	padding: 0 0 15px 30px;
-	margin-left:auto;
-}
-
-#top_menu2{
-	display:flex;
-	
-}
-
-.right_menu{
-	margin-left:auto;
-	padding-left:15px;
-	
-}
-.top_text1{
-	font-size: 15px;
-	color: white;
-	text-decoration:none;
-	vertical-align:-8px;
-	
-}
-
-#sign_up{
-	background:#f30;
-	
-}
-
-.top_text2{
-	font-size: 15px;
-	color: white;
-	vertical-align:-2px;
-	text-decoration:none;
-	padding-right:15px;
-	
-}
-
-#search{
-	border:none;
-	border-bottom: 3px solid white;
-	background: transparent;
-	height: 25px;
-}
-
-
-#genre_sub{
-	display:none;
-	height: 115px;
-	width:70px;
-	padding:0;
-	margin: 0px;
-	position: absolute;
-	z-index:2;
-	list-style-type:none;
-	text-decoration:none;
-	background-color: #fff;
-	border: 1px solid gray;
-	border-radius: 5px;
-}
-
-
-.left_menu:hover ul#genre_sub {
-	display:block;
-}
-
-.top_text3{
-	text-decoration:none;
-	color:#555;
-	font-size:15px;
-	vertical-align: 8px;
-}
-
-.left_inner_menu{
-	padding: 10px 0 0 5px ;
-}
-
-.left_inner_menu:hover {
-	background: lightblue;
-}
-
 
 #main_area{
 	width:100vw;
@@ -217,6 +110,8 @@
 
 </head>
 <body>
+<!-- 절대경로 -->
+<c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 
 <!--전체 레이아웃-->
 
@@ -370,7 +265,7 @@
 
 		<div id="user_score">
 
-			<h3>User Score</h3> <div id="write_review">Write a Review</div>
+			<h3>User Score</h3> <div id="write_review"><a href="${rootPath}/view_review">Write a Review</a></div>
 
 			<!--점수표시 이미지-->
 			<div>

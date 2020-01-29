@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.js.movie.member.dao.CustomService;
-import org.js.movie.member.domain.CustomMember;
+import org.js.movie.member.domain.CustomMemberVO;
 import org.js.movie.member.domain.MemberVO;
 import org.js.movie.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,23 +76,35 @@ public class MemberController {
 	
 	@RequestMapping(value="/login", method = RequestMethod.GET)
 	public String getlogin() {
+		
+		log.info("##################### get login");
 		return "member/login";
 	}
 	
 	@RequestMapping(value="/loginProc", method = RequestMethod.POST)
 	public String login(String memberId, HttpServletRequest req) {
-		log.info("#####################post login");
+		log.info("#####################post login -- MemberController");
 		
 		HttpSession session = req.getSession();
 		
-		CustomMember cMember = (CustomMember) customService.loadUserByUsername(memberId);
+		CustomMemberVO cMember = (CustomMemberVO) customService.loadUserByUsername(memberId);
 		
 		if(cMember == null) {
 			session.setAttribute("member", null);
+			log.info("member = null");
 		} else
 			session.setAttribute("member", cMember);
+			log.info("member != null");
 		return "redirect:/";
 		
+	}
+	
+	@RequestMapping(value="/logout", method=RequestMethod.GET)
+	public String getLogOut(HttpSession session) {
+		log.info("##################### log out" );
+		session.invalidate();
+		
+		return "redirect:../";
 	}
 	
 }

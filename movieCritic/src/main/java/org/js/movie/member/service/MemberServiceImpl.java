@@ -17,9 +17,9 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	private MemberDAO dao;
 
-	/*
-	 * @Autowired BCryptPasswordEncoder passwordEncoder;
-	 */
+	@Autowired 
+	BCryptPasswordEncoder passwordEncoder;
+	 
 
 	@Override
 	public List<MemberVO> selectAll() {
@@ -32,11 +32,11 @@ public class MemberServiceImpl implements MemberService {
 
 		log.info("회원 가입 서비스 시작");
 
-		/*
-		 * String bcryptPassword = passwordEncoder.encode(vo.getMemberPw());
-		 * vo.setMemberPw(bcryptPassword); log.info("bcryptPassword : " +
-		 * vo.getMemberPw()); log.info("######### 암호화 완료");
-		 */
+		
+		String bcryptPassword = passwordEncoder.encode(vo.getMemberPw());
+		vo.setMemberPw(bcryptPassword); log.info("bcryptPassword : " +
+		vo.getMemberPw()); log.info("######### 암호화 완료");
+		 
 		dao.insert(vo);
 		log.info("vo : " + vo);
 		log.info("######### 회원가입 등록됨");

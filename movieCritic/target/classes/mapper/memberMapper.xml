@@ -33,7 +33,7 @@
 		order by member_id
 	</select>
 
-	<select id="login" resultType="CustomMember">
+	<select id="login" resultType="CustomMemberVO">
 		select *  
 		from table_member
 		where member_id=#{memberId}

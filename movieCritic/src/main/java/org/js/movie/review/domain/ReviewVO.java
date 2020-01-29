@@ -4,9 +4,11 @@ import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class ReviewVO {
 	
 //	CREATE TABLE tbl_review (
@@ -14,7 +16,7 @@ public class ReviewVO {
 //		    movieId INT,
 //		    content  varchar(2000),
 //		    writer  varchar(50) ,
-//		    regDate  DATE DEFAULT NOW(),
+//		    registerDate  DATE DEFAULT NOW(),
 //		    rating  INT,
 //		    FOREIGN KEY(movieId) REFERENCES tbl_movieInfo(movieId),
 //		    primary key(replyId, movieId)
@@ -24,7 +26,7 @@ public class ReviewVO {
 	private int movieId;
 	private String content;
 	private String writer;
-	private Date regDate;
+	private Date registerDate;
 	private int rating;
 
 }

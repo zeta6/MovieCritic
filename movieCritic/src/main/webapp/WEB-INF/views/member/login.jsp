@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -85,10 +86,10 @@ p {
 		<ul id="left_menu">
 		
 		<li class="left_menu">		
-		<a href="#"><img src="/resources/image/logo.webp" alt="OpenCritic"></a>
+		<a href="${rootPath}"><img src="/resources/image/logo.webp" alt="OpenCritic"></a>
 		</li>
 		<li class="left_menu">
-			<a href="#" class="top_text1">Genre</a>
+			<a href="${rootPath}/movie_list" class="top_text1">Genre</a>
 				
 				<ul id="genre_sub">
 					<li class="left_inner_menu"><a href="# "class="top_text3">Action</a></li>
@@ -137,7 +138,7 @@ p {
 		<!-- 관리자 로그인 -->
 			<c:if test="${sessionScope.sessionID=='admin'}">
 			<div id="admin_write" class="right_menu">
-					<a href="#" class="top_text2">Write</a>
+					<a href="${rootPath}/wrtie_board" class="top_text2">Write</a>
 				</div>
 			</c:if>
 		</c:if>	
@@ -158,6 +159,7 @@ p {
 			<input type="text" placeholder=" ID" class="login" name="memberId">
 		</div>
 		<div id="pw_box">
+<%--  폼태그..	<form:password path="memberPw"/> --%>
 			<input type="password" placeholder=" Password" class="login" name="memberPw">
 		</div>
 
@@ -165,6 +167,7 @@ p {
 
 		<article>
 			 <input type="submit" id="login_btn" value="Log In"/> 
+			 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> <!-- csrf -->
 		</article>
 		<div id="foot"><span>Not a member?</span><a href="${rootPath}/member/sign_up" style=text-decoration:none;>Create an account</a></div>
 	

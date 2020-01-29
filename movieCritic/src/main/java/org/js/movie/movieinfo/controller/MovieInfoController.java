@@ -34,6 +34,12 @@ public class MovieInfoController {
 	@Resource(name="uploadPath")
 	private String uploadPath;
 	
+	@RequestMapping (value = "/movie_list", method = RequestMethod.GET)
+	public String getMovieList() {
+		
+		return "movie_list";
+	}
+	
 	@RequestMapping (value = "/movie_info", method = RequestMethod.GET)
 	public void getMovieInfo(@RequestParam("movieId") int movieId, Model model) throws Exception {
 		
@@ -48,9 +54,11 @@ public class MovieInfoController {
 	}
 	
 	@RequestMapping (value ="/write_board", method = RequestMethod.GET)
-	public void getMovieWrite() {
+	public String getMovieWrite() {
 		
 		log.info("######write_board get######");
+		
+		return "write_board";
 	}
 	
 	@RequestMapping(value = "/write_board", method = RequestMethod.POST)

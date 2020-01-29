@@ -1,125 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Browse movie</title>
 
+<link rel="stylesheet" type="text/css" href="/resources/css/common.css"/>
 <style>
-
-#site_layout{
-	margin: -8px;
-	padding : 0;
-}
-
-#top_menu_wrapper{
-	margin:0 auto;
-	
-}
-
-#top_menu{
-	margin:0;
-	width:100%;
-	height:60px;
-	display:flex;
-	justify-content:space-around;
-	align-items:center;
-	background:black;
-
-	
-}
-
-#left_menu{
-	list-style-type:none;
-	
-}
-
-.left_menu{
-	float:left;
-	padding: 0 0 15px 30px;
-	margin-left:auto;
-}
-
-#top_menu2{
-	display:flex;
-	
-}
-
-.right_menu{
-	margin-left:auto;
-	padding-left:15px;
-	
-}
-.top_text1{
-	font-size: 15px;
-	color: white;
-	text-decoration:none;
-	vertical-align:-8px;
-	
-}
-
-#sign_up{
-	background:#f30;
-	
-}
-
-.top_text2{
-	font-size: 15px;
-	color: white;
-	vertical-align:-2px;
-	text-decoration:none;
-	padding-right:15px;
-	
-}
-
-#search{
-	border:none;
-	border-bottom: 3px solid white;
-	background: transparent;
-	height: 25px;
-}
-
-.line{
-	border-bottom: 2px solid lightgray;
-}
-
-#genre_sub{
-	display:none;
-	height: 115px;
-	width:70px;
-	padding:0;
-	margin: 0px;
-	position: absolute;
-	z-index:2;
-	list-style-type:none;
-	text-decoration:none;
-	background-color: #fff;
-	border: 1px solid gray;
-	border-radius: 5px;
-}
-
-
-.left_menu:hover ul#genre_sub {
-	display:block;
-}
-
-.top_text3{
-	text-decoration:none;
-	color:#555;
-	font-size:15px;
-	vertical-align: 8px;
-}
-
-.left_inner_menu{
-	padding: 10px 0 0 5px ;
-}
-
-.left_inner_menu:hover {
-	background: lightblue;
-}
-
-
 
 #middle_wrapper{
 	width:100%;
@@ -168,6 +57,8 @@
 
 <body>
 
+<!-- 절대경로 -->
+<c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 
 <div id="site_layout">
 
@@ -182,10 +73,10 @@
 				<ul id="left_menu">
 		
 					<li class="left_menu">		
-						<a href="#"><img src="C:\Users\orc4g\Desktop\image\logo.webp" alt="OpenCritic"></a>
+						<a href="../${rootPath}"><img src="/resources/image/logo.webp" alt="OpenCritic"></a>
 					</li>
 					<li class="left_menu">
-						<a href="#" class="top_text1">Genre</a>
+						<a href="${rootPath}/movie_list" class="top_text1">Genre</a>
 				
 							<ul id="genre_sub">
 								<li class="left_inner_menu"><a href="# "class="top_text3">Action</a></li>
@@ -214,10 +105,10 @@
 				</div>
 		
 				<div id="login" class="right_menu">
-					<a href="#" class="top_text2">Login</a>
+					<a href="${rootPath}/member/login" class="top_text2">Login</a>
 				</div>
 				<div id="sign_up" class="right_menu">
-					<a href="#" class="top_text2">Sign Up</a>
+					<a href="${rootPath}/member/sign_up" class="top_text2">Sign Up</a>
 				</div>
 			</nav>
 			<!-- 상단 오른쪽 메뉴 끝 -->

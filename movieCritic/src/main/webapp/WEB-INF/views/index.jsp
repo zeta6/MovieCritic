@@ -65,10 +65,10 @@ section[id^=board]{
 		<ul id="left_menu">
 		
 		<li class="left_menu">		
-		<a href=".do"><img src="/resources/image/logo.webp" alt="OpenCritic"></a>
+		<a href="${rootPath}"><img src="/resources/image/logo.webp" alt="OpenCritic"></a>
 		</li>
 		<li class="left_menu">
-			<a href="#" class="top_text1">Genre</a>
+			<a href="${rootPath}/movie_list" class="top_text1">Genre</a>
 				
 				<ul id="genre_sub">			<!-- select 기준 적용된 페이지 호출.. -->
 					<li class="left_inner_menu"><a href="#" class="top_text3">Action</a></li>
@@ -94,7 +94,7 @@ section[id^=board]{
 			</div>
 		
 					<!-- 로그인 안됐을 경우 , 로그인, 회원가입 버튼 보여줌-->
-		<c:if test="${sessionScope.sessionID==null}">		
+		<c:if test="${sessionScope.member.memberId==null}">		
 			<div id="login" class="right_menu">
 				<a href="${rootPath}/member/login" class="top_text2">Login</a>
 			</div>
@@ -104,7 +104,7 @@ section[id^=board]{
 		</c:if>
 		
 		<!-- 로그인 됐을 경우 , 로그아웃, 마이페이지 버튼 보여줌 -->
-		<c:if test="${sessionScope.sessionID!=null}">
+		<c:if test="${sessionScope.member.memberId!=null}">
 			<div class="right_menu">
 					<a href="${rootPath}/member/my_page">
 						<img src="/resources/image/toMyPage.png"
@@ -115,9 +115,9 @@ section[id^=board]{
 					<a href="${rootPath}/member/logout" class="top_text2">Log Out</a>
 			</div>
 		<!-- 관리자 로그인 -->
-			<c:if test="${sessionScope.sessionID=='admin'}">
+			<c:if test="${sessionScope.member.memberId=='admin'}">
 			<div id="admin_write" class="right_menu">
-					<a href="#" class="top_text2">Write</a>
+					<a href="${rootPath}/write_board" class="top_text2">Write</a>
 				</div>
 			</c:if>
 		</c:if>	

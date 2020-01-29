@@ -6,7 +6,16 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class CustomMember implements UserDetails {
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter //jsp 로그인 표현할 때 getMemberId가 없어서 추가함.
+@Setter
+@NoArgsConstructor   //Mybatis
+@ToString
+public class CustomMemberVO implements UserDetails {
 
 	private static final long serialVersionUID = 1L; //ctrl+1 로 값을 생성.
 	
@@ -20,7 +29,7 @@ public class CustomMember implements UserDetails {
 
 	
 	//id, pw, enabled를 vo에 설정하는 생성자
-	public CustomMember(MemberVO vo) {
+	public CustomMemberVO(MemberVO vo) {
 		
 		this.memberId = vo.getMemberId();
 		this.memberPw = vo.getMemberPw();

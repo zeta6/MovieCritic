@@ -159,6 +159,7 @@ div[id*=_box]{
 	
 		<article>
 			<input type="submit" id="create_account_btn" value="Create Account"/>
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> <!-- csrf -->
 		</article>
 	</form>
 

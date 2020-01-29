@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemberRole">
+
+	<insert id="insert" parameterType="Role">
+		insert into table_member_roles (member_id, role)
+		values (#{memberId}, #{role})   <!-- #{role}을 찾는 원리.. 로직 처리내에서 알아서 찾아주는건지 -->
+	</insert>
+
+	<select id="select">
+		select * from table_member_roles
+		where member_id = #{memberId}
+	</select>
+</mapper>

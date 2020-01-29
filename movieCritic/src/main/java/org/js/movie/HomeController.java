@@ -1,8 +1,5 @@
 package org.js.movie;
 
-import java.util.List;
-
-import org.js.movie.movieinfo.domain.MovieInfoVO;
 import org.js.movie.movieinfo.service.MovieInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +19,7 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String getIndex(Model model) {
 		
-		log.debug("index 시작");
+		log.info("#################### index 시작");
 
 		return "index";
 	}

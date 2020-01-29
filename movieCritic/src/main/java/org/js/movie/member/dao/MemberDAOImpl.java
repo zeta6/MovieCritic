@@ -2,8 +2,9 @@ package org.js.movie.member.dao;
 
 import java.util.List;
 
-import org.js.movie.member.domain.CustomMember;
+import org.js.movie.member.domain.CustomMemberVO;
 import org.js.movie.member.domain.MemberVO;
+import org.js.movie.member.domain.Role;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -49,9 +50,22 @@ public class MemberDAOImpl implements MemberDAO {
 	 * sql.selectOne("MemberMapper.login", vo); }
 	 */
 	@Override
-	public CustomMember login(String memberId) {
+	public CustomMemberVO login(String memberId) {
 		
 		return sql.selectOne("MemberMapper.login", memberId);
+	}
+
+	@Override
+	public void insertRole(CustomMemberVO cMember) {
+		
+		sql.insert("MemberRole.insert", cMember);
+
+	}
+
+	@Override
+	public Role selectRole(String memberId) {
+		
+		return sql.selectOne("MemberRole.select", memberId);
 	}
 
 

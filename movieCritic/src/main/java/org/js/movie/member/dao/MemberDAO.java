@@ -2,8 +2,9 @@ package org.js.movie.member.dao;
 
 import java.util.List;
 
-import org.js.movie.member.domain.CustomMember;
+import org.js.movie.member.domain.CustomMemberVO;
 import org.js.movie.member.domain.MemberVO;
+import org.js.movie.member.domain.Role;
 
 
 public interface MemberDAO {
@@ -28,9 +29,14 @@ public interface MemberDAO {
 	 * //로그인 public MemberVO login(MemberVO vo);
 	 */
 	
-	//시큐리티
-	public CustomMember login(String memberId);
+	//시큐리티 로그인
+	public CustomMemberVO login(String memberId);
 	
+	//회원가입 시 role 부여
+	public void insertRole(Role role);
+	
+	//Role 조회
+	public Role selectRole(String memberId);
 	
 
 }

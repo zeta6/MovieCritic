@@ -56,9 +56,9 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 
 	@Override
-	public void insertRole(CustomMemberVO cMember) {
+	public void insertRole(Role role) {
 		
-		sql.insert("MemberRole.insert", cMember);
+		sql.insert("MemberRole.insert", role);
 
 	}
 

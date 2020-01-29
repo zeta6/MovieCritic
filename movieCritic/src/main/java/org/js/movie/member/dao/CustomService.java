@@ -21,9 +21,9 @@ public class CustomService implements UserDetailsService {
 	private MemberDAO dao;
 	
 	//DB에 role을 저장한다.
-	private void insertRole(CustomMemberVO cMember) {
+	private void insertRole(Role role) {
 		
-		dao.insertRole(cMember);
+		dao.insertRole(role);
 	}
 	
 	@Override
@@ -38,12 +38,13 @@ public class CustomService implements UserDetailsService {
 			
 			Role adminRole = new Role();
 			adminRole.setRole("ROLE_ADMIN");
+			adminRole.setMemberId(cMember.getMemberId());
 			List<Role> roles = new ArrayList<Role>();
 			roles.add(adminRole);
 			cMember.setAuthorities(roles);
 			log.info("adminRole: " + adminRole.toString());
 			
-			insertRole(cMember);
+			insertRole(adminRole);
 				
 		} else if(memberId == "admin" && cMember.getAuthorities() != null) {
 			log.info("권한이 이미 있음");
@@ -55,12 +56,13 @@ public class CustomService implements UserDetailsService {
 			
 			Role userRole = new Role();
 			userRole.setRole("ROLE_USER");
+			userRole.setMemberId(cMember.getMemberId());
 			List<Role> roles = new ArrayList<Role>();
 			roles.add(userRole);
 			cMember.setAuthorities(roles);                  //authorities를 중간에 설정? 아니면 db에서 조회? 
 			log.info("userRole : " + userRole.toString());		
 			
-			insertRole(cMember);
+			insertRole(userRole);
 		} else if(memberId != "admin" && memberId != null && cMember.getAuthorities() != null) {
 			log.info("권한이 이미 있음");
 		}

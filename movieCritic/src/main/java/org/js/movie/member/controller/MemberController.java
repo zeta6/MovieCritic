@@ -8,6 +8,8 @@ import org.js.movie.member.domain.CustomMemberVO;
 import org.js.movie.member.domain.MemberVO;
 import org.js.movie.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,8 +33,11 @@ public class MemberController {
 	@RequestMapping(value="/my_page" , method=RequestMethod.GET)
 	public String getMyPage() {
 		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		log.info("auth 확인 " + auth.toString());
+		
 		log.info("myPage입니다.");
-		return "my_page";
+		return "member/my_page";
 	}
 	
 	
@@ -95,7 +100,7 @@ public class MemberController {
 		} else
 			session.setAttribute("member", cMember);
 			log.info("member != null");
-		return "redirect:/";
+		return "redirect:../";
 		
 	}
 	

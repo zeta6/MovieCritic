@@ -7,8 +7,8 @@
 		values (#{memberId}, #{role})   <!-- #{role}을 찾는 원리.. 로직 처리내에서 알아서 찾아주는건지 -->
 	</insert>
 
-	<select id="select">
-		select * from table_member_roles
+	<select id="select" resultType = "Role">
+		select role from table_member_roles
 		where member_id = #{memberId}
 	</select>
 </mapper>

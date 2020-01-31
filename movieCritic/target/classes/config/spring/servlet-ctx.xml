@@ -31,7 +31,7 @@
 	
 	<!-- 업로드 패스 설정 -->	
 	<beans:bean class="java.lang.String" id="uploadPath">
-		<beans:constructor-arg value="C:\works\moviecritic\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\movieCritic\resources\" />
+		<beans:constructor-arg value="C:\movieCritic\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\movieCritic\" />
 	</beans:bean>
 	
 	<!-- 일반 파일 업로드 경로 -->

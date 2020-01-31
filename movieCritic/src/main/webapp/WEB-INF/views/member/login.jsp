@@ -1,11 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta id="_csrf" name="_csrf" content="${_csrf.token}" /> 
+<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}" />
+
 <title>Login -MovieCritic</title>
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css">
 <style>
@@ -114,7 +118,9 @@ p {
 				</form>			
 			</div>
 		
-					<!-- 로그인 안됐을 경우 , 로그인, 회원가입 버튼 보여줌-->
+		<!-- 로그인 안됐을 경우 , 로그인, 회원가입 버튼 보여줌-->
+		
+		<sec:authorize access="isAuthenticated()">			
 		<c:if test="${sessionScope.sessionID==null}">		
 			<div id="login" class="right_menu">
 				<a href="${rootPath}/member/login.do" class="top_text2">Login</a>
@@ -123,7 +129,7 @@ p {
 				<a href="${rootPath}/member/sign_up.do" class="top_text2">Sign Up</a>
 			</div>
 		</c:if>
-		
+		</sec:authorize>
 		<!-- 로그인 됐을 경우 , 로그아웃, 마이페이지 버튼 보여줌 -->
 		<c:if test="${sessionScope.sessionID!=null}">
 			<div class="right_menu">
@@ -166,8 +172,8 @@ p {
 		<div id="forgot"><a>Forgot Password?</a></div>
 
 		<article>
-			 <input type="submit" id="login_btn" value="Log In"/> 
-			 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> <!-- csrf -->
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> <!-- csrf -->
+			<input type="submit" id="login_btn" value="Log In"/> 
 		</article>
 		<div id="foot"><span>Not a member?</span><a href="${rootPath}/member/sign_up" style=text-decoration:none;>Create an account</a></div>
 	

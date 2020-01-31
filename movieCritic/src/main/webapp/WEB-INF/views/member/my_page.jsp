@@ -1,126 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="/resources/css/common.css"/>
 <title>My Page</title>
 
 <style>
 
-#site_layout{
-	margin: -8px;
-	padding : 0;
-}
-
-#top_menu_wrapper{
-	margin:0 auto;
-	
-}
-
-#top_menu{
-	margin:0;
-	width:100%;
-	height:60px;
-	display:flex;
-	justify-content:space-around;
-	align-items:center;
-	background:black;
-
-	
-}
-
-#left_menu{
-	list-style-type:none;
-	
-}
-
-.left_menu{
-	float:left;
-	padding: 0 0 15px 30px;
-	margin-left:auto;
-}
-
-#top_menu2{
-	display:flex;
-	
-}
-
-.right_menu{
-	margin-left:auto;
-	padding-left:15px;
-	
-}
-.top_text1{
-	font-size: 15px;
-	color: white;
-	text-decoration:none;
-	vertical-align:-8px;
-	
-}
-
-#sign_up{
-	background:#f30;
-	
-}
-
-.top_text2{
-	font-size: 15px;
-	color: white;
-	vertical-align:-2px;
-	text-decoration:none;
-	padding-right:15px;
-	
-}
-
-#search{
-	border:none;
-	border-bottom: 3px solid white;
-	background: transparent;
-	height: 25px;
-}
-
-
-#genre_sub{
-	display:none;
-	height: 115px;
-	width:70px;
-	padding:0;
-	margin: 0px;
-	position: absolute;
-	z-index:2;
-	list-style-type:none;
-	text-decoration:none;
-	background-color: #fff;
-	border: 1px solid gray;
-	border-radius: 5px;
-}
-
-
-.left_menu:hover ul#genre_sub {
-	display:block;
-}
-
-.top_text3{
-	text-decoration:none;
-	color:#555;
-	font-size:15px;
-	vertical-align: 8px;
-}
-
-.left_inner_menu{
-	padding: 10px 0 0 5px ;
-}
-
-.left_inner_menu:hover {
-	background: lightblue;
-}
-
 #main_setting_area{
-	margin: 70px 700px 100px;
+	margin: 70px 300px 100px;
 	border: 1px solid white;
 	font-size: 13px;
-
+	width:50%;
+	height:100%;
 }
 
 .main_inner_area{
@@ -133,13 +29,13 @@
 .content_left_area{
 	float:left;
 	padding-left: 5px;
-	width: 80px;
+	width: 20%;
 }
 
 .content_right_area{
 	float:left;
 	padding-left: 25px;
-	
+	width:20%px;
 }
 
 </style>
@@ -148,6 +44,8 @@
 
 <body>
 
+<!-- 절대경로 -->
+<c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 
 <div id="site_layout">
 
@@ -161,10 +59,10 @@
 		<ul id="left_menu">
 		
 		<li class="left_menu">		
-		<a href="#"><img src="C:\Users\orc4g\Desktop\image\logo.webp" alt="OpenCritic"></a>
+		<a href="../${rootPath}"><img src="/resources/image/logo.webp" alt="OpenCritic"></a>
 		</li>
 		<li class="left_menu">
-			<a href="#" class="top_text1">Genre</a>
+			<a href="${rootPath}/movie_list" class="top_text1">Genre</a>
 				
 				<ul id="genre_sub">
 					<li class="left_inner_menu"><a href="# "class="top_text3">Action</a></li>
@@ -189,12 +87,40 @@
 				</form>			
 			</div>
 		
+						<!-- 로그인 안됐을 경우 , 로그인, 회원가입 버튼 보여줌-->
+		<sec:authorize access="!isAuthenticated()">
 			<div id="login" class="right_menu">
-				<a href="#" class="top_text2">Login</a>
+				<a href="${rootPath}/member/login" class="top_text2">Login</a>
 			</div>
 			<div id="sign_up" class="right_menu">
-				<a href="#" class="top_text2">Sign Up</a>
+				<a href="${rootPath}/member/sign_up" class="top_text2">Sign Up</a>
 			</div>
+		</sec:authorize>
+		
+		<!-- 로그인 됐을 경우 , 로그아웃, 마이페이지 버튼 보여줌 -->
+
+			<sec:authorize access="hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')">
+			<div class="right_menu">
+					<a href="${rootPath}/member/my_page">
+						<img src="/resources/image/toMyPage.png"
+						width="30px" height="30px">
+					</a>
+			</div>
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated()">
+			<div id="logout" class="right_menu">
+					<a href="${rootPath}/member/logout" class="top_text2">Log Out</a>
+			</div>
+			</sec:authorize>
+
+		<!-- 관리자 로그인 -->
+			<sec:authorize access="hasAuthority('ROLE_ADMIN')">
+				<div id="admin_write" class="right_menu">
+					<a href="${rootPath}/write_board" class="top_text2">Write</a>
+				</div>
+			</sec:authorize>	
+
+
 		</nav>
 
 	</div>
@@ -209,9 +135,9 @@
 	<div class="main_inner_area">
 		<div class="content_left_area">PROFILE IMAGE</div>
 
-		<div class="content_right_area"><img src="C:\Users\orc4g\Desktop\image\profile.png"></div>
+		<div class="content_right_area"><img src="${rootPath}/resources/image/profile.png"></div>
 
-		<div class="content_right_area"><input type="button" value="파일 선택"></div>
+		<div class="content_right_area" style="clear:both; padding-left:200px"><input type="file" value="파일 선택"></div>
 	</div>
 
 	<div class="main_inner_area">

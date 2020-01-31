@@ -1,7 +1,12 @@
 package org.js.movie;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.js.movie.movieinfo.service.MovieInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +25,7 @@ public class HomeController {
 	public String getIndex(Model model) {
 		
 		log.info("#################### index 시작");
+		
 
 		return "index";
 	}

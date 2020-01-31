@@ -1,10 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Welcome MovieCritic</title>
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css">
 <style>
@@ -94,33 +95,38 @@ section[id^=board]{
 			</div>
 		
 					<!-- 로그인 안됐을 경우 , 로그인, 회원가입 버튼 보여줌-->
-		<c:if test="${sessionScope.member.memberId==null}">		
+		<sec:authorize access="!isAuthenticated()">
 			<div id="login" class="right_menu">
 				<a href="${rootPath}/member/login" class="top_text2">Login</a>
 			</div>
 			<div id="sign_up" class="right_menu">
 				<a href="${rootPath}/member/sign_up" class="top_text2">Sign Up</a>
 			</div>
-		</c:if>
+		</sec:authorize>
 		
 		<!-- 로그인 됐을 경우 , 로그아웃, 마이페이지 버튼 보여줌 -->
-		<c:if test="${sessionScope.member.memberId!=null}">
+
+			<sec:authorize access="hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')">
 			<div class="right_menu">
 					<a href="${rootPath}/member/my_page">
 						<img src="/resources/image/toMyPage.png"
 						width="30px" height="30px">
 					</a>
 			</div>
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated()">
 			<div id="logout" class="right_menu">
 					<a href="${rootPath}/member/logout" class="top_text2">Log Out</a>
 			</div>
+			</sec:authorize>
+
 		<!-- 관리자 로그인 -->
-			<c:if test="${sessionScope.member.memberId=='admin'}">
-			<div id="admin_write" class="right_menu">
+
+			<sec:authorize access="hasRole('ADMIN')">
+				<div id="admin_write" class="right_menu">
 					<a href="${rootPath}/write_board" class="top_text2">Write</a>
 				</div>
-			</c:if>
-		</c:if>	
+			</sec:authorize>	
 		</nav>
 
 	</div>

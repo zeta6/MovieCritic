@@ -1,13 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Browse movie</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css"/>
+<title>Browse movie</title>
 <style>
 
 #middle_wrapper{
@@ -104,12 +104,39 @@
 					</form>			
 				</div>
 		
-				<div id="login" class="right_menu">
-					<a href="${rootPath}/member/login" class="top_text2">Login</a>
+						<!-- 로그인 안됐을 경우 , 로그인, 회원가입 버튼 보여줌-->
+		<sec:authorize access="!isAuthenticated()">
+			<div id="login" class="right_menu">
+				<a href="${rootPath}/member/login" class="top_text2">Login</a>
+			</div>
+			<div id="sign_up" class="right_menu">
+				<a href="${rootPath}/member/sign_up" class="top_text2">Sign Up</a>
+			</div>
+		</sec:authorize>
+		
+		<!-- 로그인 됐을 경우 , 로그아웃, 마이페이지 버튼 보여줌 -->
+
+			<sec:authorize access="hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')">
+			<div class="right_menu">
+					<a href="${rootPath}/member/my_page">
+						<img src="/resources/image/toMyPage.png"
+						width="30px" height="30px">
+					</a>
+			</div>
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated()">
+			<div id="logout" class="right_menu">
+					<a href="${rootPath}/member/logout" class="top_text2">Log Out</a>
+			</div>
+			</sec:authorize>
+
+		<!-- 관리자 로그인 -->
+			<sec:authorize access="hasAuthority('ROLE_ADMIN')">
+				<div id="admin_write" class="right_menu">
+					<a href="${rootPath}/write_board" class="top_text2">Write</a>
 				</div>
-				<div id="sign_up" class="right_menu">
-					<a href="${rootPath}/member/sign_up" class="top_text2">Sign Up</a>
-				</div>
+			</sec:authorize>	
+
 			</nav>
 			<!-- 상단 오른쪽 메뉴 끝 -->
 		</div>

@@ -65,24 +65,29 @@ public class MovieInfoController {
 	public String posttWrite(MovieInfoVO vo, MultipartFile file) throws Exception{
 		
 		
-		log.info("###upload path###");
+		log.info("########### write_board post 진입");
 		String imgUploadPath = uploadPath + File.separator + "movieImage";
 		String ymdPath = UploadFileUtils.calcPath(imgUploadPath);
 		String fileName = null;
+		log.info("file: " + file.getOriginalFilename());
+		log.debug("file :" +file);
+
 		
 		log.info("###upload path###");
 		if(file != null) {
 			fileName =  UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath); 
 		} else {
+			log.info("file is null");
 			fileName = uploadPath + File.separator + "image" + File.separator + "none.png";
 		}
 
+		log.info("fileName 확인: " +File.separator + "movieImage" + ymdPath + File.separator + fileName );
 		vo.setPoster(File.separator + "movieImage" + ymdPath + File.separator + fileName);
 
 		log.info("####upload post###");
 		movieInfoService.write(vo);
 			
-		return "redirect:/";
+		return "movie_list";
 	}
 	
 }

@@ -11,25 +11,28 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
+<import resource="db-ctx.xml"/>
 
-<security:http pattern="/resources/**" security="none"/>
+<context:component-scan base-package="org.js.movie.member" use-default-filters="true"></context:component-scan>
+<!-- <security:http pattern="/resources/**" security="none"/> -->
 
-<security:http auto-config="true" use-expressions="true">
-	<security:form-login login-page="/login" 
+<security:http auto-config="true" use-expressions="true" authentication-manager-ref="authenticationManager">
+	<security:form-login login-page="/member/login" 
 				username-parameter="memberId" 
 				password-parameter="memberPw" 
-				login-processing-url="/loginProc" 
+				login-processing-url="/member/loginProc" 
 				authentication-failure-url="/loginError"   
-				default-target-url="/my_page" 
+				default-target-url="/member/my_page" 
 				always-use-default-target="false" /> 
 	
 	<security:intercept-url pattern="/write_board" access="hasRole('ROLE_ADMIN')"/>
-	<security:intercept-url pattern="/view_review" access="hasRole('ROLE_USER')"/>			
+	<security:intercept-url pattern="/view_review" access="hasRole('ROLE_USER')"/>
+	<security:intercept-url pattern="/my_page" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>			
 	<security:intercept-url pattern="/login" access="permitAll" />
 	<security:intercept-url pattern="/loginProc" access="permitAll"/>
 	<security:intercept-url pattern="/**" access="permitAll"/>
 	
-	<security:csrf disabled="false"/>
+	<security:csrf disabled="true"/>
 	
 	
 	<security:logout invalidate-session="true" logout-success-url="/logout" logout-url="/logout" /> 
@@ -37,14 +40,17 @@
 
 </security:http>
 
-<bean id="customProvider" class="org.js.movie.member.service.CustomProvider"/> 
+<bean id="customProvider" class="org.js.movie.member.service.CustomProvider"/>
 <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 <bean id="customService" class="org.js.movie.member.dao.CustomService"/>
 
-<security:authentication-manager> 
+<security:authentication-manager alias="authenticationManager">
+ 
 	<security:authentication-provider ref="customProvider"/> 
-	<security:authentication-provider user-service-ref="customService"/>
+	<security:authentication-provider user-service-ref="customService">
+		<security:password-encoder hash="bcrypt"/>
+	</security:authentication-provider>
+	
 </security:authentication-manager>
-
 
 </beans>

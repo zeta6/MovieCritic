@@ -178,22 +178,69 @@ td:nth-child(2n+1){
 					<tr>
 						<td>
 						<div style="margin: 10px 0;">
- 							<label for="poster">이미지</label>
+ 							<label for="poster">Poster</label>
+ 							
+ 							<%= request.getRealPath("/") %>
+						</div>
+ 						</td>
+ 						<td>
  							<input type="file" id="poster" name="file" />
- 							<div class="select_img"><img src="" /></div> 
-							<script>
+ 							<script>
   								$("#poster").change(function(){
    									if(this.files && this.files[0]) {
     									var reader = new FileReader;
     									reader.onload = function(data) {
-     										$(".select_img img").attr("src", data.target.result).width(200);        
+     										$(".select_img img").attr("src", data.target.result).width(50).height(50);
+     										$(".select_img").css("display", "inline-block");
     									}
 								    	reader.readAsDataURL(this.files[0]);
    									}
   								});
  							</script>
- 							<%= request.getRealPath("/") %>
-						</div>	
+ 							<div class="select_img"><img src="" /></div>
+ 						</td>
+ 					</tr>
+ 					<tr> 
+						<td>
+						<div style="margin: 10px 0;">
+ 							<label for="stillCuts">StillCuts</label>
+ 						</div>
+ 						</td>
+ 						<td>
+ 							<input multiple="multiple" type="file" id="stillCuts" name="file" />
+ 							 <!-- for문을 교체!! -->
+							<script>
+  								$("#stillCuts").change(function(){
+   									if(this.files[0] || this.files[1] || this.files[2]) {
+    									var reader1 = new FileReader;
+    									var reader2 = new FileReader;
+    									var reader3 = new FileReader;
+    									reader1.onload = function(data) {
+     										$(".select_img2 img").attr("src", data.target.result).width(50).height(50);
+     										$(".select_img2").css("display", "inline-block");
+     									
+    									}
+    									reader2.onload = function(data) {
+     								
+     										$(".select_img3 img").attr("src", data.target.result).width(50).height(50);
+     										$(".select_img3").css("display", "inline-block");
+    									}
+    									reader3.onload = function(data) {
+     										
+     										
+     										$(".select_img4 img").attr("src", data.target.result).width(50).height(50);
+     										$(".select_img4").css("display", "inline-block");
+    									}
+								    	reader1.readAsDataURL(this.files[0]);
+								    	reader2.readAsDataURL(this.files[1]);
+								    	reader3.readAsDataURL(this.files[2]);
+   									}
+  								});
+  							
+ 							</script>
+ 							<div class="select_img2"><img src="" /></div>
+ 							<div class="select_img3"><img src="" /></div>
+ 							<div class="select_img4"><img src="" /></div>
 						</td>
 					</tr>
 					

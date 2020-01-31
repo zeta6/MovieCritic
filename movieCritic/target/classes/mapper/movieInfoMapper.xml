@@ -34,8 +34,8 @@
 	<!--  movie info 작성 -->
 	<insert id="write" parameterType="movieinfoVO">
 		insert into
-			table_movie_info(title, summary, poster)
-				values(#{title}, #{summary}, #{poster})
+			table_movie_info(title, starring, writer, genre, summary, poster, still_cut1, still_cut2, still_cut3, thumb_nail)
+				values(#{title}, #{starring}, #{writer}, #{genre}, #{summary}, #{poster}, #{stillCut1}, #{stillCut2}, #{stillCut3}, #{thumbNail} )
 	</insert>
 	
 </mapper>

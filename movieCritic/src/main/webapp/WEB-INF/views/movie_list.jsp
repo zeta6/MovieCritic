@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- uri에 jsp 유무 --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +13,7 @@
 
 #middle_wrapper{
 	width:100%;
-	height:400px;
+	max-height:80%;
 	border:1px solid blue;
 }
 
@@ -26,6 +27,47 @@
 	border:1px solid blue;
 }
 
+#board_wrapper{
+	display:flex;
+	justify-content:space-around;
+	align-items:center;
+	width: 1000px;
+	margin-top: 50px;
+	margin-left: 310px;
+	border:1px solid blue;
+
+}
+
+table{
+	width:100%;		/* width, height를 비율로 정의하는 것은 부모요소에 영향을 받음  */
+	height:60%;
+}
+td,th{
+	text-align:left;
+	padding-left: 20px;
+}
+
+td:nth-child(n+1){
+
+	border:1px solid red;
+}
+
+td:nth-of-type(1){
+	width:10%;
+	height:2%;
+}
+td:nth-of-type(2){
+	width:35%;
+	height:2%;
+}
+td:nth-of-type(3){
+	width:20%;
+	height:2%;
+}
+td:nth-of-type(4){
+	width:35%;
+	height:2%;
+}
 #genre{
 	width:250px;
 	height:30px;
@@ -147,6 +189,7 @@
 	<div id="middle_wrapper">
 		<h1 style="width:100%;padding-top:100px;padding-left:340px;">Browse Movie</h1>
 		
+		<!-- select Wrapper 시작 -->
 		<div id="select_wrapper">
 
 			<div id="select1">
@@ -178,7 +221,35 @@
 				</select>
 			</div>
 		</div>
+		<!-- select Wrapper 끝 -->
+		
+		<div id="board_wrapper">
+	
+			<table>
+				<tr>
+					<th>Number</th><th>Title</th><th>Genre</th><th>Release Date</th>
+				</tr>
+			<%--서버에서 넘어온 변수 두개 사용하는 방법 --%>
+				<c:forEach items="${list}" var="list" varStatus="status"> <%-- items 에는 속성명을 적어줌 --%>
+					<tr>
+						<td>${boardNumber[status.index]}</td>
+						<td><a href="/movie_info/view?movieId=${list.movieId}">${list.title}</a></td>
+						<td>${list.genre}</td>
+						<td><fmt:formatDate value="${list.releaseDate}" pattern="yyyy.MM.dd"/></td>
+					</tr>
+				</c:forEach>
+			
+							<%--<c:forEach items="${list}" var="list" varStatus="status"> items 에는 속성명을 적어줌  (varStatus로 처리하는 법)
+							<tr>
+								<td>${status.count}</td><td>${list.title}</td><td>${list.genre}</td><td>${list.registerDate}</td>
+							</tr>
+							</c:forEach>--%>		
+			</table>
+		</div>
 	</div>
+	<!-- middle Wrapper 끝 -->
+	
+	
 </div>
 </body>
 </html>

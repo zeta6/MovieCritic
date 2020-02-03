@@ -25,5 +25,5 @@ public class MovieInfoVO {
 	private String stillCut3;
 	private String thumbNail;
 	private String poster;
-
+	private Date releaseDate;
 }	

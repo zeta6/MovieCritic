@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MovieInfoMapper">
 
+
 	<!-- index 포스터 페이지 목록 -->
 	<select id="poster_list" resultType="movieinfoVO">
 		select
@@ -14,28 +15,28 @@
 	<!-- index movie 목록 -->
 	<select id="list" resultType="movieinfoVO">
  		select
- 			movie_id, title, register_date
+ 			*
  		from table_movie_info
- 		order by movie_id desc
- 		limit 7
+<!--  		order by movie_id asc -->
+ 	<!-- 	limit 7 -->
 	</select>
 		
-	<!--  move info 페이지 뷰 -->
+	<!--  move info 페이지 뷰 (개별 게시글) -->
 	<select id="view" parameterType="int" resultType="movieinfoVO">
 		select
-			movie_id, title, summary, register_date
+			*
 		from
 			table_movie_info
 		where
-			movie_id = #{movieId}
+			title = #{movieId}
 	
 	</select>
 	
 	<!--  movie info 작성 -->
 	<insert id="write" parameterType="movieinfoVO">
 		insert into
-			table_movie_info(title, starring, writer, genre, summary, poster, still_cut1, still_cut2, still_cut3, thumb_nail)
-				values(#{title}, #{starring}, #{writer}, #{genre}, #{summary}, #{poster}, #{stillCut1}, #{stillCut2}, #{stillCut3}, #{thumbNail} )
+			table_movie_info(title, starring, writer, genre, summary, poster, still_cut1, still_cut2, still_cut3, thumb_nail, release_date)
+				values(#{title}, #{starring}, #{writer}, #{genre}, #{summary}, #{poster}, #{stillCut1}, #{stillCut2}, #{stillCut3}, #{thumbNail}, #{releaseDate} )
 	</insert>
 	
 </mapper>

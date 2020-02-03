@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css">
+<link rel="stylesheet" type="text/css" href="/resources/css/jquerys.css">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta id="_csrf" name="_csrf" content="${_csrf.token}" /> 
 
@@ -15,24 +17,27 @@
 <style>
 
 #main_write_area{
-
+	border:1px solid blue;
+	margin:2% 10% 5% 10%;
 }
 
 
-table {
-
+#input_table {
+	margin:20px;
 	border: 1px solid #444444;
 	border-collapse: collapse;
 }
 
-  td {
+#input_table  td {
 	border: 1px solid #444444;
 	padding: 10px;
-	
+	width:15%;
+	word-break:break-all;
 }
 
-td:nth-child(2n+1){
+#input_table td:nth-child(2n+1){
 	background:#fee;
+	width:30%;
 }
 
 #submit_btn_area{
@@ -54,11 +59,15 @@ td:nth-child(2n+1){
 
 </style>
 
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
-
-
-
-
+$( function() {
+  $( "#datepicker" ).datepicker();
+  	dateFormat: 'yyyy.mm.dd'
+  	showOn: "both"
+  	buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif"
+} );
 </script>
 
 </head>
@@ -157,7 +166,7 @@ td:nth-child(2n+1){
 			<form method="post" enctype="multipart/form-data">
 
 			
-				<table>
+				<table id="input_table">
 	
 					<tr>
 						<td> Title  </td>
@@ -170,6 +179,10 @@ td:nth-child(2n+1){
 					<tr>
 						<td> Genre  </td>
 						<td><input type="text" name="genre"> </td>
+					</tr>
+					<tr>
+						<td> Release Date  </td>
+						<td><input type="text" name="releaseDate" id="datepicker"> </td>
 					</tr>
 					<tr>
 						<td> Summary  </td>

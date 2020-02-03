@@ -1,14 +1,17 @@
 @charset "UTF-8";
 
 #site_layout{
-	margin: -8px;
+	margin: -4px;
 	padding : 0;
 	width:100%;
+
 }
 
 #top_menu_wrapper{
 	margin:0 auto;
-	
+	border:1px solid red;
+	width:100%;
+	background:black;	
 }
 
 #top_menu{
@@ -18,7 +21,6 @@
 	display:flex;
 	justify-content:space-around;
 	align-items:center;
-	background:black;
 
 	
 }

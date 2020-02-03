@@ -8,7 +8,7 @@ public interface MovieInfoService {
 	
 	public List<MovieInfoVO> list();
 	
-	public MovieInfoVO view(int id);
+	public MovieInfoVO view(int movieId);
 	
 	public void write(MovieInfoVO vo);
 	

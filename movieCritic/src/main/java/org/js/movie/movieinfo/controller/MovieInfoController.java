@@ -2,7 +2,7 @@ package org.js.movie.movieinfo.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -39,13 +39,27 @@ public class MovieInfoController {
 	private String uploadPath;
 	
 	@RequestMapping (value = "/movie_list", method = RequestMethod.GET)
-	public String getMovieList() {
+	public String getMovieList(Model model) {
+		
+		log.info("#####################movie_list get");
+		List<MovieInfoVO> infoList = movieInfoService.list();
+		int maxBoardNumber = infoList.size();
+		log.info("Max boardNumber :" + maxBoardNumber);
+		List<Integer> numberList = new ArrayList<Integer>(); 
+		for(int i=1; i<=maxBoardNumber; i++) {
+
+			numberList.add(i-1, i);
+		}
+		log.info("################## list 확인: " + infoList);
+		log.info("################## list 확인: " + numberList);
+		model.addAttribute("list", infoList);
+		model.addAttribute("boardNumber", numberList);
 		
 		return "movie_list";
 	}
 	
-	@RequestMapping (value = "/movie_info", method = RequestMethod.GET)
-	public void getMovieInfo(@RequestParam("movieId") int movieId, Model model) throws Exception {
+	@RequestMapping (value = "/movie_info/view", method = RequestMethod.GET)
+	public String getMovieInfo(@RequestParam("movieId") int movieId, Model model) throws Exception {
 		
 	
 		MovieInfoVO vo = movieInfoService.view(movieId);
@@ -55,6 +69,8 @@ public class MovieInfoController {
 		
 		List<ReviewVO> reviewList = reviewService.readReview(movieId);
 		model.addAttribute("reviewList", reviewList);
+		
+		return "movie_info";	//page 404로 void에서 string으로 교체
 	}
 	
 	@RequestMapping (value ="/write_board", method = RequestMethod.GET)
@@ -112,7 +128,9 @@ public class MovieInfoController {
 		vo.setWriter(principal.toString());
 		movieInfoService.write(vo);
 	
-		return "movie_list";
+		return "redirect:../";
 	
 	}
+	//@RequestParam 주소(경로)에서 해당하는 이름의 값을 찾아서 엮어줌.
+
 }

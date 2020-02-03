@@ -22,9 +22,9 @@ public class MovieInfoServiceImpl implements MovieInfoService {
 	}
 	
 	@Override
-	public MovieInfoVO view(int id) {
+	public MovieInfoVO view(int movieId) {
 		
-		return dao.view(id);
+		return dao.view(movieId);
 	}
 	
 	@Override

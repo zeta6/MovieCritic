@@ -1,10 +1,12 @@
 package org.js.movie.movieinfo.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
+import org.js.movie.movieinfo.domain.Criteria;
 import org.js.movie.movieinfo.domain.MovieInfoVO;
 import org.springframework.stereotype.Repository;
 
@@ -16,9 +18,15 @@ public class MovieInfoDAOImpl implements MovieInfoDAO {
 	
 	//movie list
 	@Override
-	public List<MovieInfoVO> list() {
+	public List<Map<String, Object>> list(Criteria criteria) {
 
-		return sql.selectList("MovieInfoMapper.list");
+		return sql.selectList("MovieInfoMapper.list", criteria);
+	}
+	
+	@Override
+	public List<MovieInfoVO> listAll(){
+		
+		return sql.selectList("MovieInfoMapper.listAll");
 	}
 	
 	//movie info
@@ -33,5 +41,11 @@ public class MovieInfoDAOImpl implements MovieInfoDAO {
 	public void write(MovieInfoVO vo) {
 		
 		sql.insert("MovieInfoMapper.write", vo);
+	}
+
+	@Override
+	public int countTotalList() {
+
+		return sql.selectOne("MovieInfoMapper.countTotalList");
 	}
 }

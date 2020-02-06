@@ -8,33 +8,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css"/>
+<!-- 합쳐지고 최소화된 최신 CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <title>Browse movie</title>
 <style>
 
 #middle_wrapper{
 	width:100%;
 	max-height:80%;
-	border:1px solid blue;
 }
 
 #select_wrapper{
 	display:flex;
 	justify-content:space-around;
 	align-items:center;
-	width: 1000px;
+	width: 60%;
 	margin-top: 50px;
-	margin-left: 310px;
-	border:1px solid blue;
+	margin-left: 18%;
 }
 
 #board_wrapper{
 	display:flex;
 	justify-content:space-around;
 	align-items:center;
-	width: 1000px;
+	width: 60%;
 	margin-top: 50px;
-	margin-left: 310px;
-	border:1px solid blue;
+	margin-left: 18%;
+
 
 }
 
@@ -42,32 +42,50 @@ table{
 	width:100%;		/* width, height를 비율로 정의하는 것은 부모요소에 영향을 받음  */
 	height:60%;
 }
-td,th{
+td{
 	text-align:left;
-	padding-left: 20px;
+	padding-left: 10px;
 }
 
-td:nth-child(n+1){
+tr:nth-child(n+2):hover{		/* tr,td행은 1부터 시작. n은 0부터..*/
+	background:#fff9f2;
+}
 
-	border:1px solid red;
+th, td:nth-child(n){
+	border-bottom:1px solid #ccc;
+}
+
+th{
+	padding-bottom:13px;	
+}
+
+th:nth-of-type(1), th:nth-of-type(2){
+	text-align:center;
 }
 
 td:nth-of-type(1){
-	width:10%;
+	text-align:center;
+	width:5%;
 	height:2%;
 }
 td:nth-of-type(2){
-	width:35%;
+	width:5%;
 	height:2%;
+
 }
 td:nth-of-type(3){
-	width:20%;
+	width:40%;
 	height:2%;
 }
 td:nth-of-type(4){
-	width:35%;
+	width:20%;
 	height:2%;
 }
+td:nth-of-type(5){
+	width:20%;
+	height:2%;
+}
+
 #genre{
 	width:250px;
 	height:30px;
@@ -91,6 +109,21 @@ td:nth-of-type(4){
 .select_label{
 	display:block;
 	padding-bottom:5px;
+}
+
+.rating_circle_average{
+    border-radius: 50%;
+    height: 28px;
+    width: 28px;
+    text-align: center;
+    background-color: #eee;
+    color:#fff;
+    cursor:pointer;
+    float:left;
+    margin:12px 0px 12px 12px;
+    font-size:14px;
+    font-weight:1000px;
+    padding-top:5px;
 }
 
 </style>
@@ -187,7 +220,7 @@ td:nth-of-type(4){
 	<!-- 상단 메뉴 wrapper 끝-->
 
 	<div id="middle_wrapper">
-		<h1 style="width:100%;padding-top:100px;padding-left:340px;">Browse Movie</h1>
+		<h1 style="width:100%;padding-top:50px;padding-left:18%;">Browse Movie</h1>
 		
 		<!-- select Wrapper 시작 -->
 		<div id="select_wrapper">
@@ -203,7 +236,7 @@ td:nth-of-type(4){
 			</div>
 
 			<div id="select2">
-				<label for="timeframe" class="select_label">Timeframe</label>
+				<label for="timeframe" class="select_label">Release Date</label>
 				<select name="timeframe" id="timeframe" class="select_box">
 					<option value="">All Time</option>
 					<option value="2019">2019</option>
@@ -224,32 +257,76 @@ td:nth-of-type(4){
 		<!-- select Wrapper 끝 -->
 		
 		<div id="board_wrapper">
-	
+
 			<table>
 				<tr>
-					<th>Number</th><th>Title</th><th>Genre</th><th>Release Date</th>
+					<th>Number</th><th>Score</th><th>Title</th><th>Genre</th><th>Release Date</th>
 				</tr>
-			<%--서버에서 넘어온 변수 두개 사용하는 방법 --%>
-				<c:forEach items="${list}" var="list" varStatus="status"> <%-- items 에는 속성명을 적어줌 --%>
+<%--${((criteria.nowPage)-1)*criteria.perPageNumber+status.count} --%>		
+					<c:forEach items="${list}" var="list" varStatus="status"> 
 					<tr>
-						<td>${boardNumber[status.index]}</td>
+						<td>${((criteria.nowPage)-1)*criteria.perPageNumber+status.count}</td>
+						<td>
+							<div class="rating_circle_average" style="margin-right:20px;font-weight:bold;">
+								<fmt:formatNumber value="${list.scoreAverage}" pattern="0.0"/>
+							</div>
+						</td>
 						<td><a href="/movie_info/view?movieId=${list.movieId}">${list.title}</a></td>
 						<td>${list.genre}</td>
 						<td><fmt:formatDate value="${list.releaseDate}" pattern="yyyy.MM.dd"/></td>
 					</tr>
-				</c:forEach>
-			
-							<%--<c:forEach items="${list}" var="list" varStatus="status"> items 에는 속성명을 적어줌  (varStatus로 처리하는 법)
-							<tr>
-								<td>${status.count}</td><td>${list.title}</td><td>${list.genre}</td><td>${list.registerDate}</td>
-							</tr>
-							</c:forEach>--%>		
+					</c:forEach>		
 			</table>
 		</div>
+		
+				<div style="margin:5% 0 5% 40%;">
+					<ul class="btn-group pagination">
+			    		<c:if test="${pageMaker.prev}">
+			    		<li>
+			        		<a href='<c:url value="/movie_list?nowPage=${pageMaker.startPage-1 }"/>' role="button" class="btn btn-default btn-sm">><i class="fa fa-chevron-left"></i></a>
+			    		</li>
+			    		</c:if>
+			    		
+			    		<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="pageNumber">
+			    		<li>
+			        		<a href='<c:url value="/movie_list?nowPage=${pageNumber}"/>'><i class="fa">${pageNumber}</i></a>
+			    		</li>
+			    		</c:forEach>
+			    
+			    		<c:if test="${pageMaker.next && pageMaker.endPage >0 }">
+			   			<li>
+			        		<a href='<c:url value="/movie_list?nowPage=${pageMaker.endPage+1}"/>' role="button" class="btn btn-default btn-sm">><i class="fa fa-chevron-right"></i></a>
+			    		</li>
+			    		</c:if>
+					</ul>
+				</div>
 	</div>
 	<!-- middle Wrapper 끝 -->
 	
 	
 </div>
+
+<script>
+		window.onload = function(){
+			var scoreAverageDIV= document.getElementsByClassName("rating_circle_average");
+			console.log("scoreAverageDIV="+scoreAverageDIV);
+			for(var i=0; i < scoreAverageDIV.length; i++){
+				var scoreAverage = scoreAverageDIV[i].innerHTML;
+				if(scoreAverage <=3 && scoreAverage>=0){
+					scoreAverageDIV[i].style.backgroundColor = "red";
+				}
+				else if(scoreAverage <=6){
+					scoreAverageDIV[i].style.backgroundColor = "orange";
+				}
+				else if(scoreAverage <=10){
+					scoreAverageDIV[i].style.backgroundColor = "#1aff00";
+				}
+				else if(scoreAverage.equals("")){
+					scoreAverageDIV[i].style.backgroundColor = "#000";
+				}
+			}
+			  
+			}
+		</script>
 </body>
 </html>

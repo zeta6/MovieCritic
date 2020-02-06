@@ -20,7 +20,8 @@
 	<resources mapping="/image/**" location="/resources/image/"/>
 	
 	<!-- 영화 이미지 경로 -->
-	<resources mapping="/movieImage/**" location="/resourcecs/movieImage/"/>
+	<!-- <resources mapping="/movieImage/**" location="/resourcecs/movieImage/"/> -->
+	<!-- <resources mapping="\movieImage\**" location="C:\movieCritic\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\movieCritic\resources"/> -->
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

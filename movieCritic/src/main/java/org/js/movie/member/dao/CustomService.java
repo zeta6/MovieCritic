@@ -26,7 +26,7 @@ public class CustomService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
 		
 		log.info("CustomService 진입");
-		CustomMemberVO cMember = dao.login(memberId);
+		CustomMemberVO cMember = dao.login(memberId);	//로그인시 id에 맞는 정보들이 cMember에 담김.
 		log.info("login 시작" + cMember);
 		
 		

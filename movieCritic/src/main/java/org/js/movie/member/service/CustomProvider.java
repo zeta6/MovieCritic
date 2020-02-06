@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.js.movie.member.dao.CustomService;
 import org.js.movie.member.domain.CustomMemberVO;
+import org.js.movie.member.domain.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,6 +23,9 @@ public class CustomProvider implements AuthenticationProvider {
 	
 	@Autowired
 	private CustomService service;
+	
+	@Autowired
+	private MemberService memberService;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -39,7 +43,7 @@ public class CustomProvider implements AuthenticationProvider {
 		log.info("authentication.getPrincipal : " + authentication.getPrincipal());
 		String password = (String) authentication.getCredentials(); //Object -> String
 		log.info("입력한 비밀번호 암호화 하지않음 : " + password);
-		
+
 		//passwordEncoder.encode(password) 입력한 pw 암호화 매번 값이 달라져서 입력한 비밀번호를 암호화하고 비교하는방법은 없나?
 		
 		CustomMemberVO cMemberProvider = (CustomMemberVO) service.loadUserByUsername(username);
@@ -51,6 +55,7 @@ public class CustomProvider implements AuthenticationProvider {
 			log.info(" Not Match Password");
             throw new BadCredentialsException(username);
         } else {
+    		
         	log.info("pass!");
         }
  
@@ -66,7 +71,7 @@ public class CustomProvider implements AuthenticationProvider {
         List<? extends GrantedAuthority> authorities = (List<? extends GrantedAuthority>) cMemberProvider.getAuthorities();
         log.info("authorities 확인 : " + authorities.toString());
 		
-		return new UsernamePasswordAuthenticationToken(username, password, cMemberProvider.getAuthorities());
+		return new UsernamePasswordAuthenticationToken(cMemberProvider, null , cMemberProvider.getAuthorities()); //view단 에서  principal.~ 정보 관련됨. 객체 리턴해서 활용가능 
 	}
 	
 	/*

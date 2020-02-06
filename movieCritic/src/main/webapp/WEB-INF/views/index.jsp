@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,9 +88,10 @@ section[id^=board]{
 			
 			<div id="form" class="right_menu">
 	
-				<form action="login.jsp" method="post" class="right_menu">
+				<form action="#" method="post" class="right_menu">
 
 					<input type="text" placeholder="Search" class="top_text2" id="search">
+					<sec:csrfInput/>
 
 				</form>			
 			</div>
@@ -170,20 +172,24 @@ section[id^=board]{
 		<table>
 			<thead>
 				<tr>
-					<th>제목</th>
-					<th>작성일</th>
+					<th>제목</th><th>작성일</th>
+				</tr>
+				<tr>
+					<td>
+							
+					</td>
 				</tr>
 			</thead>
 			
-			<%-- <tbody>
+			<tbody>
 	
 				<c:forEach items="${list}" var="list">
 					<tr>
 						<td><a href="/movie_info?movieId=${list.movieId}">${list.title}</a></td>
-						<td><a href="/movie_info?movieId=${list.movieId}">${list.registerDate}</a></td>
+						<td><a href="/movie_info?movieId=${list.movieId}"><fmt:formatDate value="${list.registerDate}" pattern="yyyy.mm.dd:hh:mm"/></a></td>
 					</tr>
 				</c:forEach>
-  		 	</tbody> --%>
+  		 	</tbody>
   		 </table>
 			
 			

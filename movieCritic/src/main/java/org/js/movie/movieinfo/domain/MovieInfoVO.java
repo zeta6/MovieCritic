@@ -26,4 +26,7 @@ public class MovieInfoVO {
 	private String thumbNail;
 	private String poster;
 	private Date releaseDate;
+	private String runtime;
+	private String director;
+	private double scoreAverage;
 }	

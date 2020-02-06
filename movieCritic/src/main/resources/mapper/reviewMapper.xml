@@ -4,17 +4,25 @@
 
 	<!-- 리뷰 조회   -->
 	<select id="readReview" resultType="reviewVO">
-		select
-			review_id, content, writer, register_date, movie_id
-		from table_review
-			where movie_id = #{movieId}
+	<![CDATA[
+		SELECT *
+		FROM table_review
+		WHERE movie_id = #{movieId}
+	]]>
 	</select>
 	
 	<insert id="insertReview">
+	
 		insert into table_review 
 			(movie_id, content, writer, rating)
 		values
-			(#{movieId}r, #{content}, #{writer}, #{rating}) 
+			(#{movieId}, #{content}, #{writer}, #{rating});
+		
+		update table_movie_info tmi
+		set tmi.score_average = 
+			(select avg(rating) from table_review tr 
+				where tmi.movie_id = tr.movie_id)
+		
 	</insert>
 	
 	<update id="updateReview">

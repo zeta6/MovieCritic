@@ -9,4 +9,7 @@ public interface ReviewDAO {
 	//리뷰 조회
 	public List<ReviewVO> readReview(int movieId);
 	
+	//리뷰 작성
+	public void insertReview(ReviewVO vo);
+	
 }

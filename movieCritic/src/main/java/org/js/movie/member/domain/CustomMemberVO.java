@@ -21,12 +21,32 @@ public class CustomMemberVO implements UserDetails {
 	
 	private String memberId;
 	private String memberPw;
+	private String email;
+	private String phoneNumber;
+	private String nickname;
 	private List<Role> authorities;
 	private boolean accountNonExpired = true;
 	private boolean accountNonLocked =true;
 	private boolean credentialsNonExpired = true;
 	private boolean enabled = true;
 
+	//my_page 정보 표시로 추가함. getter,setter 없어도 nickname이 나옴.
+	public String getEmail() {
+		return this.email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public String getPhoneNumber() {
+		return this.phoneNumber;
+	}
+	
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+	
 	
 	//id, pw, enabled를 vo에 설정하는 생성자
 	public CustomMemberVO(MemberVO vo) {

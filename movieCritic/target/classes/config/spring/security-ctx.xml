@@ -16,23 +16,25 @@
 <context:component-scan base-package="org.js.movie.member" use-default-filters="true"></context:component-scan>
 <!-- <security:http pattern="/resources/**" security="none"/> -->
 
-<security:http auto-config="true" use-expressions="true" authentication-manager-ref="authenticationManager">
+<bean id="defaultHttpFirewall" class="org.springframework.security.web.firewall.DefaultHttpFirewall"/> <!-- 용도? -->
+
+<security:http auto-config="false" use-expressions="true" authentication-manager-ref="authenticationManager" create-session="ifRequired" >
 	<security:form-login login-page="/member/login" 
 				username-parameter="memberId" 
 				password-parameter="memberPw" 
 				login-processing-url="/member/loginProc" 
 				authentication-failure-url="/loginError"   
 				default-target-url="/member/my_page" 
-				always-use-default-target="false" /> 
+				always-use-default-target="true" /> 
 	
 	<security:intercept-url pattern="/write_board" access="hasRole('ROLE_ADMIN')"/>
 	<security:intercept-url pattern="/view_review" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>
-	<security:intercept-url pattern="/my_page" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>			
-	<security:intercept-url pattern="/login" access="permitAll" />
-	<security:intercept-url pattern="/loginProc" access="permitAll"/>
+	<security:intercept-url pattern="/member/my_page" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>			
+	<security:intercept-url pattern="/member/login" access="permitAll" />
+	<security:intercept-url pattern="/member/loginProc" access="permitAll"/>	<!-- 경로 잘못지정한 것 수정.. ${}값이 안나와서 확인해봄. -->
 	<security:intercept-url pattern="/**" access="permitAll"/>
 	
-	<security:csrf disabled="true"/>
+	<security:csrf disabled="false"/>
 	
 	
 	<security:logout invalidate-session="true" logout-success-url="/logout" logout-url="/logout" /> 

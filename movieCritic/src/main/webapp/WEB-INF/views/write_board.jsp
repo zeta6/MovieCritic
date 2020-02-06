@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="/resources/css/jquerys.css">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta id="_csrf" name="_csrf" content="${_csrf.token}" /> 
+<%-- <meta id="_csrf" name="_csrf" content="${_csrf.token}" /> --%> 
 
 <title>Insert title here</title>
 <script src="/resources/jquery/jquery-3.4.1.min.js"></script>
@@ -23,7 +23,8 @@
 
 
 #input_table {
-	margin:20px;
+	width:70%;
+	margin:1% 15% 2% 15%;
 	border: 1px solid #444444;
 	border-collapse: collapse;
 }
@@ -112,6 +113,7 @@ $( function() {
 				<form action="#" method="post" class="right_menu">
 
 					<input type="text" placeholder="Search" class="top_text2" id="search">
+					<sec:csrfInput/>
 
 				</form>			
 			</div>
@@ -163,26 +165,35 @@ $( function() {
 
 		<div id="main_write_area">		
 
-			<form method="post" enctype="multipart/form-data">
-
+			<form method="post" enctype="multipart/form-data" action="/write_board?${_csrf.parameterName}=${_csrf.token}">
+			<%--컨트롤러에 인자가 안들어오는것 같은데.. csrf값은 확실히 나왔고. --%>
 			
 				<table id="input_table">
 	
 					<tr>
 						<td> Title  </td>
-						<td><input type="text" name="title"> </td>
+						<td><input type="text" name="title" style="width:50%;" pattern="\w{1,30}" /> </td>
 					</tr>
 					<tr>
 						<td> Starring  </td>
-						<td><input type="text" name="starring"> </td>
+						<td><textarea name="starring" style="width:80%;"></textarea></td>
 					</tr>
 					<tr>
 						<td> Genre  </td>
-						<td><input type="text" name="genre"> </td>
+						<td><input type="text" name="genre" pattern="\w{1,20}"> </td>
 					</tr>
 					<tr>
+						<td> Director  </td>
+						<td><input type="text" name="director" pattern="\w{1,20}"> </td>
+					</tr>
+					<tr>
+						<td> Runtime  </td>
+						<td><input type="text" name="runtime" pattern="\d{1}\w{1}\s\d{1,2}\w{3}"> </td>
+					</tr>
+					
+					<tr>
 						<td> Release Date  </td>
-						<td><input type="text" name="releaseDate" id="datepicker"> </td>
+						<td><input type="text" name="releaseDate" id="datepicker" pattern="\d{2}\/\d{2}\/\d{4}"> </td>
 					</tr>
 					<tr>
 						<td> Summary  </td>
@@ -260,8 +271,11 @@ $( function() {
 				</table>
 				
 
-				<div id="submit_btn_area"><input type="submit" value="작성"></input></div>
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				<div id="submit_btn_area">
+					<input type="submit" value="저장"/>
+					<sec:csrfInput/>
+				</div>
+				
 
 			
 	

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,15 +24,25 @@
 }
 
 .inner_header{
-	background:#eee;
+	background:#fffaf2;
 	color:black;
 	font-size:13px;
 }
 
 .review_area{
-	background:#eee;
+	background:#fffaf2;
 	border:1px solid purple;
 	margin-top:20px;
+}
+
+.ratingCircle{
+    border-radius: 50%;
+    height: 28px;
+    width: 28px;
+    text-align: center;
+    background-color: #000;
+    color:white;
+    cursor:pointer;
 }
 
 #review_menu_list{
@@ -69,7 +80,7 @@
 		<ul id="left_menu">
 		
 		<li class="left_menu">		
-		<a href="${rootPath}"><img src="/resources/image/logo.webp" alt="OpenCritic"></a>
+		<a href="../"><img src="/resources/image/logo.webp" alt="OpenCritic"></a>
 		</li>
 		<li class="left_menu">
 			<a href="/movie_list" class="top_text1">Genre</a>
@@ -143,8 +154,8 @@
 
 <div id="main_wrapper_area">
 
-	<h2> 영화 제목 </h2>
-	<h4> 장르 | 개봉일 </h4>
+	<h1> <a href="movie_info/view?movieId=${view.movieId}">${view.title}</a> </h1>
+	<h5> ${view.genre} | <fmt:formatDate value="${view.releaseDate}" pattern="yyyy.MM.dd"/> </h5>
 	
 	<!-- middle menu bar-->
 	<div>		
@@ -173,12 +184,74 @@
 	<div class="review_area">
 		<div class="inner_header">
 			<h3> REVIEW THIS MOVIE</h3>
+ 
+				<div style="display: flex;">
+				    <div id="ratingCircle_0" class="ratingCircle">0</div>
+				    <div id="ratingCircle_1" class="ratingCircle">1</div>
+				    <div id="ratingCircle_2" class="ratingCircle">2</div>
+				    <div id="ratingCircle_3" class="ratingCircle">3</div>
+				    <div id="ratingCircle_4" class="ratingCircle">4</div>
+				    <div id="ratingCircle_5" class="ratingCircle">5</div>
+				    <div id="ratingCircle_6" class="ratingCircle">6</div>
+				    <div id="ratingCircle_7" class="ratingCircle">7</div>
+				    <div id="ratingCircle_8" class="ratingCircle">8</div>
+				    <div id="ratingCircle_9" class="ratingCircle">9</div>
+				    <div id="ratingCircle_10" class="ratingCircle">10</div>
+				</div>
+				
+				<script>
+				window.onload = function(){
+				    var markScore;  
+				    for(var x=0; x<=10; x++){
+				        var circle = document.querySelectorAll(".ratingCircle")[x];
+				        circle.onmouseover = function(e){
+				            var score = this.innerHTML;
+				            for(var i=0; i <= score; i++) {
+				                if(i<4 ) {
+				                    var id = "ratingCircle_" + i;
+				                    document.getElementById(id).style.backgroundColor = "red";
+				                }else if( i < 7){
+				                    var id = "ratingCircle_" + i;
+				                    document.getElementById(id).style.backgroundColor = "orange";
+				                }else if ( i< 11){
+				                    var id = "ratingCircle_" + i;
+				                    document.getElementById(id).style.backgroundColor = "greenyellow";
+				                }
+				            }
+				        }
+				        circle.onmouseout = function(e){
+				            if(markScore == null){
+				                var score = this.innerHTML;
+				                for(var i=0; i <= score; i++) {
+				                    var id = "ratingCircle_" + i;
+				                    document.getElementById(id).style.backgroundColor = "#ccc";
+				                }
+				            }else{
+				                for(var i=10; i >markScore; i--){
+				                    var id = "ratingCircle_" + i;
+				                    document.getElementById(id).style.backgroundColor = "#ccc";
+				                }
+				                
+				            }
+				            console.log("markScore="+markScore);
+				        }
+				        circle.onclick = function(e){
+				            markScore = this.innerHTML;
+				            document.getElementById("markRating").value = markScore;
+				            console.log("markScore="+markScore);
+				        }
+				    }
+				}
+				</script>
 		</div>
 
 		<div>
-			<form action="${rootPath}" method="post">
-				<textarea cols="100" rows="5" maxlength="500"></textarea>
+			<form action="/view_review" method="post"> 
+				<textarea cols="100" rows="5" maxlength="500" name="content"></textarea>	<%--name에 정해진 값은 변수로 요청에 파라미터를 보냄 --%>
+				<input type="hidden" value="${view.movieId}" name="movieId"/>
+				<input type ="hidden" name="rating" id="markRating" />
 				<input type="submit" value="submit"/>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			</form>
 		</div>
 

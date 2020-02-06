@@ -20,4 +20,10 @@ public class ReviewDAOImpl implements ReviewDAO {
 		return sql.selectList("ReviewMapper.readReview", movieId);
 	}
 
+	@Override
+	public void insertReview(ReviewVO vo) {
+		
+		sql.insert("ReviewMapper.insertReview", vo);
+	}
+
 }

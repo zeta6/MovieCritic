@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css"/>
 <title>My Page</title>
-
+<script src="/resources/jquery/jquery-3.4.1.min.js"></script>
 <style>
 
 #main_setting_area{
@@ -136,20 +136,33 @@
 		<div class="content_left_area">PROFILE IMAGE</div>
 
 		<div class="content_right_area"><img src="${rootPath}/resources/image/profile.png"></div>
-
-		<div class="content_right_area" style="clear:both; padding-left:200px"><input type="file" value="파일 선택"></div>
+		
+		<div class="content_right_area"><input type="file" value="파일 선택" id="profile"></div>
+							<script>
+  								$("#profile").change(function(){
+   									if(this.files && this.files[0]) {
+    									var reader = new FileReader;
+    									reader.onload = function(data) {
+     										$(".content_right_area img").attr("src", data.target.result).width(100).height(100);
+     										$(".content_right_area").css("display", "inline-block");
+    									}
+								    	reader.readAsDataURL(this.files[0]);
+   									}
+  								});
+ 							</script>
 	</div>
 
 	<div class="main_inner_area">
 		<div class="content_left_area">NICKNAME</div>
-
-		<div class="content_right_area"> <input type="text" placeholder="now"> </div>
+		<div class="content_right_area"><sec:authentication property="principal.nickname"/>
+		<input type="text" placeholder="change"></div>
+		
 	</div>
 
 	<div class="main_inner_area">
 		<div class="content_left_area">ID</div>
-
-		<div class="content_right_area"> current_id </div>
+		
+		<div class="content_right_area"> <sec:authentication property="principal.username" /> </div>
 	</div>
 
 	<div class="main_inner_area">
@@ -165,13 +178,13 @@
 	<div class="main_inner_area">
 		<div class="content_left_area">EMAIL</div>
 
-		<div class="content_right_area"> current email </div>
+		<div class="content_right_area"> <sec:authentication property="principal.email" /> </div>
 	</div>
 
 	<div class="main_inner_area">
 		<div class="content_left_area">PHONE</div>
 
-		<div class="content_right_area"> current phone </div>
+		<div class="content_right_area"> <sec:authentication property="principal.phoneNumber"/> </div>
 	</div>
 
 

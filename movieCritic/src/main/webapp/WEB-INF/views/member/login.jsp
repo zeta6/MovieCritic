@@ -118,36 +118,39 @@ p {
 				</form>			
 			</div>
 		
-		<!-- 로그인 안됐을 경우 , 로그인, 회원가입 버튼 보여줌-->
-		
-		<sec:authorize access="isAuthenticated()">			
-		<c:if test="${sessionScope.sessionID==null}">		
+					<!-- 로그인 안됐을 경우 , 로그인, 회원가입 버튼 보여줌-->
+		<sec:authorize access="!isAuthenticated()">
 			<div id="login" class="right_menu">
-				<a href="${rootPath}/member/login.do" class="top_text2">Login</a>
+				<a href="${rootPath}/member/login" class="top_text2">Login</a>
 			</div>
 			<div id="sign_up" class="right_menu">
-				<a href="${rootPath}/member/sign_up.do" class="top_text2">Sign Up</a>
+				<a href="${rootPath}/member/sign_up" class="top_text2">Sign Up</a>
 			</div>
-		</c:if>
 		</sec:authorize>
+		
 		<!-- 로그인 됐을 경우 , 로그아웃, 마이페이지 버튼 보여줌 -->
-		<c:if test="${sessionScope.sessionID!=null}">
+
+			<sec:authorize access="hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')">
 			<div class="right_menu">
-					<a href="${rootPath}/member/my_page.do">
+					<a href="${rootPath}/member/my_page">
 						<img src="/resources/image/toMyPage.png"
 						width="30px" height="30px">
 					</a>
 			</div>
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated()">
 			<div id="logout" class="right_menu">
-					<a href="${rootPath}/member/logout.do" class="top_text2">Log Out</a>
+					<a href="${rootPath}/member/logout" class="top_text2">Log Out</a>
 			</div>
+			</sec:authorize>
+
 		<!-- 관리자 로그인 -->
-			<c:if test="${sessionScope.sessionID=='admin'}">
-			<div id="admin_write" class="right_menu">
-					<a href="${rootPath}/wrtie_board" class="top_text2">Write</a>
+
+			<sec:authorize access="hasRole('ADMIN')">
+				<div id="admin_write" class="right_menu">
+					<a href="${rootPath}/write_board" class="top_text2">Write</a>
 				</div>
-			</c:if>
-		</c:if>	
+			</sec:authorize>	
 		</nav>
 
 	</div>

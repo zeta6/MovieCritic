@@ -2,12 +2,15 @@ package org.js.movie.movieinfo.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.js.movie.member.domain.CustomMemberVO;
+import org.js.movie.movieinfo.domain.Criteria;
 import org.js.movie.movieinfo.domain.MovieInfoVO;
+import org.js.movie.movieinfo.domain.PageMaker;
 import org.js.movie.movieinfo.service.MovieInfoService;
 import org.js.movie.movieinfo.utils.UploadFileUtils;
 import org.js.movie.review.domain.ReviewVO;
@@ -38,38 +41,89 @@ public class MovieInfoController {
 	@Resource(name="uploadPath")
 	private String uploadPath;
 	
+	// 커맨드 객체, requestparam..
+	//@RequestParam(value="nowPage", defaultValue="1") int nowPage,  HashMap 
 	@RequestMapping (value = "/movie_list", method = RequestMethod.GET)
-	public String getMovieList(Model model) {
+	public String getMovieList(Model model, Criteria criteria) throws Exception {
 		
 		log.info("#####################movie_list get");
-		List<MovieInfoVO> infoList = movieInfoService.list();
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCriteria(criteria);//시작페이지 , 페이지당 게시글수 초기화
+		log.info("##########");
+		pageMaker.setTotalCount(movieInfoService.countTotalList()); //총 게시글 수 초기화
+
+		log.info("totalCount : " + pageMaker.getTotalCount());
+		List<Map<String, Object>> infoList = movieInfoService.list(criteria); //리스트 불러오기
+		
+
 		int maxBoardNumber = infoList.size();
 		log.info("Max boardNumber :" + maxBoardNumber);
-		List<Integer> numberList = new ArrayList<Integer>(); 
-		for(int i=1; i<=maxBoardNumber; i++) {
-
-			numberList.add(i-1, i);
-		}
+		
 		log.info("################## list 확인: " + infoList);
-		log.info("################## list 확인: " + numberList);
+
 		model.addAttribute("list", infoList);
-		model.addAttribute("boardNumber", numberList);
+
+		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("criteria", criteria);
 		
 		return "movie_list";
 	}
 	
 	@RequestMapping (value = "/movie_info/view", method = RequestMethod.GET)
 	public String getMovieInfo(@RequestParam("movieId") int movieId, Model model) throws Exception {
-		
-	
-		MovieInfoVO vo = movieInfoService.view(movieId);
-		
 		log.info("####movie_info get####");
+		
+		MovieInfoVO vo = movieInfoService.view(movieId);
+		log.info("vo : "+ vo.toString());
+		
+
 		model.addAttribute("view", vo);
 		
 		List<ReviewVO> reviewList = reviewService.readReview(movieId);
-		model.addAttribute("reviewList", reviewList);
+		log.info("reviewList: " + reviewList);
 		
+		if(!reviewList.equals(null)) {
+		int totalCount = reviewList.size();
+		log.info("totalCount  : " + totalCount);
+		int positiveCount=0;
+		int mixedCount=0;
+		int negativeCount=0;
+		int totalScore=0;
+		
+		for(ReviewVO revList : reviewList) {
+			totalScore += revList.getRating();
+			
+			if(revList.getRating() < 4) {
+				negativeCount++;
+			}
+			else if(4<=revList.getRating() && revList.getRating()<=6) {
+				mixedCount++;
+			}
+			else if(7<=revList.getRating() && revList.getRating()<=10) {
+				positiveCount++;
+			}
+		}
+		int maxCount = Math.max(negativeCount, Math.max(positiveCount, mixedCount));
+		double scoreAverage = Math.round((totalScore*10.0/totalCount))/10.0;
+
+		log.info("totalScore : " + totalScore);
+		log.info("negative: " + negativeCount);
+		log.info("positive : " + positiveCount);
+		log.info("mixed : " + mixedCount);
+		log.info("scoreAverage: " + scoreAverage);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("negativeCount", negativeCount);
+		model.addAttribute("mixedCount", mixedCount);
+		model.addAttribute("positiveCount", positiveCount);
+		model.addAttribute("maxCount", maxCount);
+		model.addAttribute("scoreAverage", scoreAverage);
+		model.addAttribute("reviewList", reviewList);
+
+		} else {
+			log.info("reviewList : " + reviewList.toString()); 
+		}
+			
 		return "movie_info";	//page 404로 void에서 string으로 교체
 	}
 	
@@ -88,7 +142,6 @@ public class MovieInfoController {
 		
 		int count = 0;
 		
-			
 		log.info("########### write_board post 진입");
 		
 		String imgUploadPath = uploadPath + File.separator + "movieImage";
@@ -123,9 +176,10 @@ public class MovieInfoController {
 		
 		log.info("vo: " +vo);
 		}// for문 끝
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();	//provider가 리턴하는 값에 따라 달라짐.
 		log.info(principal.toString());
-		vo.setWriter(principal.toString());
+		CustomMemberVO putWriter = (CustomMemberVO) principal;
+		vo.setWriter(putWriter.getMemberId());
 		movieInfoService.write(vo);
 	
 		return "redirect:../";

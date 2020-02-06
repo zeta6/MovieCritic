@@ -21,4 +21,12 @@ public class ReviewServiceImpl implements ReviewService {
 		return dao.readReview(movieId);
 	}
 
+
+	@Override
+	public void insertReview(ReviewVO vo) {
+		
+		dao.insertReview(vo);
+		
+	}
+
 }

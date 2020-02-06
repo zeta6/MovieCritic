@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css"/>
 <!-- 합쳐지고 최소화된 최신 CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<script src="/resources/jquery/jquery-3.4.1.min.js"></script>
 <title>Browse movie</title>
 <style>
 
@@ -102,9 +103,6 @@ td:nth-of-type(5){
 	height:30px;
 }
 
-. select_box{
-
-}
 
 .select_label{
 	display:block;
@@ -227,7 +225,7 @@ td:nth-of-type(5){
 
 			<div id="select1">
 				<label for="genre" class="select_label">Genre</label>
-				<select name="genre" id="genre" class="select_box">
+				<select name="genre" id="genreSelect" class="select_option">
 					<option value="">All Genre</option>
 					<option value="Action">Action</option>
 					<option value="Drama">Drama</option>
@@ -237,7 +235,7 @@ td:nth-of-type(5){
 
 			<div id="select2">
 				<label for="timeframe" class="select_label">Release Date</label>
-				<select name="timeframe" id="timeframe" class="select_box">
+				<select name="timeframe" id="releaseDateCondition" class="select_option">
 					<option value="">All Time</option>
 					<option value="2019">2019</option>
 					<option value="2018">2018</option>
@@ -247,7 +245,7 @@ td:nth-of-type(5){
 
 			<div id="select3">
 				<label for="sort" class="select_label">Sort</label>
-				<select name="sort" id="sort" class="select_box">
+				<select name="sort" id="sortCondition" class="select_option">
 					<option value="score">Score</option>
 					<option value="A_Z">A-Z</option>
 					<option value="release_date">Release Date</option>
@@ -258,7 +256,7 @@ td:nth-of-type(5){
 		
 		<div id="board_wrapper">
 
-			<table>
+			<table id="tableBoard">
 				<tr>
 					<th>Number</th><th>Score</th><th>Title</th><th>Genre</th><th>Release Date</th>
 				</tr>
@@ -327,6 +325,36 @@ td:nth-of-type(5){
 			}
 			  
 			}
-		</script>
+			<!--검색-->
+$(document).ready(function(){
+	$(".select_option").change(function(){
+		var genre = $("#genreSelect").val();
+		var releaseDate = $("#releaseDateCondition").val();
+		var sortCondition = $("#sortCondition").val();
+		
+		var conditionData = { "genre": genre, "releaseDate": releaseDate, "sortCondition":sortCondition };
+				
+		$.ajax({
+            url:"movie_list.getConditionalList",
+            type: 'GET',
+            data: conditionData,
+            datatype: "json",
+            success: function(data){
+            	
+					var html = "<tr>\
+						<th>Number</th><th>Title</th><th>Genre</th><th>Release Date</th>\
+						</tr>";
+					for (var i=0; i<data.length; i++){
+						html += "<tr><td>${status.count}</td><td>"	+data[i].title+"</td><td>"+
+						data[i].genre+"</td><td>"+data[i].releaseDate+"</td></tr>";
+					}
+					
+         			$("#tableBoard").html(html);	
+			}
+        })
+	})
+})
+			<!--검색-->
+</script>
 </body>
 </html>

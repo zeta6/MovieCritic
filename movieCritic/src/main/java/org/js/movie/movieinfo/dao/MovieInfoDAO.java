@@ -1,5 +1,6 @@
 package org.js.movie.movieinfo.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,4 +21,10 @@ public interface MovieInfoDAO {
 	public void write(MovieInfoVO vo);
 	
 	public int countTotalList();
+	
+	public List<MovieInfoVO> getConditionalList(HashMap<String, String> conditions);
+
+	public List<MovieInfoVO> searchByTitle(String searchKeyword);
+	
+	
 }

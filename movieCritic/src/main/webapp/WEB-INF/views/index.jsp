@@ -9,6 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Welcome MovieCritic</title>
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css">
+<script src="/resources/jquery/jquery-3.4.1.min.js"></script>
 <style>
 
 #posters{
@@ -39,6 +40,11 @@ section[id^=board]{
 	border-bottom: 2px solid lightgray;
 }
 
+#searchResultsListDiv{
+	width: 200px;
+	position:absolute;
+	background-color:white;
+	 }
 
 </style>
 
@@ -88,9 +94,9 @@ section[id^=board]{
 			
 			<div id="form" class="right_menu">
 	
-				<form action="#" method="post" class="right_menu">
-
+					
 					<input type="text" placeholder="Search" class="top_text2" id="search">
+					<div id="searchResultsListDiv"></div>
 					<sec:csrfInput/>
 
 				</form>			
@@ -228,6 +234,61 @@ section[id^=board]{
 	<!-- 하단 게시판 끝-->
 
 </div>
+
+<script type="text/javascript">
+
+function select(selectKeyword){
+    document.getElementById("search").value = selectKeyword;
+	hide();
+}
+	
+function hide(){
+    var searchResultsListDiv = document.getElementById("searchResultsListDiv");
+    searchResultsListDiv.style.display = "none";
+}
+
+function show(){
+    var searchResultsListDiv = document.getElementById("searchResultsListDiv");
+    searchResultsListDiv.style.display = "block";
+}
+
+$(document).ready(function(){
+
+    var oldVal;
+    
+    $("#search").on("propertychange change keyup paste input", function() {
+		
+    	var searchedList;
+        var currentVal = $(this).val();
+        if(currentVal == oldVal) {
+            return;
+        }else{
+            $.ajax({
+                url:"movie_list.search",
+                type: "GET",
+                data: {"searchKeyword" : currentVal},
+                datatype: 'json',
+                success: function(data){
+                    searchedList = data;
+                    var html = "";
+                    show();
+                    for(i=0; i<searchedList.length; i++){
+                        html += "<span style='cursor:pointer' onclick='location.href=\"/movie_info?movieId="+
+                        		searchedList[i].movieId+"\"'>" +
+                        		searchedList[i].title + "</span></br>";
+                    }			
+                       
+                    var searchResultsListDiv = document.getElementById("searchResultsListDiv");
+                    searchResultsListDiv.innerHTML = html;
+                }
+            })
+            console.log("searchedList="+searchedList);
+        }
+
+	}) 
+})
+
+</script>
 
 </body>
 </html>

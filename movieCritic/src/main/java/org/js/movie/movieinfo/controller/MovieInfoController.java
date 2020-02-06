@@ -2,6 +2,8 @@ package org.js.movie.movieinfo.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -40,6 +43,47 @@ public class MovieInfoController {
 	
 	@Resource(name="uploadPath")
 	private String uploadPath;
+	
+	@RequestMapping (value = "/movie_list.search", method = RequestMethod.GET)
+	@ResponseBody
+	public List<MovieInfoVO> searchByTitle(@RequestParam(value = "searchKeyword", defaultValue="") String searchKeyword,
+						Model model){
+		
+		searchKeyword = searchKeyword +"%";
+		log.info("searchKeyword="+searchKeyword);
+
+		List<MovieInfoVO> list = movieInfoService.searchByTitle(searchKeyword);
+		
+		return list;
+	
+	}
+	
+	@RequestMapping (value = "/movie_list.getConditionalList", method = RequestMethod.GET)
+	@ResponseBody
+	public List<MovieInfoVO> getConditionalList(@RequestParam(value = "genre", defaultValue="") String genre,
+						@RequestParam(value = "releaseDate", defaultValue="") String releaseDate,
+						@RequestParam(value = "sortCondition", defaultValue="") String sortCondition,
+						Model model) {
+
+		
+		log.info("genre="+genre);
+		log.info("releaseDate="+releaseDate);
+		log.info("sortCondition="+sortCondition);
+		
+		HashMap<String, String> conditions = new HashMap<String, String>();
+		conditions.put("genre", genre);
+		conditions.put("releaseDate", releaseDate);
+		conditions.put("sortCondition", sortCondition);
+		
+		log.info("conditions="+conditions);
+		
+		List<MovieInfoVO> list = new ArrayList<MovieInfoVO>();
+		list =  movieInfoService.getConditionalList(conditions);
+	
+		return list;
+		
+		
+	}
 	
 	// 커맨드 객체, requestparam..
 	//@RequestParam(value="nowPage", defaultValue="1") int nowPage,  HashMap 

@@ -1,5 +1,6 @@
 package org.js.movie.movieinfo.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,5 +45,20 @@ public class MovieInfoServiceImpl implements MovieInfoService {
 
 		return dao.countTotalList();
 	}
+	
+	@Override
+	public List<MovieInfoVO> getConditionalList(HashMap<String, String> conditions){
+		
+		
+		return dao.getConditionalList(conditions);
+		
+	}
+	
+	@Override
+	public List<MovieInfoVO> searchByTitle(String searchKeyword){
+		
+		return dao.searchByTitle(searchKeyword);
+	}
+
 
 }

@@ -1,5 +1,6 @@
 package org.js.movie.movieinfo.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,4 +49,17 @@ public class MovieInfoDAOImpl implements MovieInfoDAO {
 
 		return sql.selectOne("MovieInfoMapper.countTotalList");
 	}
+	
+	
+	@Override
+	public List<MovieInfoVO> getConditionalList(HashMap<String, String> conditions){
+		
+		return sql.selectList("MovieInfoMapper.get_conditional_list", conditions);
+	}
+
+	@Override
+	public List<MovieInfoVO> searchByTitle(String searchKeyword){
+		return sql.selectList("MovieInfoMapper.search_by_title", searchKeyword);
+	}
 }
+

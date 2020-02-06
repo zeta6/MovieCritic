@@ -1,5 +1,6 @@
 package org.js.movie.movieinfo.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,5 +18,9 @@ public interface MovieInfoService {
 	public void write(MovieInfoVO vo);
 	
 	public int countTotalList();
+	
+	public List<MovieInfoVO> getConditionalList(HashMap<String, String> conditions);
+	
+	public List<MovieInfoVO> searchByTitle(String searchKeyword);
 	
 }

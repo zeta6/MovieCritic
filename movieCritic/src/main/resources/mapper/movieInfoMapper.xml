@@ -55,4 +55,29 @@
 				values(#{title}, #{starring}, #{writer}, #{genre}, #{director}, #{runtime}, #{summary}, #{poster}, #{stillCut1}, #{stillCut2}, #{stillCut3}, #{thumbNail}, #{releaseDate} )
 	</insert>
 	
+		<!--  get conditional list -->
+	<select id="get_conditional_list" resultType="movieinfoVO">
+		select
+			movie_id, title, genre, date_format(release_date, '%Y-%m-%d') AS release_date
+		from
+	 		table_movie_info
+	 	<if test="!genre.equals('')">
+		where
+ 			genre = #{genre}
+ 		</if>
+ 		<if test="sortCondition.equals('A_Z')">
+ 			order by title desc
+ 		</if>
+ 	</select>
+ 	
+ 	<!--  searchByTitle -->
+ 	<select id ="search_by_title" resultType="movieinfoVO">
+ 	select 
+ 		movie_id, title
+ 	from
+ 		table_movie_info
+ 	where 
+	 	title like #{searchKeyword}
+ 	</select>
+ 	
 </mapper>

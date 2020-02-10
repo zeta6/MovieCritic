@@ -17,6 +17,12 @@ public class MovieInfoDAOImpl implements MovieInfoDAO {
 	@Inject
 	private SqlSession sql;
 	
+	@Override
+	public List<MovieInfoVO> indexList() {
+	
+		return sql.selectList("MovieInfoMapper.index_list");
+	}
+	
 	//movie list
 	@Override
 	public List<Map<String, Object>> list(Criteria criteria) {

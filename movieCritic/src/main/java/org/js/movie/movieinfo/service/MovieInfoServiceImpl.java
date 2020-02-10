@@ -18,6 +18,11 @@ public class MovieInfoServiceImpl implements MovieInfoService {
 	private MovieInfoDAO dao;
 	
 	@Override
+	public List<MovieInfoVO> indexList(){
+		return dao.indexList();
+	}
+	
+	@Override
 	public List<MovieInfoVO> listAll(){
 		
 		return dao.listAll();

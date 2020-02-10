@@ -195,14 +195,14 @@ z-index : 100;
 							
 					</td>
 				</tr>
-			</thead>
+		</thead>
 			
 			<tbody>
 	
 				<c:forEach items="${list}" var="list">
 					<tr>
-						<td><a href="/movie_info?movieId=${list.movieId}">${list.title}</a></td>
-						<td><a href="/movie_info?movieId=${list.movieId}"><fmt:formatDate value="${list.registerDate}" pattern="yyyy.mm.dd:hh:mm"/></a></td>
+						<td><a href="/movie_info/view?movieId=${list.movieId}">${list.title}</a></td>
+						<td><a href="/movie_info/view?movieId=${list.movieId}"><fmt:formatDate value="${list.registerDate}" pattern="yyyy.mm.dd"/></a></td>
 					</tr>
 				</c:forEach>
   		 	</tbody>
@@ -212,8 +212,7 @@ z-index : 100;
 		</section>
 		
 		<section id="board_review">
-		<h2>REVIEWED TODAY</h2>
-
+		<h2>Recent Most Popular</h2>
 			<article class="line">
 			<h3>review 1</h3>			
 	

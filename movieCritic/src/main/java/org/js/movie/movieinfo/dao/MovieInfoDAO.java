@@ -9,6 +9,10 @@ import org.js.movie.movieinfo.domain.MovieInfoVO;
 
 public interface MovieInfoDAO {
 	
+	// index movie list
+	
+	public List<MovieInfoVO> indexList();
+	
 //	movie list (paging)
 	public List<Map<String, Object>> list(Criteria criteria);
 	

@@ -9,6 +9,8 @@ import org.js.movie.movieinfo.domain.MovieInfoVO;
 
 public interface MovieInfoService {
 	
+	public List<MovieInfoVO> indexList();
+	
 	public List<Map<String, Object>> list(Criteria criteria);
 	
 	public List<MovieInfoVO> listAll();

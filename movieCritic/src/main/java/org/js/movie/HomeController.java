@@ -1,12 +1,10 @@
 package org.js.movie;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
+import org.js.movie.movieinfo.domain.MovieInfoVO;
 import org.js.movie.movieinfo.service.MovieInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +24,12 @@ public class HomeController {
 		
 		log.info("#################### index 시작");
 		
+		List<MovieInfoVO> list = null;
+		list = service.indexList();
+		
+		model.addAttribute("list", list);
 
+		
 		return "index";
 	}
 }

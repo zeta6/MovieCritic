@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MovieInfoMapper">
 
+	<select id="index_list" resultType="movieinfoVO">
+		select movie_id, title, register_date
+		from table_movie_info
+		order by register_date desc
+		limit 10
+	</select>
+	
+
 	<select id="countTotalList" resultType="Integer">
     <![CDATA[
         SELECT

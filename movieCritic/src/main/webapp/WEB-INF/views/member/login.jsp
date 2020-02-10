@@ -16,8 +16,8 @@
 
 #login_box{
 	border : 1px solid lightgray;
-	width: 300px;
-	height: 300px;
+	width: 18%;
+	max-height: 50%;
 	margin: 200px auto;
 }
 
@@ -119,7 +119,7 @@ p {
 			</div>
 		
 					<!-- 로그인 안됐을 경우 , 로그인, 회원가입 버튼 보여줌-->
-		<sec:authorize access="!isAuthenticated()">
+		<sec:authorize access="!isFullyAuthenticated()">
 			<div id="login" class="right_menu">
 				<a href="${rootPath}/member/login" class="top_text2">Login</a>
 			</div>
@@ -162,14 +162,18 @@ p {
 	<p>Continue with Facebook</p>
 	<div id="or"><span>or</span></div>
 	
-	<form action="${rootPath}/member/loginProc" method="post">
+	<form action="${rootPath}/member/login" method="post">
 		
 		<div id="id_box">
-			<input type="text" placeholder=" ID" class="login" name="memberId">
+			<input type="text" placeholder=" ID" class="login" name="memberId" value="${tryId}">
 		</div>
 		<div id="pw_box">
 <%--  폼태그..	<form:password path="memberPw"/> --%>
 			<input type="password" placeholder=" Password" class="login" name="memberPw">
+			    <c:if test="${not empty errorMsg}">
+			    	<span style="color:red; font-size:13px;">Your login attempt was not successful due to <br/>
+			        ${errorMsg}</span>
+    			</c:if>
 		</div>
 
 		<div id="forgot"><a>Forgot Password?</a></div>

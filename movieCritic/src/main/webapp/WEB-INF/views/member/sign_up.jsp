@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>Sign Up -MovieCritic</title>
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css">
+<script src="/resources/jquery/jquery-3.4.1.min.js"></script>
 <style>
 
 #login_box{
@@ -163,24 +164,29 @@ div[id*=_box]{
 
 	<form action="${rootPath}/member/sign_up.do" method="post">
 		<div id="nickname_box">
-			<input type="text" placeholder=" Nickname" class="login" name="nickname">
+			<input type="text" placeholder=" Nickname" class="login" name="nickname" id="nickname">
+			<span id="nickCheck"></span>
 		</div>
 	
 	
 		<div id="id_box">
-			<input type="text" placeholder=" ID" class="login" name="memberId">
+			<input type="text" placeholder=" ID" class="login" name="memberId" id="memberId">
+			<span id="idCheck"></span>
 		</div>
 		
 		<div id="pw_box">
-			<input type="password" placeholder=" Password" class="login" name="memberPw">
+			<input type="password" placeholder=" Password" class="login" name="memberPw" id="memberPw">
+			<span id="pwCheck"></span>
 		</div>
 	
 		<div id="email_box">
-			<input type="text" placeholder=" Email" class="login" name="email">
+			<input type="text" placeholder=" Email" class="login" name="email" id="email">
+			<span id="emailCheck"></span>
 		</div>
 		
 		<div id="phone_number_box">
-			<input type="text" placeholder=" Phone Number" class="login" name="phoneNumber">
+			<input type="text" placeholder=" Phone Number" class="login" name="phoneNumber" id="phoneNumber">
+			<span id="phoneCheck"></span>
 		</div>
 	
 	
@@ -196,6 +202,84 @@ div[id*=_box]{
 </section>
 
 </div>
+
+<script>
+
+var idCheck = /^[0-9a-zA-Z]{4,12}$/;
+var pwCheck = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()\-\[\]?<>\;])*([A-Za-z\d!@#$%^&*()\-\[\]?<>;]){8,20}$/;
+var nickCheck = /^[a-zA-Z]{2,12}$/;
+var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
+var phoneCheck = /^01([0|1|6|7|8|9]?)?([0-9]{3,4})?([0-9]{4})$/;
+
+$('#memberId').blur(function(){
+	console.log('hi');
+	alert('hi');
+    if(idCheck.test($('#memberId').val())){
+		console.log('true');
+		$('#idCheck').text('');
+		return true;
+    } else {
+		console.log('false');
+		$('#idCheck').text(' number or Alphabet only from 4 to12 characters');
+		$('#idCheck').css('color', 'red');
+		return false;
+    }
+});
+
+$('#memberPw').blur(function(){
+    if(pwCheck.test($('#memberPw').val())){
+		console.log('true');
+		$('#pwCheck').text('');
+		return true;
+    } else {
+		console.log('false');
+		$('#pwCheck').text(' at least one number and (capital or small letter) and special characters only 4~12 characters');
+		$('#pwCheck').css('color', 'red');
+		return false;
+    }
+});
+
+$('#nickname').blur(function(){
+   	if(nickCheck.test($('#nickname').val())){
+		console.log('true');
+		$('#nickCheck').text('');
+		return true;
+    } else {
+		console.log('false');
+		$('#nickCheck').text(' number or Alphabet only 2~12characters');
+		$('#nickCheck').css('color', 'red');
+		return false;
+    }
+});
+
+$('#email').blur(function(){
+    if(emailCheck.test($('#email').val())){
+		console.log('true');
+		$('#emailCheck').text('');
+		return true;
+    } else {
+		console.log('false');
+		$('#emailCheck').text(' please check your email');
+		$('#emailCheck').css('color', 'red');
+		return false;
+    }
+});
+
+
+$('#phoneNumber').blur(function(){
+    if(phoneCheck.test($('#phoneNumber').val())){
+		console.log('true');
+		$('#phoneCheck').text('');
+		return true;
+    } else {
+		console.log('false');
+		$('#phoneCheck').text(' please check your phone number');
+		$('#phoneCheck').css('color', 'red');
+		return false;
+    }
+});
+
+</script>
 
 </body>
 </html>

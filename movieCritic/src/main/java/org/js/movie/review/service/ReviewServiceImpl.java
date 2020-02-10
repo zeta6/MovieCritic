@@ -1,7 +1,9 @@
 package org.js.movie.review.service;
 
 import java.util.List;
+import java.util.Map;
 
+import org.js.movie.movieinfo.domain.Criteria;
 import org.js.movie.review.dao.ReviewDAO;
 import org.js.movie.review.domain.ReviewVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +31,19 @@ public class ReviewServiceImpl implements ReviewService {
 		
 	}
 
+
+	@Override
+	public List<Map<String, Object>> pagingList(Criteria criteria) {
+
+		return dao.pagingList(criteria);
+	}
+
+
+	@Override
+	public int countTotalList(int movieId) {
+
+		return dao.countTotalList(movieId);
+	}
+
+	
 }

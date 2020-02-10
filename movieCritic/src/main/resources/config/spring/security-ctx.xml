@@ -17,13 +17,18 @@
 <!-- <security:http pattern="/resources/**" security="none"/> -->
 
 <bean id="defaultHttpFirewall" class="org.springframework.security.web.firewall.DefaultHttpFirewall"/> <!-- 용도? -->
+<bean id="customAuthenticationFailureHandler" class="org.js.movie.member.CustomAuthenticationFailureHandler">
+	<property name="memberId" value="memberId"/>
+	<property name="memberPw" value="memberPw"/>
+	<property name="errorMsg" value="errorMsg"/>
+</bean>
 
 <security:http auto-config="false" use-expressions="true" authentication-manager-ref="authenticationManager" create-session="ifRequired" >
 	<security:form-login login-page="/member/login" 
 				username-parameter="memberId" 
 				password-parameter="memberPw" 
-				login-processing-url="/member/loginProc" 
-				authentication-failure-url="/loginError"   
+				login-processing-url="/member/login" 
+				authentication-failure-handler-ref="customAuthenticationFailureHandler"
 				default-target-url="/member/my_page" 
 				always-use-default-target="true" /> 
 	

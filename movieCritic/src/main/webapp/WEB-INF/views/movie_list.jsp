@@ -7,16 +7,128 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" type="text/css" href="/resources/css/common.css"/>
+<!-- <link rel="stylesheet" type="text/css" href="/resources/css/common.css"/> -->
 <!-- 합쳐지고 최소화된 최신 CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="/resources/jquery/jquery-3.4.1.min.js"></script>
 <title>Browse movie</title>
 <style>
+#site_layout{
+	margin: 0px;
+	padding:0;
+
+	overflow:auto;
+}
+
+#top_menu_wrapper{
+	margin:0;
+	padding:0;
+	width:100%;
+	height:10%;
+	background:black;	
+}
+
+#top_menu{
+	margin:0;
+	padding:0;
+	width:100%;
+	height:70px;
+	display:flex;
+	justify-content:space-around;
+	align-items:center;
+
+	
+}
+
+#left_menu{
+	list-style-type:none;
+	
+}
+
+.left_menu{
+	float:left;
+	padding: 0 0 15px 30px;
+	margin-left:auto;
+}
+
+#top_menu2{
+	display:flex;
+	
+}
+
+.right_menu{
+	margin-left:auto;
+	padding-left:15px;
+	
+}
+.top_text1{
+	font-size: 15px;
+	color: white;
+	text-decoration:none;
+	vertical-align:-8px;
+	
+}
+
+#sign_up{
+	background:#f30;
+	
+}
+
+.top_text2{
+	font-size: 15px;
+	color: white;
+	vertical-align:-2px;
+	text-decoration:none;
+	padding-right:15px;
+	
+}
+
+#search{
+	border:none;
+	border-bottom: 3px solid white;
+	background: transparent;
+	height: 25px;
+}
+
+#genre_sub{
+	display:none;
+	height: 115px;
+	width:70px;
+	padding:0;
+	margin: 0px;
+	position: absolute;
+	z-index:2;
+	list-style-type:none;
+	text-decoration:none;
+	background-color: #fff;
+	border: 1px solid gray;
+	border-radius: 5px;
+}
+
+
+.left_menu:hover ul#genre_sub {
+	display:block;
+}
+
+.top_text3{
+	text-decoration:none;
+	color:#555;
+	font-size:15px;
+	vertical-align: 8px;
+}
+
+.left_inner_menu{
+	padding: 10px 0 0 5px ;
+}
+
+.left_inner_menu:hover {
+	background: lightblue;
+}
 
 #middle_wrapper{
 	width:100%;
-	max-height:80%;
+	max-height:75%;
 }
 
 #select_wrapper{
@@ -281,7 +393,7 @@ td:nth-of-type(5){
 					<ul class="btn-group pagination">
 			    		<c:if test="${pageMaker.prev}">
 			    		<li>
-			        		<a href='<c:url value="/movie_list?nowPage=${pageMaker.startPage-1 }"/>' role="button" class="btn btn-default btn-sm">><i class="fa fa-chevron-left"></i></a>
+			        		<a href='<c:url value="/movie_list?nowPage=${pageMaker.startPage-1 }"/>' role="button" class="btn btn-default btn-sm"><i style="font-size:18px;" class="fa fa-angle-left"></i></a>
 			    		</li>
 			    		</c:if>
 			    		
@@ -293,7 +405,7 @@ td:nth-of-type(5){
 			    
 			    		<c:if test="${pageMaker.next && pageMaker.endPage >0 }">
 			   			<li>
-			        		<a href='<c:url value="/movie_list?nowPage=${pageMaker.endPage+1}"/>' role="button" class="btn btn-default btn-sm">><i class="fa fa-chevron-right"></i></a>
+			        		<a href='<c:url value="/movie_list?nowPage=${pageMaker.endPage+1}"/>' role="button" class="btn btn-default btn-sm"><i style="font-size:18px;" class="fa fa-angle-right"></i></a>
 			    		</li>
 			    		</c:if>
 					</ul>

@@ -471,7 +471,7 @@ meter{
 			
 			<h2>User Reviews</h2>
 	
-			<c:forEach items="${reviewList}" var="reviewList" begin="1" end="7">
+			<c:forEach items="${reviewList}" var="reviewList" begin="0" end="5">
 			<div class="critic_reviews">
 					<div class="rating_circle_average" style="width:38px;height:38px; font-size:25px;">${reviewList.rating}</div>
 					<div style="display:flex; flex-direction:column; padding:7px 0 0 20px;">
@@ -483,7 +483,7 @@ meter{
 	 					</div>
  					</div>
   
-  					<p>${reviewList.content}</p>
+  					<p style="padding-left:8px;padding-bottom:50px;">${reviewList.content}</p>
  			</div>
  			</c:forEach>   
 

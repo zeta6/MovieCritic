@@ -65,42 +65,23 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-//	//login Get
-//	@RequestMapping(value="/login.do", method=RequestMethod.GET)
-//	public String getLogin() {
-//		return "member/login";
-//	}
-//	
-//	//login Post
-//	@RequestMapping(value="/login.do" , method=RequestMethod.POST)
-//	public String postLogin() {
-//		
-//		
-//		return "redirect:/";
-//	}
-	
 	@RequestMapping(value="/login", method = RequestMethod.GET)
 	public String getlogin() {
 		
 		log.info("##################### get login");
+		
+		
 		return "member/login";
 	}
+
 	
-	@RequestMapping(value="/loginProc", method = RequestMethod.POST)
+	@RequestMapping(value="/login", method = RequestMethod.POST)
 	public String login(String memberId, HttpServletRequest req) {
 		log.info("#####################post login -- MemberController");
 		
 		HttpSession session = req.getSession();
 		
-		CustomMemberVO cMember = (CustomMemberVO) customService.loadUserByUsername(memberId);
-		
-		if(cMember == null) {
-			session.setAttribute("member", null);
-			log.info("member = null");
-		} else
-			session.setAttribute("member", cMember);
-			log.info("member != null");
-		return "redirect:../";
+		return "member/login";
 		
 	}
 	

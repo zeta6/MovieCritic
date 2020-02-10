@@ -46,7 +46,7 @@ public class CustomProvider implements AuthenticationProvider {
 
 		//passwordEncoder.encode(password) 입력한 pw 암호화 매번 값이 달라져서 입력한 비밀번호를 암호화하고 비교하는방법은 없나?
 		
-		CustomMemberVO cMemberProvider = (CustomMemberVO) service.loadUserByUsername(username);
+		CustomMemberVO cMemberProvider = (CustomMemberVO) service.loadUserByUsername(username);	//db에서 입력한 아이디가 있는지 확인.	없으면 null
 		log.info("service.load 확인 : " + cMemberProvider);
 		log.info("db 비번 확인 : " + cMemberProvider.getMemberPw());
 		

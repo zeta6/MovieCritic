@@ -11,6 +11,28 @@
 	]]>
 	</select>
 	
+	<!-- 페이징 -->
+	<select id="pagingReview" resultType="hashMap">
+		<![CDATA[
+			select * 
+			from table_review
+			WHERE movie_id = #{movieId}
+			limit #{pageStart}, #{perPageNumber}
+ 		]]>
+
+	</select>
+	<select id="countTotalList" resultType="Integer">
+	    <![CDATA[
+	        SELECT
+	            count(*)
+	        FROM
+	            table_review
+	        WHERE 
+	        	movie_id = #{movieId}
+	    ]]>
+	</select>
+	
+	
 	<insert id="insertReview">
 	
 		insert into table_review 

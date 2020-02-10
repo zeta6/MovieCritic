@@ -6,10 +6,11 @@ public class Criteria {
 
 	private int nowPage;	//현재 페이지 번호
 	private int perPageNumber;	//페이지당 게시글 수
+	private int movieId;
 	
 	public Criteria() {
 		this.nowPage = 1;
-		this.perPageNumber = 7;
+		this.perPageNumber = 10;
 	}	//페이지당 게시글수, 현재 페이지 번호의 값이 필요한데 이를 기본 생성자에서 초기화해줌으로써 해결.
 	
 	public int getPageStart() {
@@ -34,6 +35,14 @@ public class Criteria {
 	
 	public void setPerPageNumber(int perPageNumber) {
 		this.perPageNumber = perPageNumber;
+	}
+	
+	public int getMovieId() {
+		return movieId;
+	}
+	
+	public void setMovieId(int movieId) {
+		this.movieId = movieId;
 	}
 	
 	

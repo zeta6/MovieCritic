@@ -28,6 +28,7 @@
         <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
 
+	<context:component-scan base-package="org.js.movie.member"/>
 	<context:component-scan base-package="org.js.movie.member.controller"></context:component-scan>
     <context:component-scan base-package="org.js.movie.member.dao"></context:component-scan>
  	<context:component-scan base-package="org.js.movie.member.service"></context:component-scan>

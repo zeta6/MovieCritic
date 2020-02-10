@@ -41,10 +41,19 @@ section[id^=board]{
 }
 
 #searchResultsListDiv{
-	width: 200px;
+	width: 10%;
 	position:absolute;
 	background-color:white;
-	 }
+}
+#searchResultsListDiv:hover{
+box-shadow : rgba(0,0,0,0.5) 0 0 0 9999px;
+
+z-index : 100;
+}
+
+#searchResultsListDiv span:hover{
+	background:#eee;
+}
 
 </style>
 
@@ -98,8 +107,7 @@ section[id^=board]{
 					<input type="text" placeholder="Search" class="top_text2" id="search">
 					<div id="searchResultsListDiv"></div>
 					<sec:csrfInput/>
-
-				</form>			
+			
 			</div>
 		
 					<!-- 로그인 안됐을 경우 , 로그인, 회원가입 버튼 보여줌-->
@@ -140,6 +148,8 @@ section[id^=board]{
 	</div>
    </div>
 	<!-- 상단 메뉴 끝-->
+	
+	<div id="main_wrapper">
 
 	<!-- 영화 포스터-->		
 	<div id="posters">
@@ -232,7 +242,9 @@ section[id^=board]{
 
 	</div>
 	<!-- 하단 게시판 끝-->
-
+	
+	</div>
+	<!-- main wrapper -->
 </div>
 
 <script type="text/javascript">
@@ -273,20 +285,24 @@ $(document).ready(function(){
                     var html = "";
                     show();
                     for(i=0; i<searchedList.length; i++){
-                        html += "<span style='cursor:pointer' onclick='location.href=\"/movie_info?movieId="+
+                        html += "<span style='cursor:pointer;line-height:35px;' onclick='location.href=\"/movie_info?movieId="+
                         		searchedList[i].movieId+"\"'>" +
-                        		searchedList[i].title + "</span></br>";
+                        		searchedList[i].title + "</span><br/>";
                     }			
-                       
+
+                    
                     var searchResultsListDiv = document.getElementById("searchResultsListDiv");
                     searchResultsListDiv.innerHTML = html;
                 }
             })
+            
             console.log("searchedList="+searchedList);
         }
 
 	}) 
+
 })
+
 
 </script>
 

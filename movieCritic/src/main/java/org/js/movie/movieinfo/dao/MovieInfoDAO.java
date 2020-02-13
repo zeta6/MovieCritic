@@ -9,8 +9,10 @@ import org.js.movie.movieinfo.domain.MovieInfoVO;
 
 public interface MovieInfoDAO {
 	
-	// index movie list
+	//update
+	public void updateMovieInfo(MovieInfoVO vo);
 	
+	// index movie list
 	public List<MovieInfoVO> indexList();
 	
 //	movie list (paging)

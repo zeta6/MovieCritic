@@ -3,6 +3,7 @@ package org.js.movie.member.service;
 import java.util.List;
 
 import org.js.movie.member.dao.MemberDAO;
+import org.js.movie.member.domain.CustomMemberVO;
 import org.js.movie.member.domain.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -49,7 +50,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void update(MemberVO vo) {
+	public void update(CustomMemberVO vo) {
 
 		dao.update(vo);
 	}
@@ -58,6 +59,12 @@ public class MemberServiceImpl implements MemberService {
 	public void delete(String memberId) {
 		
 		dao.delete(memberId);
+	}
+
+	@Override
+	public void deleteRole(String memberId) {
+		
+		dao.deleteRole(memberId);
 	}
 	 
 

@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MovieInfoMapper">
 
+	<update id="updateMovie">
+		update table_movie_info 
+		set title=#{title}, starring=#{starring}, genre = #{genre}, director = #{director}, runtime = #{runtime}, summary=#{summary}, poster = #{poster}
+				, still_cut1 = #{stillCut1}, still_cut2 = #{stillCut2}, still_cut3 = #{stillCut3}, thumb_nail = #{thumbNail}, release_date = #{releaseDate}
+		where movie_id=#{movieId}
+	</update>
+	
 	<select id="index_list" resultType="movieinfoVO">
 		select movie_id, title, register_date
 		from table_movie_info

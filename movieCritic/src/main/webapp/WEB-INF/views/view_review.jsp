@@ -9,7 +9,7 @@
 <title>Movie Review</title>
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css"/>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <style>
 
@@ -268,12 +268,29 @@
 	
 			<c:forEach items="${list}" var="list" varStatus="status">
 			<div class="critic_reviews">
+
+			
 				<div style="display:flex;">
 					<div class="rating_circle_average" style="width:38px;height:38px; font-size:25px;">${list.rating}</div>
-					<div style="display:flex; flex-direction:column; padding:7px 0 0 20px;">
+					<div style="display:flex; flex-direction:column; padding:7px 0 0 20px; width:90%; margin:6px 5px;">
 	  					<div>
 						 	작성자 : ${list.writer}
+						 	<sec:authentication property="principal" var="principal"/>
+						 	<c:if test="${list.writer eq principal.memberId}">
+								<a href="/view_review?movieId=${view.movieId}/deletion" style="display:inline;">
+									<span style="float:right;font-weight:bold; height:15px; font-size:12px;">
+										<i class="far fa-trash-alt" style="color:black; font-weight:bold;"></i>
+									</span>
+								</a>
+								<a href="/view_review?movieId=${view.movieId}/update" style="display:inline;">
+									<span style="float:right; font-weight:bold; height:15px; font-size:12px; width:30px;">
+										<i class="far fa-edit" style="color:black; font-weight:bold;"></i>
+									</span>
+								</a>
+							</c:if>
 						</div>
+			
+	
 						<div>
 	   						<span style="font-size:14px; color:#999;"><fmt:formatDate value="${list.registerDate}" pattern="yyyy.MM.dd"/></span>
 	 					</div>
@@ -334,6 +351,7 @@
 			}
 					
 			  var markScore;  
+			  
 			    for(var x=0; x<=10; x++){
 			        var circle = document.querySelectorAll(".ratingCircle")[x];
 			        circle.onmouseover = function(e){
@@ -376,33 +394,33 @@
 			}
 		</script>
 <script>
-	var ctx = document.getElementById('myChart').getContext('2d');
-	var chart = new Chart(ctx, {
-		type:	'horizontalBar',
-		data:{
-			labels:	['Positive', 'Mixed', 'Negative'],
-			datasets:	[{
-				label : 'Preference Distribution',
-				backgroundColor: [
-					'rgba(50, 255, 50, 1)',
-					'rgba(255, 150, 80, 1)',
-					'rgba(255, 30, 30, 1)'
-					],
-		        borderColor: 'rgb(255, 99, 132)',
-		        data: [${positiveCount}, ${mixedCount}, ${negativeCount}]
-			}]
-		},
-		options: {
-			responsive: false,
-	        scales	: { //X,Y축 옵션
-	            xAxes: [{
-	                ticks: {
-	                    beginAtZero:true  //Y축의 값이 0부터 시작
-	                }
-	            }]
-	        }
-	    }
-	})
+var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+	type:	'horizontalBar',
+	data:{
+		labels:	['Positive', 'Mixed', 'Negative'],
+		datasets:	[{
+			label : 'Preference Distribution',
+			backgroundColor: [
+				'rgba(50, 255, 50, 1)',
+				'rgba(255, 150, 80, 1)',
+				'rgba(255, 30, 30, 1)'
+				],
+	        borderColor: 'rgb(255, 99, 132)',
+	        data: [${positiveCount}, ${mixedCount}, ${negativeCount}]
+		}]
+	},
+	options: {
+		responsive: false,
+        scales	: { //X,Y축 옵션
+            xAxes: [{
+                ticks: {
+                    beginAtZero:true  //Y축의 값이 0부터 시작
+                }
+            }]
+        }
+    }
+})
 </script>
 
 

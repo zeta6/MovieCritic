@@ -20,7 +20,7 @@ public interface MemberDAO {
 	public MemberVO selectOne(String memberId);
 	
 	//회원정보 수정
-	public void update(MemberVO vo);
+	public void update(CustomMemberVO vo);
 	
 	//회원정보 삭제
 	public void delete(String memberId);
@@ -38,5 +38,6 @@ public interface MemberDAO {
 	//Role 조회
 	public Role selectRole(String memberId);
 	
-
+	//Role 삭제
+	public void deleteRole(String memberId);
 }

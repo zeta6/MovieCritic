@@ -30,11 +30,11 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public MemberVO selectOne(String memberId) {
 
-		return sql.selectOne("MemberMapper.selectOne");
+		return sql.selectOne("MemberMapper.selectOne", memberId); //인자 넘겨주는 부분 없어서 nullpointer Exception.
 	}
 
 	@Override
-	public void update(MemberVO vo) {
+	public void update(CustomMemberVO vo) {
 
 		sql.update("MemberMapper.update", vo);
 	}
@@ -42,7 +42,7 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public void delete(String memberId) {
 
-		sql.delete("MemberMapper.delete");
+		sql.delete("MemberMapper.delete", memberId);
 	}
 	
 	/*
@@ -66,6 +66,12 @@ public class MemberDAOImpl implements MemberDAO {
 	public Role selectRole(String memberId) {
 		
 		return sql.selectOne("MemberRole.select", memberId);
+	}
+
+	@Override
+	public void deleteRole(String memberId) {
+		
+		sql.delete("MemberRole.delete", memberId);
 	}
 
 

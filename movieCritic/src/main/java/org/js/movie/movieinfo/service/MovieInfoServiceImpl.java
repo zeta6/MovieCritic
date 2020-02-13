@@ -13,9 +13,14 @@ import org.springframework.stereotype.Service;
 
 @Service("MovieInfoService")
 public class MovieInfoServiceImpl implements MovieInfoService {
-
+	
 	@Inject
 	private MovieInfoDAO dao;
+	
+	@Override
+	public void updateMovieInfo(MovieInfoVO vo) {
+		dao.updateMovieInfo(vo);
+	}
 	
 	@Override
 	public List<MovieInfoVO> indexList(){

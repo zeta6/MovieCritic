@@ -28,7 +28,7 @@ public class CustomProvider implements AuthenticationProvider {
 	private MemberService memberService;
 
 	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+	BCryptPasswordEncoder passwordEncoder;
 	
 	public void setCustomService(CustomService service) {
 		this.service = service;

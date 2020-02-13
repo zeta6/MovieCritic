@@ -55,6 +55,14 @@ z-index : 100;
 	background:#eee;
 }
 
+tr,td,th {
+
+	text-align:left;
+	padding-right:80px;
+}
+
+
+
 </style>
 
 <script>
@@ -190,19 +198,14 @@ z-index : 100;
 				<tr>
 					<th>제목</th><th>작성일</th>
 				</tr>
-				<tr>
-					<td>
-							
-					</td>
-				</tr>
 		</thead>
 			
 			<tbody>
 	
 				<c:forEach items="${list}" var="list">
 					<tr>
-						<td><a href="/movie_info/view?movieId=${list.movieId}">${list.title}</a></td>
-						<td><a href="/movie_info/view?movieId=${list.movieId}"><fmt:formatDate value="${list.registerDate}" pattern="yyyy.mm.dd"/></a></td>
+						<td><a href="/movie_info/view?movieId=${list.movieId}"><span>${list.title}</span></a></td>
+<%-- 						<td><a href="/movie_info/view?movieId=${list.movieId}"><fmt:formatDate value="${list.registerDate}" pattern="yyyy.mm.dd"/></a></td> --%>
 					</tr>
 				</c:forEach>
   		 	</tbody>

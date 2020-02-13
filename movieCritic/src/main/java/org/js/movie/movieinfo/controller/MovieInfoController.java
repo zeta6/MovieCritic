@@ -44,6 +44,78 @@ public class MovieInfoController {
 	@Resource(name="uploadPath")
 	private String uploadPath;
 	
+	@RequestMapping(value="/movie_info/view?movieId=${view.movieId}/deletion", method=RequestMethod.GET)
+	public String getMovieInfoDeletion(@RequestParam("movieId") int movieId) {
+		
+		reviewService.
+		
+		
+		return "movie_list";
+	}
+	
+	@RequestMapping(value="/editMovieInfo", method=RequestMethod.POST)
+	public String postEditMovieInfo(MovieInfoVO vo, MultipartHttpServletRequest mtpRequest) throws IOException, Exception {
+		
+		List<MultipartFile> fileList = mtpRequest.getFiles("file");
+		
+		int count = 0;
+		
+		log.info("########### edit MovieInfo post 진입");
+		
+		String imgUploadPath = uploadPath + File.separator + "movieImage";
+		String ymdPath = UploadFileUtils.calcPath(imgUploadPath);
+		log.info("ymdPath : " + ymdPath);
+		String fileName = null;
+
+		for (MultipartFile mf : fileList) {
+			
+		if(mf.isEmpty()) {
+			log.info("empty file");
+			count++;
+			continue;
+		}
+		fileName =  UploadFileUtils.fileUpload(imgUploadPath, mf.getOriginalFilename(), mf.getBytes(), ymdPath);
+		
+		if(count==0) {
+			vo.setPoster(File.separator + "movieImage" + ymdPath + File.separator + fileName);
+			vo.setThumbNail(File.separator + "movieImage" + ymdPath + File.separator + "s" + File.separator + "s_" + fileName);
+		}
+		else if(count==1) {
+			vo.setStillCut1(File.separator + "movieImage" + ymdPath + File.separator + fileName);
+		}
+		else if(count==2) {
+			vo.setStillCut2(File.separator + "movieImage" + ymdPath + File.separator + fileName);			
+		}
+		else if(count==3) {
+			log.info("stillCut3");
+			vo.setStillCut3(File.separator + "movieImage" + ymdPath + File.separator + fileName);
+			log.info(vo.getStillCut3());
+		}
+		count++;
+		
+		log.info("vo: " +vo);
+		}// for문 끝
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();	//provider가 리턴하는 값에 따라 달라짐.
+		log.info(principal.toString());
+		CustomMemberVO putWriter = (CustomMemberVO) principal;
+		vo.setWriter(putWriter.getMemberId());
+		log.info("update 전 확인 : " + vo.toString());
+		
+
+		movieInfoService.updateMovieInfo(vo);
+		
+		
+		String strMovieId = "redirect:movie_info/view?movieId="+String.valueOf(vo.getMovieId());
+		
+		log.info("strMovieId="+strMovieId);
+		
+		return strMovieId;
+	
+		
+	}
+	
+	
+	
 	@RequestMapping (value = "/movie_list.search", method = RequestMethod.GET)
 	@ResponseBody
 	public List<MovieInfoVO> searchByTitle(@RequestParam(value = "searchKeyword", defaultValue="") String searchKeyword,
@@ -187,7 +259,7 @@ public class MovieInfoController {
 		int count = 0;
 		
 		log.info("########### write_board post 진입");
-		
+		log.info("releaseDate : " + vo.getReleaseDate());
 		String imgUploadPath = uploadPath + File.separator + "movieImage";
 		String ymdPath = UploadFileUtils.calcPath(imgUploadPath);
 		log.info("ymdPath : " + ymdPath);
@@ -195,12 +267,13 @@ public class MovieInfoController {
 
 		for (MultipartFile mf : fileList) {
 			
-		if(mf != null) {
-		 fileName =  UploadFileUtils.fileUpload(imgUploadPath, mf.getOriginalFilename(), mf.getBytes(), ymdPath); 
-		} else {
-		 fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
+		if(mf.isEmpty()) {
+			log.info("empty");
+			count++;
+			continue;
 		}
-
+		
+		fileName =  UploadFileUtils.fileUpload(imgUploadPath, mf.getOriginalFilename(), mf.getBytes(), ymdPath); 
 		if(count==0) {
 			vo.setPoster(File.separator + "movieImage" + ymdPath + File.separator + fileName);
 			vo.setThumbNail(File.separator + "movieImage" + ymdPath + File.separator + "s" + File.separator + "s_" + fileName);

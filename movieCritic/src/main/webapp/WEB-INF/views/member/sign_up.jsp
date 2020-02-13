@@ -13,8 +13,8 @@
 
 #login_box{
 	border : 1px solid lightgray;
-	width: 300px;
-	height: 450px;
+	max-width:290px;
+	max-height:700px;
 	margin: 200px auto;
 }
 
@@ -197,7 +197,7 @@ div[id*=_box]{
 		</article>
 	</form>
 
-	<div id="foot"><span>By clicking Register, you indicate that you have read and understand our Privacy Policy and Terms of Use and represent that you are at least 13 years of age.</span></div>
+	<div id="foot" style="padding:10px;"><span>By clicking Register, you indicate that you have read and understand our Privacy Policy and Terms of Use and represent that you are at least 13 years of age.</span></div>
 
 </section>
 
@@ -222,6 +222,7 @@ $('#memberId').blur(function(){
 		console.log('false');
 		$('#idCheck').text(' number or Alphabet only from 4 to12 characters');
 		$('#idCheck').css('color', 'red');
+		$('#idCheck').css('font-size', '12px');
 		return false;
     }
 });
@@ -235,6 +236,7 @@ $('#memberPw').blur(function(){
 		console.log('false');
 		$('#pwCheck').text(' at least one number and (capital or small letter) and special characters only 4~12 characters');
 		$('#pwCheck').css('color', 'red');
+		$('#pwCheck').css('font-size', '12px');
 		return false;
     }
 });
@@ -248,6 +250,7 @@ $('#nickname').blur(function(){
 		console.log('false');
 		$('#nickCheck').text(' number or Alphabet only 2~12characters');
 		$('#nickCheck').css('color', 'red');
+		$('#nickCheck').css('font-size', '12px');
 		return false;
     }
 });
@@ -261,6 +264,7 @@ $('#email').blur(function(){
 		console.log('false');
 		$('#emailCheck').text(' please check your email');
 		$('#emailCheck').css('color', 'red');
+		$('#emailCheck').css('font-size', '12px');
 		return false;
     }
 });
@@ -275,6 +279,7 @@ $('#phoneNumber').blur(function(){
 		console.log('false');
 		$('#phoneCheck').text(' please check your phone number');
 		$('#phoneCheck').css('color', 'red');
+		$('#phoneCheck').css('font-size', '12px');
 		return false;
     }
 });

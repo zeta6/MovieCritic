@@ -42,7 +42,7 @@
 	<security:csrf disabled="false"/>
 	
 	
-	<security:logout invalidate-session="true" logout-success-url="/logout" logout-url="/logout" /> 
+	<security:logout invalidate-session="true" logout-success-url="/" logout-url="/member/logout" /> 
 	
 
 </security:http>

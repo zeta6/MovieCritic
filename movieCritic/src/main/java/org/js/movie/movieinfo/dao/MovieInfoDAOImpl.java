@@ -17,6 +17,12 @@ public class MovieInfoDAOImpl implements MovieInfoDAO {
 	@Inject
 	private SqlSession sql;
 	
+	
+	@Override
+	public void updateMovieInfo(MovieInfoVO vo) {
+		sql.update("MovieInfoMapper.updateMovie", vo);
+	}
+	
 	@Override
 	public List<MovieInfoVO> indexList() {
 	

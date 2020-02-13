@@ -6,8 +6,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="/resources/jquery/jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <style>
 
 #main_area{
@@ -185,6 +189,49 @@ meter{
 	padding:20px 0;
 }
 
+/* modal */
+#main_write_area{
+	border:1px solid blue;
+	margin:2% 10% 5% 10%;
+}
+
+
+#input_table {
+	width:100%;
+	margin:0;
+	border: 1px solid #444444;
+	border-collapse: collapse;
+}
+
+#input_table  td {
+	border: 1px solid #444444;
+	padding: 10px;
+	width:30%;
+	word-break:break-all;
+}
+
+#input_table td:nth-child(2n+1){
+	background:#fee;
+	width:30%;
+}
+
+#submit_btn_area{
+	padding: 10px 0;
+	margin: 10px 46%;
+}
+
+
+#submit_inner{
+	background:transparent;
+	background:#fbb;
+	color:#000;
+	border: 1px solid black;
+}
+
+/* 20200117 write_board.jsp movieImg 업로드 위해 추가함 - ohjin */
+.select_img img { 
+	margin:20px 0; 
+}
 
 </style>
 
@@ -274,12 +321,164 @@ meter{
 				<div id="admin_write" class="right_menu">
 					<a href="${rootPath}/write_board" class="top_text2">Write</a>
 				</div>
+			</sec:authorize>
+						<sec:authorize access="hasRole('ADMIN')">
+				<div id="admin_edit" class="right_menu">
+					<a class="top_text2" onclick="editMovie()" style="cursor:pointer;">Edit</a>
+				</div>
 			</sec:authorize>	
 		</nav>
 
 	</div>
    </div>
 	<!-- 상단 메뉴 끝-->
+
+	<!-- edit modal -->
+	
+	<div id="modalDiv" style="display:none; position:fixed; z-index:100; width:70%; height:70%; overflow:auto; margin:2.5% 13%; background:white;">
+	<!-- 글쓰기 폼 시작-->
+
+	<a style="cursor:pointer;">
+		<span id="closeModal" style="color:#333; float:right; font-size:22px; font-weight:bold; padding:10px;" onclick="closeModal()">
+			X
+		</span>
+	</a>
+	<a href="/movie_info/view?movieId=${view.movieId}/deletion">
+		<button type="button" style="float:left; background-color:orange;font-weight:bold; border:1px solid black;">
+			Delete
+		</button>
+	</a>
+		
+	<h2 style="text-align:center; margin:30px; float:center;">게시글 수정</h2>
+
+		<div id="main_write_area">		
+
+			<form method="post" enctype="multipart/form-data" action="/editMovieInfo?${_csrf.parameterName}=${_csrf.token}">
+				<input type="hidden" name="movieId" value="${view.movieId}">
+			<%--컨트롤러에 인자가 안들어오는것 같은데.. csrf값은 확실히 나왔고. --%>
+			
+				<table id="input_table">
+					<tr>
+						<td> Title  </td>
+						<td><input type="text" name="title" style="width:50%;" pattern="\w{1,30}" value="${view.title}" /> </td>
+					</tr>
+					<tr>
+						<td> Starring  </td>
+						<td><textarea name="starring" style="width:80%;"></textarea></td>
+					</tr>
+					<tr>
+						<td> Genre  </td>
+						<td><input type="text" name="genre" pattern="\w{1,20}" value="${view.genre}"> </td>
+					</tr>
+					<tr>
+						<td> Director  </td>
+						<td><input type="text" name="director" pattern="\w{1,20}" value="${view.director}"> </td>
+					</tr>
+					<tr>
+						<td> Runtime  </td>
+						<td><input type="text" name="runtime" value="${view.runtime}"> </td>
+					</tr>
+					
+					<tr>
+						<td> Release Date  </td>
+						<td>
+							<input type="text" name="releaseDate" id="datepicker" pattern="\d{2}\/\d{2}\/\d{4}"  autocomplete="off"
+										value="<fmt:formatDate value="${view.releaseDate}" pattern="MM/dd/yyyy"/>"> 
+						</td>
+					</tr>
+					<tr>
+						<td> Summary  </td>
+						<td><textarea cols="70" rows="10" maxlength="500" name="summary"></textarea> </td>
+					</tr>
+					<tr>
+						<td>
+						<div style="margin: 10px 0;">
+ 							<label for="poster">Poster</label>
+ 							
+ 							<%= request.getRealPath("/") %>
+						</div>
+ 						</td>
+ 						<td>
+ 							<input type="file" id="poster" name="file" />
+ 							<script>
+  								$("#poster").change(function(){
+   									if(this.files && this.files[0]) {
+    									var reader = new FileReader;
+    									reader.onload = function(data) {
+     										$(".select_img img").attr("src", data.target.result).width(50).height(50);
+     										$(".select_img").css("display", "inline-block");
+    									}
+								    	reader.readAsDataURL(this.files[0]);
+   									}
+  								});
+ 							</script>
+ 							<div class="select_img"><img src="" /></div>
+ 						</td>
+ 					</tr>
+ 					<tr> 
+						<td>
+						<div style="margin: 10px 0;">
+ 							<label for="stillCuts">StillCuts</label>
+ 						</div>
+ 						</td>
+ 						<td>
+ 							<input multiple="multiple" type="file" id="stillCuts" name="file" />
+ 							 <!-- for문을 교체!! -->
+							<script>
+  								$("#stillCuts").change(function(){
+   									if(this.files[0] || this.files[1] || this.files[2]) {
+    									var reader1 = new FileReader;
+    									var reader2 = new FileReader;
+    									var reader3 = new FileReader;
+    									reader1.onload = function(data) {
+     										$(".select_img2 img").attr("src", data.target.result).width(50).height(50);
+     										$(".select_img2").css("display", "inline-block");
+     									
+    									}
+    									reader2.onload = function(data) {
+     								
+     										$(".select_img3 img").attr("src", data.target.result).width(50).height(50);
+     										$(".select_img3").css("display", "inline-block");
+    									}
+    									reader3.onload = function(data) {
+     										
+     										
+     										$(".select_img4 img").attr("src", data.target.result).width(50).height(50);
+     										$(".select_img4").css("display", "inline-block");
+    									}
+								    	reader1.readAsDataURL(this.files[0]);
+								    	reader2.readAsDataURL(this.files[1]);
+								    	reader3.readAsDataURL(this.files[2]);
+   									}
+  								});
+  							
+ 							</script>
+ 							<div class="select_img2"><img src="" /></div>
+ 							<div class="select_img3"><img src="" /></div>
+ 							<div class="select_img4"><img src="" /></div>
+						</td>
+					</tr>
+					
+				</table>
+				
+
+				<div id="submit_btn_area">
+					<input type="submit" value="저장"/>
+					<sec:csrfInput/>
+				</div>
+				
+
+			
+	
+			</form>
+		</div>
+
+	
+
+	<!--글쓰기 폼 끝-->
+	</div>
+	<!-- edit modal -->
+
 
 	<!-- 트레일러-->	
 
@@ -325,7 +524,7 @@ meter{
 
 		<div id="main_trailer_area">
 
-
+<!-- 			<video src="/resources/image/1917-trailer-3_h480p.avi" controls style="width:100%;height:90%;"></video> -->
 			<img class="still_cuts" src="${view.stillCut1}">
 			<img class="still_cuts" src="${view.stillCut2}">
 			<img class="still_cuts" src="${view.stillCut3}">
@@ -566,6 +765,32 @@ meter{
 			        }
 			    }
 			}
+		
+		function editMovie(){
+			var modalDiv = document.getElementById('modalDiv');
+			var siteDiv = document.getElementById("site_layout");
+			var summaryText = document.getElementsByName("summary");
+			var starringText = document.getElementsByName("starring");
+			modalDiv.style.display = "block";
+			siteDiv.style.backgroundColor= "rgba(0,0,0,0.5)";
+			summaryText.value = '${view.summary}';
+			starringText.value = '${view.starring}';
+		}
+		
+		function closeModal(){
+			var modalDiv = document.getElementById('modalDiv');
+			var siteDiv = document.getElementById('site_layout');
+			siteDiv.style.backgroundColor = "white";
+			modalDiv.style.display = "none";
+		}
+		
+		$( function() {
+			  $( "#datepicker" ).datepicker();
+			  	dateFormat: 'yyyy.mm.dd'
+			  	showOn: "both"
+			  	buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif"
+			} );
+		
 		</script>
 
 </body>

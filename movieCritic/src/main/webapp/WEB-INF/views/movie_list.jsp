@@ -15,9 +15,8 @@
 <title>Browse movie</title>
 <style>
 #site_layout{
-	margin: 0px;
+	margin:0;
 	padding:0;
-
 	overflow:auto;
 }
 
@@ -30,7 +29,7 @@
 }
 
 #top_menu{
-	margin:0;
+	margin-bottom:-25px;
 	padding:0;
 	width:100%;
 	height:70px;
@@ -378,7 +377,12 @@ td:nth-of-type(5){
 						<td>${((criteria.nowPage)-1)*criteria.perPageNumber+status.count}</td>
 						<td>
 							<div class="rating_circle_average" style="margin-right:20px;font-weight:bold;">
-								<fmt:formatNumber value="${list.scoreAverage}" pattern="0.0"/>
+								<c:if test="${list.scoreAverage eq 0}">
+									<fmt:formatNumber value="${list.scoreAverage}" pattern="0"/>
+								</c:if>
+								<c:if test="${list.scoreAverage != 0}">
+									<fmt:formatNumber value="${list.scoreAverage}" pattern="0.0"/>
+								</c:if>
 							</div>
 						</td>
 						<td><a href="/movie_info/view?movieId=${list.movieId}">${list.title}</a></td>
@@ -399,7 +403,7 @@ td:nth-of-type(5){
 			    		
 			    		<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="pageNumber">
 			    		<li>
-			        		<a href='<c:url value="/movie_list?nowPage=${pageNumber}"/>'><i class="fa">${pageNumber}</i></a>
+			        		<a href='<c:url value="/movie_list?nowPage=${pageNumber}"/>'><i class='fa'>${pageNumber}</i></a>
 			    		</li>
 			    		</c:forEach>
 			    
@@ -422,17 +426,19 @@ td:nth-of-type(5){
 			console.log("scoreAverageDIV="+scoreAverageDIV);
 			for(var i=0; i < scoreAverageDIV.length; i++){
 				var scoreAverage = scoreAverageDIV[i].innerHTML;
-				if(scoreAverage <=3 && scoreAverage>=0){
+				if(scoreAverage <=3 && scoreAverage > 0){
 					scoreAverageDIV[i].style.backgroundColor = "red";
 				}
-				else if(scoreAverage <=6){
+				else if(scoreAverage <=6 && scoreAverage != 0){
 					scoreAverageDIV[i].style.backgroundColor = "orange";
 				}
-				else if(scoreAverage <=10){
+				else if(scoreAverage <=10 && scoreAverage != 0){
 					scoreAverageDIV[i].style.backgroundColor = "#1aff00";
 				}
-				else if(scoreAverage.equals("")){
+				else if(scoreAverage == 0){
 					scoreAverageDIV[i].style.backgroundColor = "#000";
+				} else{
+					scoreAverageDIV[i].style.backgroundColor = "#ccc";
 				}
 			}
 			  

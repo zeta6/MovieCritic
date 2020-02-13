@@ -12,7 +12,9 @@
 	</insert>
 
 	<update id="update">
-		update table_member set member_pw=#{memberPw}, email=#{email}, phone_number=#{phoneNumber}
+		update table_member 
+		set nickname = #{nickname}, member_pw=#{memberPw}, email=#{email}, phone_number=#{phoneNumber}
+		where member_id = #{memberId}
 	
 	</update>
 	
@@ -30,7 +32,6 @@
 	<select id="selectOne" resultType="memberVO">
 		select * from table_member
 		where member_id=#{memberId}
-		order by member_id
 	</select>
 
 	<select id="login" resultType="CustomMemberVO">

@@ -14,6 +14,8 @@
 
 <title>Insert title here</title>
 <script src="/resources/jquery/jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <style>
 
 #main_write_area{
@@ -60,8 +62,6 @@
 
 </style>
 
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 $( function() {
   $( "#datepicker" ).datepicker();
@@ -163,6 +163,7 @@ $( function() {
 	
 	<h2 style="text-align:center; margin-top:30px;">게시글 작성</h2>
 
+
 		<div id="main_write_area">		
 
 			<form method="post" enctype="multipart/form-data" action="/write_board?${_csrf.parameterName}=${_csrf.token}">
@@ -193,7 +194,7 @@ $( function() {
 					
 					<tr>
 						<td> Release Date  </td>
-						<td><input type="text" name="releaseDate" id="datepicker" pattern="\d{2}\/\d{2}\/\d{4}"> </td>
+						<td><input type="text" name="releaseDate" id="datepicker" pattern="\d{2}\/\d{2}\/\d{4}" autocomplete="off"> </td>
 					</tr>
 					<tr>
 						<td> Summary  </td>

@@ -16,7 +16,7 @@
 
 #login_box{
 	border : 1px solid lightgray;
-	width: 18%;
+	max-width: 270px;
 	max-height: 50%;
 	margin: 200px auto;
 }
@@ -38,7 +38,7 @@ p {
 }
 
 #id_box, #pw_box{
-	margin-left: 25px;
+	margin: 12px;
 	margin-top: 5px;
 	
 }
@@ -59,15 +59,16 @@ p {
 	text-align:center;
 	background:black;
 	color:white;
-	width:270px;
+	width:250px;
 	height:30px;
-	margin: 13px 15px;
+	margin: 13px 10px;
 	padding-top: 3px;
 }
 
 #foot{
 	text-align:center;
 	font-size:12px;
+	padding:8px;
 }
 
 </style>
@@ -171,7 +172,7 @@ p {
 <%--  폼태그..	<form:password path="memberPw"/> --%>
 			<input type="password" placeholder=" Password" class="login" name="memberPw">
 			    <c:if test="${not empty errorMsg}">
-			    	<span style="color:red; font-size:13px;">Your login attempt was not successful due to <br/>
+			    	<span style="color:red; font-size:10px;">Your login attempt was not successful due to <br/>
 			        ${errorMsg}</span>
     			</c:if>
 		</div>
@@ -182,7 +183,7 @@ p {
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> <!-- csrf -->
 			<input type="submit" id="login_btn" value="Log In"/> 
 		</article>
-		<div id="foot"><span>Not a member?</span><a href="${rootPath}/member/sign_up" style=text-decoration:none;>Create an account</a></div>
+		<div id="foot"><span>Not a member? </span><a href="${rootPath}/member/sign_up" style=text-decoration:none;>Create an account</a></div>
 	
 	</form>
 </section>

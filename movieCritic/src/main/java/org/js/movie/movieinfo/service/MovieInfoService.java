@@ -8,6 +8,8 @@ import org.js.movie.movieinfo.domain.Criteria;
 import org.js.movie.movieinfo.domain.MovieInfoVO;
 
 public interface MovieInfoService {
+
+	public void updateMovieInfo(MovieInfoVO vo);
 	
 	public List<MovieInfoVO> indexList();
 	

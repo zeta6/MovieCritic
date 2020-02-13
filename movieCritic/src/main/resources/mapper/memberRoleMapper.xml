@@ -11,4 +11,10 @@
 		select role from table_member_roles
 		where member_id = #{memberId}
 	</select>
+	
+	<delete id="delete">
+		delete from table_member_roles
+		where member_id = #{memberId}
+	</delete>
+	
 </mapper>

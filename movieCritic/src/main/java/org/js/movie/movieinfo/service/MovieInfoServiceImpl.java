@@ -28,15 +28,21 @@ public class MovieInfoServiceImpl implements MovieInfoService {
 	}
 	
 	@Override
+	public List<MovieInfoVO> indexList2(){
+
+		return dao.indexList2();
+	}
+	
+	@Override
 	public List<MovieInfoVO> listAll(){
 		
 		return dao.listAll();
 	}
 	
 	@Override
-	public List<Map<String, Object>> list(Criteria criteria) {
+	public List<MovieInfoVO> list(HashMap<String, String> conditions) {
 
-		return dao.list(criteria);
+		return dao.list(conditions);
 	}
 	
 	@Override
@@ -51,10 +57,11 @@ public class MovieInfoServiceImpl implements MovieInfoService {
 	}
 
 	@Override
-	public int countTotalList() {
+	public int countTotalList(HashMap<String, String> conditions) {
 
-		return dao.countTotalList();
+		return dao.countTotalList(conditions);
 	}
+	
 	
 	@Override
 	public List<MovieInfoVO> getConditionalList(HashMap<String, String> conditions){

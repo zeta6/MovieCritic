@@ -58,6 +58,11 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		dao.deleteReviewAll(movieId);
 	}
+	
+	@Override	
+	public void updateReview(ReviewVO reviewVO) {
+		dao.updateReview(reviewVO);
+	}
 
 	
 	

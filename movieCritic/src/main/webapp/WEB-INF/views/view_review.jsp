@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="/resources/jquery/jquery-3.4.1.min.js"></script>
 <style>
 
 #main_wrapper_area{
@@ -249,7 +250,7 @@
 		</div>
 
 		<div>
-			<form action="/view_review" method="post"> 
+			<form action="/view_review" method="post" onsubmit="return RVFormCheck()"> 
 				<textarea cols="95" rows="5" maxlength="500" name="content"></textarea>	<%--name에 정해진 값은 변수로 요청에 파라미터를 보냄 --%>
 				<input type="hidden" value="${view.movieId}" name="movieId"/>
 				<input type ="hidden" name="rating" id="markRating" />
@@ -282,9 +283,9 @@
 										<i id="${list.movieId}" onclick="deleteReview('${list.reviewId}', '${view.movieId}')" class="far fa-trash-alt" style="color:black; font-weight:bold;"></i>
 									</span>
 								</a>
-								<a href="/view_review?movieId=${view.movieId}/update" style="display:inline;">
+								<a style="display:inline;">
 									<span style="float:right; font-weight:bold; height:15px; font-size:12px; width:30px;">
-										<i class="far fa-edit" style="color:black; font-weight:bold;"></i>
+										<i class="far fa-edit" style="color:black; font-weight:bold;" onclick="updateReview(this)"></i>
 									</span>
 								</a>
 							</c:if>
@@ -296,7 +297,7 @@
 	 					</div>
  					</div>
   				</div>
-  					<p style="padding-left:13px;padding-bottom:30px;">${list.content}</p>
+  					<p id = "${list.reviewId}" style="padding-left:13px;padding-bottom:30px;">${list.content}</p>
   					
  			</div>
  			</c:forEach>
@@ -344,69 +345,123 @@ var deleteReview = function(reviewId, movieId){
 	}	
 };
 
-window.onload = function(){
-	var scoreAverageDIV= document.getElementsByClassName("rating_circle_average");
-	console.log("scoreAverageDIV="+scoreAverageDIV);
-	for(var i=0; i < scoreAverageDIV.length; i++){
-		var scoreAverage = scoreAverageDIV[i].innerHTML;
-		if(scoreAverage <=3 && scoreAverage>=0){
-			scoreAverageDIV[i].style.backgroundColor = "red";
-		}
-		else if(scoreAverage <=6){
-			scoreAverageDIV[i].style.backgroundColor = "orange";
-		}
-		else if(scoreAverage <=10){
-			scoreAverageDIV[i].style.backgroundColor = "#1aff00";
-		}
-		else if(scoreAverage.equals("")){
-			scoreAverageDIV[i].style.backgroundColor = "#000";
-		}
+
+var RVFormCheck = function(){
+	if(document.getElementById("markRating").value == ""){
+		alert("You have not entered a score.");
+		return false;
 	}
-			
-	  var markScore;  
+	else{
+		return true;
+	}
+	
+};
+
+var UPRVFormCheck = function(){
+	if(document.getElementById("updateMarkRating").value == ""){
+		alert("You have not entered a score.");
+		return false;
+	}
+	else{
+		return true;
+	}
+};
+
+var updateReview = function(location){
+	//location this 받아와서 상위요소 하위요소 검색
+	var a = $(location).parents("div");
+	var content = $(a[3]).children("p");
+	var reviewId= content[0].id;
+	var text = content[0].innerHTML;
+	
+	var html = '<div class="review_input_area"> \
+		<div class="inner_header">\
+		<div style="display: flex;justify-content:space-between;">\
+				<h5> REVIEW THIS MOVIE</h5>\
+	 			<h6 style="margin-right:-140px;"> VOTE NOW </h6>	\
+			<div style="display:flex;padding:10px 0;">\
+			    <div id="reviewCircle_0" class="ratingCircle">0</div>\
+			    <div id="reviewCircle_1" class="ratingCircle">1</div>\
+			    <div id="reviewCircle_2" class="ratingCircle">2</div>\
+			    <div id="reviewCircle_3" class="ratingCircle">3</div>\
+			    <div id="reviewCircle_4" class="ratingCircle">4</div>\
+			    <div id="reviewCircle_5" class="ratingCircle">5</div>\
+			    <div id="reviewCircle_6" class="ratingCircle">6</div>\
+			    <div id="reviewCircle_7" class="ratingCircle">7</div>\
+			    <div id="reviewCircle_8" class="ratingCircle">8</div>\
+			    <div id="reviewCircle_9" class="ratingCircle">9</div>\
+			    <div id="reviewCircle_10" class="ratingCircle">10</div>\
+			</div>\
+		</div>\
+	</div>\
+	<div>\
+		<form action="/view_review.update" method="post" onsubmit="return UPRVFormCheck()"> \
+			<textarea cols="95" rows="5" maxlength="500" name="content">'+text+'</textarea>\
+			<input type="hidden" value="'+reviewId+'" name="reviewId">\
+			<input type="hidden" value="${view.movieId}" name="movieId"/>\
+			<input type ="hidden" name="rating" id="updateMarkRating" />\
+			<input type="submit" value="submit" style="background:#555; color:white; margin-left:85%;"/>\
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>\
+		</form>\
+	</div>\
+	</div>'
+	content[0].innerHTML = html;
+	ColoringRVCricle();
+		
+	
+};
+
+var updateMarkScore;
+
+var ColoringRVCricle = function(){
 	  
-	    for(var x=0; x<=10; x++){
-	        var circle = document.querySelectorAll(".ratingCircle")[x];
-	        circle.onmouseover = function(e){
-	            var score = this.innerHTML;
-	            for(var i=0; i <= score; i++) {
-	                if(i<4 ) {
-	                    var id = "ratingCircle_" + i;
-	                    document.getElementById(id).style.backgroundColor = "red";
-	                }else if( i < 7){
-	                    var id = "ratingCircle_" + i;
-	                    document.getElementById(id).style.backgroundColor = "orange";
-	                }else if ( i< 11){
-	                    var id = "ratingCircle_" + i;
-	                    document.getElementById(id).style.backgroundColor = "#1aff00";
-	                }
-	            }
-	        }
-	        circle.onmouseout = function(e){
-	            if(markScore == null){
-	                var score = this.innerHTML;
-	                for(var i=0; i <= score; i++) {
-	                    var id = "ratingCircle_" + i;
-	                    document.getElementById(id).style.backgroundColor = "#555";
-	                }
-	            }else{
-	                for(var i=10; i >markScore; i--){
-	                    var id = "ratingCircle_" + i;
-	                    document.getElementById(id).style.backgroundColor = "#555";
-	                }
-	                
-	            }
-	            console.log("markScore="+markScore);
-	        }
-	        circle.onclick = function(e){
-	            markScore = this.innerHTML;
-	            document.getElementById("markRating").value = markScore;
-	            console.log("markScore="+markScore);
-	        }
-	    }
-	}
+    for(var x=10; x<=21; x++){
+        var circle = document.querySelectorAll(".ratingCircle")[x];
+        circle.onmouseover = function(e){
+            var score = this.innerHTML;
+            for(var i=0; i <= score; i++) {
+                if(i<4 ) {
+                    var id = "reviewCircle_" + i;
+                    document.getElementById(id).style.backgroundColor = "red";
+                }else if( i < 7){
+                    var id = "reviewCircle_" + i;
+                    document.getElementById(id).style.backgroundColor = "orange";
+                }else if ( i< 11){
+                    var id = "reviewCircle_" + i;
+                    document.getElementById(id).style.backgroundColor = "#1aff00";
+                }
+            }
+        }
+        circle.onmouseout = function(e){
+            if(updateMarkScore == null){
+                var score = this.innerHTML;
+                for(var i=0; i <= score; i++) {
+                    var id = "reviewCircle_" + i;
+                    document.getElementById(id).style.backgroundColor = "#555";
+                }
+            }else{
+                for(var i=10; i >updateMarkScore; i--){
+                    var id = "reviewCircle_" + i;
+                    document.getElementById(id).style.backgroundColor = "#555";
+                }
+                
+            }
+        }
+        circle.onclick = function(e){
+        	updateMarkScore = this.innerHTML;
+            document.getElementById("updateMarkRating").value = updateMarkScore;
+    	}
+    }
+};
+	
+
+
+var updateReviewPost = function(){
+	
+}
 
 var ctx = document.getElementById('myChart').getContext('2d');
+
 var chart = new Chart(ctx, {
 	type:	'horizontalBar',
 	data:{
@@ -430,6 +485,68 @@ var chart = new Chart(ctx, {
                     beginAtZero:true  //Y축의 값이 0부터 시작
                 }
             }]
+        }
+    }
+});
+
+
+
+
+$(document).ready(function(){
+	var scoreAverageDIV= document.getElementsByClassName("rating_circle_average");
+	for(var i=0; i < scoreAverageDIV.length; i++){
+		var scoreAverage = scoreAverageDIV[i].innerHTML;
+		if(scoreAverage <=3 && scoreAverage>=0){
+			scoreAverageDIV[i].style.backgroundColor = "red";
+		}
+		else if(scoreAverage <=6){
+			scoreAverageDIV[i].style.backgroundColor = "orange";
+		}
+		else if(scoreAverage <=10){
+			scoreAverageDIV[i].style.backgroundColor = "#1aff00";
+		}
+		else if(scoreAverage == ""){
+			scoreAverageDIV[i].style.backgroundColor = "#000";
+		}
+	}
+			
+	var markScore;  
+	  
+    for(var x=0; x<=10; x++){
+        var circle = document.querySelectorAll(".ratingCircle")[x];
+        circle.onmouseover = function(e){
+            var score = this.innerHTML;
+            for(var i=0; i <= score; i++) {
+                if(i<4 ) {
+                    var id = "ratingCircle_" + i;
+                    document.getElementById(id).style.backgroundColor = "red";
+                }else if( i < 7){
+                    var id = "ratingCircle_" + i;
+                    document.getElementById(id).style.backgroundColor = "orange";
+                }else if ( i< 11){
+                    var id = "ratingCircle_" + i;
+                    document.getElementById(id).style.backgroundColor = "#1aff00";
+                }
+            }
+        }
+        circle.onmouseout = function(e){
+            if(markScore == null){
+                var score = this.innerHTML;
+                for(var i=0; i <= score; i++) {
+                    var id = "ratingCircle_" + i;
+                    document.getElementById(id).style.backgroundColor = "#555";
+                }
+            }else{
+                for(var i=10; i >markScore; i--){
+                    var id = "ratingCircle_" + i;
+                    document.getElementById(id).style.backgroundColor = "#555";
+                }
+                
+            }
+        }
+       circle.onclick = function(e){
+            markScore = this.innerHTML;
+            document.getElementById("markRating").value = markScore;
         }
     }
 })

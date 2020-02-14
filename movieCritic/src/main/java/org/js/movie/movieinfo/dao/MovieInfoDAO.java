@@ -12,11 +12,15 @@ public interface MovieInfoDAO {
 	//update
 	public void updateMovieInfo(MovieInfoVO vo);
 	
+	
 	// index movie list
+	
 	public List<MovieInfoVO> indexList();
 	
+	public List<MovieInfoVO> indexList2();	
+	
 //	movie list (paging)
-	public List<Map<String, Object>> list(Criteria criteria);
+	public List<MovieInfoVO> list(HashMap<String, String> conditions);
 	
 	public List<MovieInfoVO> listAll();
 	
@@ -26,7 +30,7 @@ public interface MovieInfoDAO {
 //	movie write
 	public void write(MovieInfoVO vo);
 	
-	public int countTotalList();
+	public int countTotalList(HashMap<String, String> conditions);
 	
 	public List<MovieInfoVO> getConditionalList(HashMap<String, String> conditions);
 

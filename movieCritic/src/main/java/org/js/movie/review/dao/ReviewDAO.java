@@ -26,4 +26,5 @@ public interface ReviewDAO {
 	//게시글 리뷰 삭제
 	public void deleteReviewAll(int movieId);
 	
+	public void updateReview(ReviewVO reviewVO);
 }

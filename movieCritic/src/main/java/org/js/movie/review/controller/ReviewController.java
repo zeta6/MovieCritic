@@ -123,4 +123,16 @@ public class ReviewController {
 		
 		return "redirect:../view_review?movieId="+reviewVO.getMovieId();
 	}
+	
+	@RequestMapping(value= "/view_review.update", method=RequestMethod.POST)
+	public String updateViewReview(ReviewVO reviewVO) {
+		
+		reviewVO.setWriter(SecurityContextHolder.getContext().getAuthentication().getName());
+		log.info("writer :" + reviewVO.getWriter());
+		log.info("reviewVO : " + reviewVO.toString());
+		reviewService.updateReview(reviewVO);
+		log.info("?????"+reviewVO);
+		return "redirect:../view_review?movieId="+reviewVO.getMovieId();
+	}
+	
 }

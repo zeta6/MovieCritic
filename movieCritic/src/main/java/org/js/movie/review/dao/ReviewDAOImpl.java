@@ -52,4 +52,8 @@ public class ReviewDAOImpl implements ReviewDAO {
 		sql.delete("ReviewMapper.deleteReviewAll", movieId);
 	}
 
+	@Override
+	public void updateReview(ReviewVO reviewVO) {
+		sql.update("ReviewMapper.updateReview", reviewVO);
+	}
 }

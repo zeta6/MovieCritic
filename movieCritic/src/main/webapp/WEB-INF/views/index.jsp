@@ -61,16 +61,25 @@ tr,td,th {
 	padding-right:80px;
 }
 
+.rating_circle_average{
+    border-radius: 50%;
+    height: 20px;
+    width: 24px;
+    text-align: center;
+    background-color: #eee;
+    color:#fff;
+    cursor:pointer;
+    float:left;
+    margin:0px 0px 0px 12px;
+    font-size:12px;
+    font-weight:1000px;
+    padding-top: 3px;
+}
+
 
 
 </style>
 
-<script>
-
-
-
-
-</script>
 
 </head>
 <body>
@@ -89,21 +98,18 @@ tr,td,th {
 		<nav id="top_menu1">
 		<ul id="left_menu">
 		
-		<li class="left_menu">		
-		<a href="${rootPath}"><img src="/resources/image/logo.webp" alt="OpenCritic"></a>
+			<li class="left_menu">		
+		<a href="${rootPath}"><img src="/resources/image/logo.jpg" alt="MovieCritic"></a>
 		</li>
 		<li class="left_menu">
-			<a href="${rootPath}/movie_list" class="top_text1">Genre</a>
+			<a href="${rootPath}/movie_list" class="top_text1">Browse Movies</a>
 				
 				<ul id="genre_sub">			<!-- select 기준 적용된 페이지 호출.. -->
-					<li class="left_inner_menu"><a href="#" class="top_text3">Action</a></li>
-					<li class="left_inner_menu"><a href="#" class="top_text3">Comedy</a></li>
-					<li class="left_inner_menu"><a href="#" class="top_text3">Drama</a></li>
+					<li class="left_inner_menu"><a href="/movie_list?genre=Action" class="top_text3">Action</a></li>
+					<li class="left_inner_menu"><a href="/movie_list?genre=Drama" class="top_text3">Drama</a></li>
+					<li class="left_inner_menu"><a href="/movie_list?genre=Fantasy" class="top_text3">Fantasy</a></li>
 				</ul>
 				
-		</li>
-		<li class="left_menu">
-			<a href="#" class="top_text1">Release Schedule</a>
 		</li>
 		</ul>
 		</nav>
@@ -112,9 +118,8 @@ tr,td,th {
 			<div id="form" class="right_menu">
 	
 					
-					<input type="text" placeholder="Search" class="top_text2" id="search">
+					<input type="text" placeholder="Search" class="top_text2" id="search" autocomplete="off">
 					<div id="searchResultsListDiv"></div>
-					<sec:csrfInput/>
 			
 			</div>
 		
@@ -161,53 +166,45 @@ tr,td,th {
 
 	<!-- 영화 포스터-->		
 	<div id="posters">
-
-		<div id="movie1">
-			<a href="#">
-				<img src="/resources/image/movie1.webp" alt="movie1">
+		<c:forEach items="${list2}" var="list2" begin="0" end="3">
+			<div>
+			<a href="/movie_info/view?movieId=${list2.movieId}">
+				<img src="${list2.thumbNail}">
 			</a>		
-		</div>
-		<div id="movie2">
-			<a href="#">
-				<img src="resources/image/movie2.webp" alt="movie2">
-			</a>		
-		</div>
-		<div id="movie3">
-			<a href="#">
-				<img src="resources/image/inner_poster.jpg" alt="movie3">
-			</a>		
-
-		</div>
-		<div id="movie4">
-			<a href="#">
-				<img src="resources/image/movie4.webp" alt="movie4">
-			</a>	
-		</div>
-
+			</div>
+		</c:forEach>
 	</div>
 	<!-- 영화 포스터 끝-->
 
 
-	<!-- 하단 게시판-->
+<!-- 하단 게시판-->
 	<div id="board">
 
 		<section id="board_now">
 		<h2 class="line">AVAILABLE NOW</h2>
-		<table>
-			<thead>
-				<tr>
-					<th>제목</th><th>작성일</th>
-				</tr>
-		</thead>
-			
+		<table>			
 			<tbody>
 	
 				<c:forEach items="${list}" var="list">
 					<tr>
-						<td><a href="/movie_info/view?movieId=${list.movieId}"><span>${list.title}</span></a></td>
-<%-- 						<td><a href="/movie_info/view?movieId=${list.movieId}"><fmt:formatDate value="${list.registerDate}" pattern="yyyy.mm.dd"/></a></td> --%>
+						<td>
+							<div class="rating_circle_average" style="margin-right:20px;font-weight:bold;">
+								<fmt:formatNumber value="${list.scoreAverage}" pattern="0.0"/>
+							</div>
+						</td>
+						<td><span style="cursor:pointer; margin-right:20px;" onclick="location.href='/movie_info/view?movieId=${list.movieId}'">${list.title}</span></td>
+						<td><span style="cursor:pointer;" onclick="location.href='/movie_info/view?movieId=${list.movieId}'"><fmt:formatDate value="${list.releaseDate}" pattern="yyyy.MM.dd"/></span></td>
 					</tr>
 				</c:forEach>
+					<tr>
+						<td>
+						</td>
+						<td>
+						</td>
+						<td>
+						<div style="float:right; cursor:pointer;" onclick="location.href='/movie_list?sortCondition=releaseDate'">>view more</div>
+						</td>
+					</tr>	
   		 	</tbody>
   		 </table>
 			
@@ -215,33 +212,33 @@ tr,td,th {
 		</section>
 		
 		<section id="board_review">
-		<h2>Recent Most Popular</h2>
-			<article class="line">
-			<h3>review 1</h3>			
+		<h2 class="line">Recent Most Popular</h2>
+				<table>			
+			<tbody>
 	
-			</article>
-			
-			<article class="line"> 
-			<h3>review 2</h3>			
-	
-			</article>		
-
-			<article class="line">
-			<h3>review 3</h3>		
-	
-			</article>		
-	
-			<article class="line">
-			<h3>review 4</h3>			
-	
-			</article>		
-
-			<article class="line">
-			<h3>review 5</h3>			
-	
-			</article>		
-		</section>
-
+				<c:forEach items="${list2}" var="list2">
+					<tr>
+						<td>
+							<div class="rating_circle_average" style="margin-right:20px;font-weight:bold;">
+								<fmt:formatNumber value="${list2.scoreAverage}" pattern="0.0"/>
+							</div>
+						</td>
+						<td><span style="cursor:pointer; margin-right:20px;" onclick="location.href='/movie_info/view?movieId=${list2.movieId}'">${list2.title}</span></td>
+						<td><span style="cursor:pointer;" onclick="location.href='/movie_info/view?movieId=${list2.movieId}'"><fmt:formatDate value="${list2.releaseDate}" pattern="yyyy.MM.dd"/></span></td>
+					</tr>
+				</c:forEach>
+					<tr>
+						<td>
+						</td>
+						<td>
+						</td>
+						<td>
+						<div style="float:right; cursor:pointer;" onclick="location.href='/movie_list?sortCondition=score&releaseDate=last90days'">>view more</div>
+						</td>
+					</tr>	
+  		 	</tbody>
+  		 </table>
+	</section>
 	</div>
 	<!-- 하단 게시판 끝-->
 	
@@ -249,12 +246,9 @@ tr,td,th {
 	<!-- main wrapper -->
 </div>
 
+
 <script type="text/javascript">
 
-function select(selectKeyword){
-    document.getElementById("search").value = selectKeyword;
-	hide();
-}
 	
 function hide(){
     var searchResultsListDiv = document.getElementById("searchResultsListDiv");
@@ -266,13 +260,36 @@ function show(){
     searchResultsListDiv.style.display = "block";
 }
 
+
 $(document).ready(function(){
+	
 
     var oldVal;
+	
+	var scoreAverageDIV= document.getElementsByClassName("rating_circle_average");
+	console.log("scoreAverageDIV="+scoreAverageDIV);
+	for(var i=0; i < scoreAverageDIV.length; i++){
+		var scoreAverage = scoreAverageDIV[i].innerHTML;
+		if(scoreAverage <=3 && scoreAverage >=0){
+			scoreAverageDIV[i].style.backgroundColor = "red";
+		}
+		else if(scoreAverage <=6){
+			scoreAverageDIV[i].style.backgroundColor = "orange";
+		}
+		else if(scoreAverage <=10){
+			scoreAverageDIV[i].style.backgroundColor = "#1aff00";
+		}
+		else if(scoreAverage.equals("")){
+			scoreAverageDIV[i].style.backgroundColor = "#000";
+		}
+	}
     
+    $("#searchResultsListDiv").mouseover(function(){
+    	$("#search").blur();
+    	
+    })
     $("#search").on("propertychange change keyup paste input", function() {
 		
-    	var searchedList;
         var currentVal = $(this).val();
         if(currentVal == oldVal) {
             return;
@@ -283,23 +300,25 @@ $(document).ready(function(){
                 data: {"searchKeyword" : currentVal},
                 datatype: 'json',
                 success: function(data){
-                    searchedList = data;
+                	show();
+                    var searchedList = data;
                     var html = "";
-                    show();
                     for(i=0; i<searchedList.length; i++){
-                        html += "<span style='cursor:pointer;line-height:35px;' onclick='location.href=\"/movie_info?movieId="+
+                        html += "<span style='cursor:pointer; line-height:35px;' onclick='location.href=\"/movie_info/view?movieId="+
                         		searchedList[i].movieId+"\"'>" +
                         		searchedList[i].title + "</span><br/>";
                     }			
-
-                    
+                 
                     var searchResultsListDiv = document.getElementById("searchResultsListDiv");
                     searchResultsListDiv.innerHTML = html;
+                    
+                    if( currentVal === ""){
+                    	hide();	
+                    }
+                    
                 }
             })
-            
-            console.log("searchedList="+searchedList);
-        }
+    	}
 
 	}) 
 

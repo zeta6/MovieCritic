@@ -8,6 +8,7 @@
 		SELECT *
 		FROM table_review
 		WHERE movie_id = #{movieId}
+		order by review_id desc
 	]]>
 	</select>
 	
@@ -17,6 +18,7 @@
 			select * 
 			from table_review
 			WHERE movie_id = #{movieId}
+			order by review_id desc
 			limit #{pageStart}, #{perPageNumber}
  		]]>
 
@@ -50,12 +52,25 @@
 	<update id="updateReview">
 		update table_review 
 			set	content=#{content}, rating=#{rating}
+		where movie_id=#{movieId} and review_id=#{reviewId};
+		
+		update table_movie_info tmi
+		set tmi.score_average = 
+			(select avg(rating) from table_review tr 
+				where tmi.movie_id = tr.movie_id)
+			
 	</update>
 	
 	<delete id="deleteReview">
 		delete from table_review
-			where review_id=#{reviewId}
+			where review_id=#{reviewId};
+		update table_movie_info tmi
+		set tmi.score_average = 
+			(select avg(rating) from table_review tr 
+				where tmi.movie_id = tr.movie_id)
 	</delete>
+	
+	
 	<delete id="deleteReviewAll">
 		delete from table_review
 			where movie_id=#{movieId}

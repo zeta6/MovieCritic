@@ -132,24 +132,48 @@ public class MovieInfoController {
 		return list;
 	
 	}
+
+	@RequestMapping (value = "/movie_list.getPageTotal", method = RequestMethod.GET)
+	@ResponseBody
+	public int getPageTotal(@RequestParam(value = "genre", defaultValue="") String genre,
+						@RequestParam(value = "releaseDate", defaultValue="") String releaseDate,
+						@RequestParam(value = "sortCondition", defaultValue="") String sortCondition,
+						@RequestParam(value = "pageNum", defaultValue="") String pageNum){
+
+		log.info("genre="+genre);
+		log.info("releaseDate="+releaseDate);
+		log.info("sortCondition="+sortCondition);
+		log.info("pageNum="+pageNum);
+		
+		HashMap<String, String> conditions = new HashMap<String, String>();
+		conditions.put("genre", genre);
+		conditions.put("releaseDate", releaseDate);
+		conditions.put("sortCondition", sortCondition);
+		log.info("conditions="+conditions);
+		
+		int pageTotal = movieInfoService.countTotalList(conditions);
+		
+		return pageTotal;
+	}
 	
 	@RequestMapping (value = "/movie_list.getConditionalList", method = RequestMethod.GET)
 	@ResponseBody
 	public List<MovieInfoVO> getConditionalList(@RequestParam(value = "genre", defaultValue="") String genre,
 						@RequestParam(value = "releaseDate", defaultValue="") String releaseDate,
 						@RequestParam(value = "sortCondition", defaultValue="") String sortCondition,
-						Model model) {
+						@RequestParam(value = "pageNum", defaultValue="") String pageNum){
 
 		
 		log.info("genre="+genre);
 		log.info("releaseDate="+releaseDate);
 		log.info("sortCondition="+sortCondition);
+		log.info("pageNum="+pageNum);
 		
 		HashMap<String, String> conditions = new HashMap<String, String>();
 		conditions.put("genre", genre);
 		conditions.put("releaseDate", releaseDate);
 		conditions.put("sortCondition", sortCondition);
-		
+		conditions.put("pageNum", pageNum);
 		log.info("conditions="+conditions);
 		
 		List<MovieInfoVO> list = new ArrayList<MovieInfoVO>();
@@ -160,33 +184,15 @@ public class MovieInfoController {
 		
 	}
 	
-	// 커맨드 객체, requestparam..
-	//@RequestParam(value="nowPage", defaultValue="1") int nowPage,  HashMap 
-	@RequestMapping (value = "/movie_list", method = RequestMethod.GET)
-	public String getMovieList(Model model, Criteria criteria) throws Exception {
+	@RequestMapping(value = "/movie_list", method =RequestMethod.GET)
+	public void getMovieList(@RequestParam(value = "genre", defaultValue="") String genre,
+			@RequestParam(value = "releaseDate", defaultValue="") String releaseDate,
+			@RequestParam(value = "sortCondition", defaultValue="") String sortCondition, Model model) {
 		
-		log.info("#####################movie_list get");
+		model.addAttribute("genre", genre);
+		model.addAttribute("releaseDate", releaseDate);
+		model.addAttribute("sortCondition", sortCondition);
 		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCriteria(criteria);//시작페이지 , 페이지당 게시글수 초기화
-		log.info("##########");
-		pageMaker.setTotalCount(movieInfoService.countTotalList()); //총 게시글 수 초기화
-
-		log.info("totalCount : " + pageMaker.getTotalCount());
-		List<Map<String, Object>> infoList = movieInfoService.list(criteria); //리스트 불러오기
-		
-
-		int maxBoardNumber = infoList.size();
-		log.info("Max boardNumber :" + maxBoardNumber);
-		
-		log.info("################## list 확인: " + infoList);
-
-		model.addAttribute("list", infoList);
-
-		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("criteria", criteria);
-		
-		return "movie_list";
 	}
 	
 	@RequestMapping (value = "/movie_info/view", method = RequestMethod.GET)

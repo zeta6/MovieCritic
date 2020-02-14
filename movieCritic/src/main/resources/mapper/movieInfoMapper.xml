@@ -2,6 +2,51 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MovieInfoMapper">
 
+
+	<sql id="movieinfo_option">
+		<if test="!genre.equals('')">
+		where
+ 			genre = #{genre}
+ 		</if>
+ 		<choose>
+	 		<when test="!releaseDate.equals('') and genre.equals('')">
+	 			where
+	 		</when>
+ 			<when test="!releaseDate.equals('') and !genre.equals('')">
+ 				and
+ 			</when>
+ 		</choose>
+ 		<choose>
+ 		 	<when test="releaseDate.equals('last90days')">
+ 				<![CDATA[ release_date >= (NOW()-INTERVAL 90 DAY) ]]>
+ 			</when>
+ 			<when test="releaseDate.equals('2020')">
+ 				year(release_date) = 2020
+ 			</when>
+ 			<when test="releaseDate.equals('2019')">
+ 				year(release_date) = 2019
+ 			</when>
+ 			<when test="releaseDate.equals('2018')">
+ 				year(release_date) = 2018
+ 			</when>
+ 			<when test="releaseDate.equals('2017')">
+ 				year(release_date) = 2017
+ 			</when>
+ 		</choose>
+ 		<choose>
+ 			<when test="sortCondition.equals('A_Z')">
+ 			order by title desc
+ 			</when>
+ 			<when test="sortCondition.equals('release_date')">
+ 			order by release_date desc
+ 			</when>
+ 			<when test="sortCondition.equals('score')">
+ 			order by score_average desc
+ 			</when>
+ 		</choose>
+	</sql>
+	
+
 	<delete id="delete">
 		delete from table_movie_info
 		where movie_id = #{movieId}
@@ -15,29 +60,28 @@
 	</update>
 	
 	<select id="index_list" resultType="movieinfoVO">
-		select movie_id, title, register_date
+		select movie_id, title, release_date, score_average
 		from table_movie_info
-		order by register_date desc
+		order by release_date desc
+		limit 10
+	</select>
+	
+		<select id="index_list2" resultType="movieinfoVO">
+		select movie_id, title, release_date, score_average, thumb_nail
+		from table_movie_info
+		where
+		<![CDATA[ release_date >= (NOW()-INTERVAL 90 DAY) ]]>
+		order by score_average desc
 		limit 10
 	</select>
 	
 
 	<select id="countTotalList" resultType="Integer">
-    <![CDATA[
         SELECT
             count(*)
         FROM
             table_movie_info
-    ]]>
-	</select>
-
-	<!-- index 포스터 페이지 목록 -->
-	<select id="poster_list" resultType="movieinfoVO">
-		select
-			movie_id, register_date
-		from table_movie_info
-		order by register_date desc
-		limit 4
+        <include refid="movieinfo_option" />    
 	</select>
 
 	<!-- 전체 리스트 조회용 -->
@@ -49,13 +93,13 @@
 
 	<!-- 페이징 -->
 	<select id="list" resultType="movieinfoVO">
-		<![CDATA[
-			select * 
-			from table_movie_info
-			limit #{pageStart}, #{perPageNumber}
- 		]]>
-
-	</select>
+		select
+			movie_id, title, genre, score_average, date_format(release_date, '%Y-%m-%d') AS release_date
+		from
+	 		table_movie_info
+	 	<include refid="movieinfo_option" />
+	 	limit 10
+	</select> 	
 		
 	<!--  move info 페이지 뷰 (개별 게시글) -->
 	<select id="view" parameterType="int" resultType="movieinfoVO">
@@ -78,16 +122,19 @@
 		<!--  get conditional list -->
 	<select id="get_conditional_list" resultType="movieinfoVO">
 		select
-			movie_id, title, genre, date_format(release_date, '%Y-%m-%d') AS release_date
+			movie_id, title, genre, score_average, date_format(release_date, '%Y-%m-%d') AS release_date
 		from
 	 		table_movie_info
-	 	<if test="!genre.equals('')">
-		where
- 			genre = #{genre}
- 		</if>
- 		<if test="sortCondition.equals('A_Z')">
- 			order by title desc
- 		</if>
+	 	<include refid="movieinfo_option" />
+	 	<choose>
+		 	<when test="!pageNum.equals('')">
+		 	limit ${pageNum}, 10
+		 	</when>
+		 	<otherwise>
+		 	limit 10
+		 	</otherwise>
+		 </choose>
+		 	
  	</select>
  	
  	<!--  searchByTitle -->
@@ -98,6 +145,7 @@
  		table_movie_info
  	where 
 	 	title like #{searchKeyword}
+	 limit 20
  	</select>
  	
 </mapper>

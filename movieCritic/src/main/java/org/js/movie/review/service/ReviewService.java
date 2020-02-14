@@ -24,4 +24,6 @@ public interface ReviewService {
 	public void deleteReview(int reviewId);
 	
 	public void deleteRevieweAll(int movieId);
+	
+	public void updateReview(ReviewVO reviewVO);
 }

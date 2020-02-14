@@ -13,7 +13,9 @@ public interface MovieInfoService {
 	
 	public List<MovieInfoVO> indexList();
 	
-	public List<Map<String, Object>> list(Criteria criteria);
+	public List<MovieInfoVO> indexList2();	
+	
+	public List<MovieInfoVO> list(HashMap<String, String> conditions);
 	
 	public List<MovieInfoVO> listAll();
 	
@@ -21,7 +23,7 @@ public interface MovieInfoService {
 	
 	public void write(MovieInfoVO vo);
 	
-	public int countTotalList();
+	public int countTotalList(HashMap<String, String> conditions);
 	
 	public List<MovieInfoVO> getConditionalList(HashMap<String, String> conditions);
 	

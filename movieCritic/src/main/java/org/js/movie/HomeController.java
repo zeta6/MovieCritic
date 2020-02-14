@@ -26,9 +26,10 @@ public class HomeController {
 		
 		List<MovieInfoVO> list = null;
 		list = service.indexList();
+		List<MovieInfoVO> list2 = service.indexList2();
 		
 		model.addAttribute("list", list);
-
+		model.addAttribute("list2", list2);
 		
 		return "index";
 	}

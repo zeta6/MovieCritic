@@ -235,6 +235,16 @@ td:nth-of-type(5){
     padding-top:5px;
 }
 
+.paging_ul{
+	text-align:center;
+	padding-top: 30px;
+	padding-right:6%;
+}
+.paging_li{
+	display:inline;
+	vertical-align:middle;
+}
+
 </style>
 
 </head>
@@ -333,7 +343,6 @@ td:nth-of-type(5){
 		
 		<!-- select Wrapper 시작 -->
 		<div id="select_wrapper">
-
 			<div id="select1">
 				<label for="genre" class="select_label">Genre</label>
 				<select name="genre" id="genreSelect" class="select_option">
@@ -346,8 +355,10 @@ td:nth-of-type(5){
 
 			<div id="select2">
 				<label for="timeframe" class="select_label">Release Date</label>
-				<select name="timeframe" id="releaseDateCondition" class="select_option">
+				<select name="releaseDateCondition" id="releaseDateCondition" class="select_option">
 					<option value="">All Time</option>
+					<option value="last90days">last90days</option>
+					<option value="2020">2020</option>
 					<option value="2019">2019</option>
 					<option value="2018">2018</option>
 					<option value="2017">2017</option>
@@ -356,10 +367,10 @@ td:nth-of-type(5){
 
 			<div id="select3">
 				<label for="sort" class="select_label">Sort</label>
-				<select name="sort" id="sortCondition" class="select_option">
-					<option value="score">Score</option>
-					<option value="A_Z">A-Z</option>
+				<select name="sortCondition" id="sortCondition" class="select_option">
 					<option value="release_date">Release Date</option>
+					<option value="A_Z">A-Z</option>
+					<option value="score">Score</option>
 				</select>
 			</div>
 		</div>
@@ -368,52 +379,19 @@ td:nth-of-type(5){
 		<div id="board_wrapper">
 
 			<table id="tableBoard">
-				<tr>
-					<th>Number</th><th>Score</th><th>Title</th><th>Genre</th><th>Release Date</th>
-				</tr>
-<%--${((criteria.nowPage)-1)*criteria.perPageNumber+status.count} --%>		
-					<c:forEach items="${list}" var="list" varStatus="status"> 
-					<tr>
-						<td>${((criteria.nowPage)-1)*criteria.perPageNumber+status.count}</td>
-						<td>
-							<div class="rating_circle_average" style="margin-right:20px;font-weight:bold;">
-								<c:if test="${list.scoreAverage eq 0}">
-									<fmt:formatNumber value="${list.scoreAverage}" pattern="0"/>
-								</c:if>
-								<c:if test="${list.scoreAverage != 0}">
-									<fmt:formatNumber value="${list.scoreAverage}" pattern="0.0"/>
-								</c:if>
-							</div>
-						</td>
-						<td><a href="/movie_info/view?movieId=${list.movieId}">${list.title}</a></td>
-						<td>${list.genre}</td>
-						<td><fmt:formatDate value="${list.releaseDate}" pattern="yyyy.MM.dd"/></td>
-					</tr>
-					</c:forEach>		
+		
 			</table>
+		
+		</div>
+		<div>
+			<ul id="pagingUL" class="paging_ul">
+			    		
+			</ul>
 		</div>
 		
-				<div style="margin:5% 0 5% 40%;">
-					<ul class="btn-group pagination">
-			    		<c:if test="${pageMaker.prev}">
-			    		<li>
-			        		<a href='<c:url value="/movie_list?nowPage=${pageMaker.startPage-1 }"/>' role="button" class="btn btn-default btn-sm"><i style="font-size:18px;" class="fa fa-angle-left"></i></a>
-			    		</li>
-			    		</c:if>
-			    		
-			    		<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="pageNumber">
-			    		<li>
-			        		<a href='<c:url value="/movie_list?nowPage=${pageNumber}"/>'><i class='fa'>${pageNumber}</i></a>
-			    		</li>
-			    		</c:forEach>
-			    
-			    		<c:if test="${pageMaker.next && pageMaker.endPage >0 }">
-			   			<li>
-			        		<a href='<c:url value="/movie_list?nowPage=${pageMaker.endPage+1}"/>' role="button" class="btn btn-default btn-sm"><i style="font-size:18px;" class="fa fa-angle-right"></i></a>
-			    		</li>
-			    		</c:if>
-					</ul>
-				</div>
+		<!-- paging wrapper -->
+		
+				
 	</div>
 	<!-- middle Wrapper 끝 -->
 	
@@ -421,58 +399,144 @@ td:nth-of-type(5){
 </div>
 
 <script>
-		window.onload = function(){
-			var scoreAverageDIV= document.getElementsByClassName("rating_circle_average");
-			console.log("scoreAverageDIV="+scoreAverageDIV);
-			for(var i=0; i < scoreAverageDIV.length; i++){
-				var scoreAverage = scoreAverageDIV[i].innerHTML;
-				if(scoreAverage <=3 && scoreAverage > 0){
-					scoreAverageDIV[i].style.backgroundColor = "red";
-				}
-				else if(scoreAverage <=6 && scoreAverage != 0){
-					scoreAverageDIV[i].style.backgroundColor = "orange";
-				}
-				else if(scoreAverage <=10 && scoreAverage != 0){
-					scoreAverageDIV[i].style.backgroundColor = "#1aff00";
-				}
-				else if(scoreAverage == 0){
-					scoreAverageDIV[i].style.backgroundColor = "#000";
-				} else{
-					scoreAverageDIV[i].style.backgroundColor = "#ccc";
-				}
-			}
-			  
-			}
-			<!--검색-->
-$(document).ready(function(){
-	$(".select_option").change(function(){
-		var genre = $("#genreSelect").val();
-		var releaseDate = $("#releaseDateCondition").val();
-		var sortCondition = $("#sortCondition").val();
+
+var currentPageNum = 0;
+var currentGenre;
+var currentReleaseDate;
+var currentSortCondition;
+
+var coloring = function coloring(){
+	var scoreAverageDIV= document.getElementsByClassName("rating_circle_average");
+	for(var i=0; i < scoreAverageDIV.length; i++){
+		var scoreAverage = scoreAverageDIV[i].innerHTML;
+		if(scoreAverage <= 3 && scoreAverage >= 0){
+			scoreAverageDIV[i].style.backgroundColor = "red";
+		}
+		else if(scoreAverage <=6){
+			scoreAverageDIV[i].style.backgroundColor = "orange";
+		}
+		else if(scoreAverage <=10){
+			scoreAverageDIV[i].style.backgroundColor = "#1aff00";
+		}
+		else if(scoreAverage == ""){
+			scoreAverageDIV[i].style.backgroundColor = "#000";
+		}
+	}
+};
+
+var setPageNum = function setPageNum(pageNum){
+	currentPageNum = (pageNum - 1)*10;
+	getpage();	
+};
+
+var getpage= function(){
+	
+	var genre = $("#genreSelect").val();
+	var releaseDate = $("#releaseDateCondition").val();
+	var sortCondition = $("#sortCondition").val();
+	var pageNum = currentPageNum;
+	
+	if (genre != currentGenre || releaseDate != currentReleaseDate || sortCondition != currentSortCondition){
+		pageNum = 0
+	}
+	
+	var conditionData = { "genre": genre, "releaseDate": releaseDate, "sortCondition":sortCondition, "pageNum":pageNum };
 		
-		var conditionData = { "genre": genre, "releaseDate": releaseDate, "sortCondition":sortCondition };
+	currentGenre = genre;
+	currentReleaseDate = releaseDate;
+	currentSortCondition = sortCondition;
+		
+	$.ajax({
+    	url:"movie_list.getPageTotal",
+        type: 'GET',
+        data: conditionData,
+        datatype: "integer",
+        success: function(data){
+        	
+  				var html = "";
+  				var pno = (pageNum/10)+1;
+  				pno = pno - 4
+  				
+  				if(pno>1){
+  					html+="<li style='margin-right:30px;' type=button class='btn btn-default color-blue paging_li' onclick='setPageNum(this.innerHTML)')>1</li>";
+  				}
+  				if(pno<=0){
+  					pno = 1;
+  				}
+  				
+				for (var i=0; i<9 && pno*10 <= data; i++){
+					html += "<li type=button class='btn btn-default color-blue paging_li' onclick='setPageNum(this.innerHTML)')>"+pno+"</li>";					
+					pno = pno + 1;
+				}
+				if (pno*10 <=data){
+					html += "<li style='margin-left:30px' type=button class='btn btn-default color-blue paging_li' onclick='setPageNum(this.innerHTML)')>"+Math.floor((data/10)+1)+"</li>";		
+				}
 				
-		$.ajax({
-            url:"movie_list.getConditionalList",
-            type: 'GET',
-            data: conditionData,
-            datatype: "json",
-            success: function(data){
-            	
-					var html = "<tr>\
-						<th>Number</th><th>Title</th><th>Genre</th><th>Release Date</th>\
-						</tr>";
-					for (var i=0; i<data.length; i++){
-						html += "<tr><td>${status.count}</td><td>"	+data[i].title+"</td><td>"+
-						data[i].genre+"</td><td>"+data[i].releaseDate+"</td></tr>";
-					}
+  			$("#pagingUL").html(html);
+        }
+	}) 	
+			
+	$.ajax({
+        url:"movie_list.getConditionalList",
+        type: 'GET',
+        data: conditionData,
+        datatype: "json",
+        success: function(data){
+				var html = "<tr>\
+					<th>Number</th><th>Score</th><th>Title</th><th>Genre</th><th>Release Date</th>\
+					</tr>";
 					
-         			$("#tableBoard").html(html);	
-			}
-        })
-	})
+				var len = data.length;	
+				pageNum = Number(pageNum);
+				var no = pageNum + 1;	
+				for (var i=0; i<len; i++){
+					var scoreAverage = data[i].scoreAverage;
+					scoreAverage = scoreAverage.toFixed(1);
+				
+					var date = new Date(data[i].releaseDate);
+					var year = date.getFullYear();
+					var month = date.getMonth()+1;
+					var day = date.getDate();
+					if(month < 10){
+				        month = "0"+month;
+				    }
+				    if(day < 10){
+				        day = "0"+day;
+				    }
+				    var release = year+"-"+month+"-"+day;
+							
+					html += "<tr><td>"+no+"</td>" +
+                        "<td><div class='rating_circle_average' style='margin-right:20px;font-weight:bold;'>" +
+                        scoreAverage+"</div></td>"+
+                        "<td><span style='cursor:pointer;line-height:35px;' onclick='location.href=\"/movie_info/view?movieId="+
+                        data[i].movieId+"\"'>" + 
+                        data[i].title+"</span></td><td>"+data[i].genre+"</td><td>"+release+"</td></tr>";
+                        
+                        no = no+1;
+					}
+				
+				$("#tableBoard").html(html);
+				
+				coloring();
+   		  }
+    })
+};
+
+
+
+$(document).ready(function(){
+	$("#genreSelect option[value='${genre}']").attr("selected", "selected");
+	$("#releaseDateCondition option[value='${releaseDate}']").attr("selected", "selected");
+	$("#sortCondition option[value='${sortCondition}']").attr("selected", "selected");
+	
+	getpage();
+	coloring();
+
+	$(".select_option").change(function(){
+		getpage();
+	})	
 })
-			<!--검색-->
+</script>
 </script>
 </body>
 </html>

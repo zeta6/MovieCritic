@@ -29,11 +29,17 @@ public class MovieInfoDAOImpl implements MovieInfoDAO {
 		return sql.selectList("MovieInfoMapper.index_list");
 	}
 	
+	@Override
+	public List<MovieInfoVO> indexList2(){
+
+		return sql.selectList("MovieInfoMapper.index_list2");
+	}
+	
 	//movie list
 	@Override
-	public List<Map<String, Object>> list(Criteria criteria) {
+	public List<MovieInfoVO> list(HashMap<String, String> conditions) {
 
-		return sql.selectList("MovieInfoMapper.list", criteria);
+		return sql.selectList("MovieInfoMapper.list", conditions);
 	}
 	
 	@Override
@@ -57,11 +63,10 @@ public class MovieInfoDAOImpl implements MovieInfoDAO {
 	}
 
 	@Override
-	public int countTotalList() {
+	public int countTotalList(HashMap<String, String> conditions) {
 
-		return sql.selectOne("MovieInfoMapper.countTotalList");
+		return sql.selectOne("MovieInfoMapper.countTotalList", conditions);
 	}
-	
 	
 	@Override
 	public List<MovieInfoVO> getConditionalList(HashMap<String, String> conditions){

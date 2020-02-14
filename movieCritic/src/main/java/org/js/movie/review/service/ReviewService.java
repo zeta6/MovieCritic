@@ -19,4 +19,9 @@ public interface ReviewService {
 	
 	//리뷰 총 개수
 	public int countTotalList(int movieId);
+	
+	//리뷰 삭제
+	public void deleteReview(int reviewId);
+	
+	public void deleteRevieweAll(int movieId);
 }

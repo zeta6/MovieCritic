@@ -20,4 +20,10 @@ public interface ReviewDAO {
 	//총 개수
 	public int countTotalList(int movieId);
 	
+	//리뷰 삭제
+	public void deleteReview(int reviewId);
+	
+	//게시글 리뷰 삭제
+	public void deleteReviewAll(int movieId);
+	
 }

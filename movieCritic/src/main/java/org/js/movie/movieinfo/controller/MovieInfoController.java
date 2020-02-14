@@ -44,13 +44,16 @@ public class MovieInfoController {
 	@Resource(name="uploadPath")
 	private String uploadPath;
 	
-	@RequestMapping(value="/movie_info/view?movieId=${view.movieId}/deletion", method=RequestMethod.GET)
+	//mapping value 값 정하는 기준.
+	@RequestMapping(value="/movie_info/deletion", method=RequestMethod.GET)
 	public String getMovieInfoDeletion(@RequestParam("movieId") int movieId) {
 		
-		reviewService.
+		log.info("deleteReview All ");
+		reviewService.deleteRevieweAll(movieId);
+		movieInfoService.deleteMovie(movieId);
+		log.info("delete 완료");
 		
-		
-		return "movie_list";
+		return "redirect:../movie_list";
 	}
 	
 	@RequestMapping(value="/editMovieInfo", method=RequestMethod.POST)

@@ -45,5 +45,20 @@ public class ReviewServiceImpl implements ReviewService {
 		return dao.countTotalList(movieId);
 	}
 
+
+	@Override
+	public void deleteReview(int reviewId) {
+		
+		dao.deleteReview(reviewId);
+	}
+
+
+	@Override
+	public void deleteRevieweAll(int movieId) {
+		
+		dao.deleteReviewAll(movieId);
+	}
+
+	
 	
 }

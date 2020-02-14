@@ -28,9 +28,8 @@
 				username-parameter="memberId" 
 				password-parameter="memberPw" 
 				login-processing-url="/member/login" 
-				authentication-failure-handler-ref="customAuthenticationFailureHandler"
-				default-target-url="/member/my_page" 
-				always-use-default-target="true" /> 
+				authentication-failure-handler-ref="customAuthenticationFailureHandler" 
+				always-use-default-target="false" /> 
 	
 	<security:intercept-url pattern="/write_board" access="hasRole('ROLE_ADMIN')"/>
 	<security:intercept-url pattern="/view_review" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>

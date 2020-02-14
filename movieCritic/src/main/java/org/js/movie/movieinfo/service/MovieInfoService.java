@@ -27,4 +27,5 @@ public interface MovieInfoService {
 	
 	public List<MovieInfoVO> searchByTitle(String searchKeyword);
 	
+	public void deleteMovie(int movieId);
 }

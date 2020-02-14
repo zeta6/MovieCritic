@@ -40,4 +40,16 @@ public class ReviewDAOImpl implements ReviewDAO {
 		return sql.selectOne("ReviewMapper.countTotalList", movieId);
 	}
 
+	@Override
+	public void deleteReview(int reviewId) {
+		
+		sql.delete("ReviewMapper.deleteReview", reviewId);
+	}
+
+	@Override
+	public void deleteReviewAll(int movieId) {
+
+		sql.delete("ReviewMapper.deleteReviewAll", movieId);
+	}
+
 }

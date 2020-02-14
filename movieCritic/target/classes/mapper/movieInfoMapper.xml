@@ -2,6 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MovieInfoMapper">
 
+	<delete id="delete">
+		delete from table_movie_info
+		where movie_id = #{movieId}
+	</delete>
+
 	<update id="updateMovie">
 		update table_movie_info 
 		set title=#{title}, starring=#{starring}, genre = #{genre}, director = #{director}, runtime = #{runtime}, summary=#{summary}, poster = #{poster}

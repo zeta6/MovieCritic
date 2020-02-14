@@ -73,5 +73,11 @@ public class MovieInfoDAOImpl implements MovieInfoDAO {
 	public List<MovieInfoVO> searchByTitle(String searchKeyword){
 		return sql.selectList("MovieInfoMapper.search_by_title", searchKeyword);
 	}
+
+	@Override
+	public void deleteMovie(int movieId) {
+		
+		sql.delete("MovieInfoMapper.delete", movieId);
+	}
 }
 

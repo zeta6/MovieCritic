@@ -12,7 +12,7 @@
 	</select>
 	
 	<!-- 페이징 -->
-	<select id="pagingReview" resultType="hashMap">
+	<select id="pagingReview" resultType="reviewVO">
 		<![CDATA[
 			select * 
 			from table_review
@@ -54,7 +54,11 @@
 	
 	<delete id="deleteReview">
 		delete from table_review
-			where writer=#{writer}
+			where review_id=#{reviewId}
+	</delete>
+	<delete id="deleteReviewAll">
+		delete from table_review
+			where movie_id=#{movieId}
 	</delete>
 
 </mapper>

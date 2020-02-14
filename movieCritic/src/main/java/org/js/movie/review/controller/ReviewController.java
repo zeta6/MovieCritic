@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,6 +28,14 @@ public class ReviewController {
 	
 	@Autowired
 	MovieInfoService movieInfoService;
+	
+	@RequestMapping(value="/view_review/deletion", method=RequestMethod.GET)
+	public String getDeleteReview(@RequestParam("reviewId") int reviewId, @RequestParam("movieId") int movieId) {
+		log.info("############delete review");
+		reviewService.deleteReview(reviewId);
+		
+		return "redirect:../view_review?movieId="+movieId;
+	}
 	
 	@RequestMapping(value = "/view_review", method=RequestMethod.GET)
 	public String getViewReview(ReviewVO reviewVO, Model model, Criteria criteria) {

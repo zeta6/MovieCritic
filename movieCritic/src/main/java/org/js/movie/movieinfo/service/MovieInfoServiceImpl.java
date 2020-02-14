@@ -70,5 +70,11 @@ public class MovieInfoServiceImpl implements MovieInfoService {
 		return dao.searchByTitle(searchKeyword);
 	}
 
+	@Override
+	public void deleteMovie(int movieId) {
+		
+		dao.deleteMovie(movieId);
+	}
+
 
 }

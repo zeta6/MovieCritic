@@ -343,7 +343,7 @@ meter{
 			X
 		</span>
 	</a>
-	<a href="/movie_info/view?movieId=${view.movieId}/deletion">
+	<a href="${rootPath}/movie_info/deletion?movieId=${view.movieId}">
 		<button type="button" style="float:left; background-color:orange;font-weight:bold; border:1px solid black;">
 			Delete
 		</button>

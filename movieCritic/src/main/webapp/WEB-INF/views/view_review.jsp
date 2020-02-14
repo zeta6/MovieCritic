@@ -274,12 +274,12 @@
 					<div class="rating_circle_average" style="width:38px;height:38px; font-size:25px;">${list.rating}</div>
 					<div style="display:flex; flex-direction:column; padding:7px 0 0 20px; width:90%; margin:6px 5px;">
 	  					<div>
-						 	작성자 : ${list.writer}
+						 	작성자 : ${list.writer} ${list.reviewId}
 						 	<sec:authentication property="principal" var="principal"/>
 						 	<c:if test="${list.writer eq principal.memberId}">
-								<a href="/view_review?movieId=${view.movieId}/deletion" style="display:inline;">
+								<a style="display:inline;">
 									<span style="float:right;font-weight:bold; height:15px; font-size:12px;">
-										<i class="far fa-trash-alt" style="color:black; font-weight:bold;"></i>
+										<i id="${list.movieId}" onclick="deleteReview('${list.reviewId}', '${view.movieId}')" class="far fa-trash-alt" style="color:black; font-weight:bold;"></i>
 									</span>
 								</a>
 								<a href="/view_review?movieId=${view.movieId}/update" style="display:inline;">
@@ -297,6 +297,7 @@
  					</div>
   				</div>
   					<p style="padding-left:13px;padding-bottom:30px;">${list.content}</p>
+  					
  			</div>
  			</c:forEach>
  			
@@ -330,70 +331,81 @@
 <!-- 컨텐츠 끝-->
 </div>
 <!-- 전체 레이아웃 끝-->
-		<script>
-		window.onload = function(){
-			var scoreAverageDIV= document.getElementsByClassName("rating_circle_average");
-			console.log("scoreAverageDIV="+scoreAverageDIV);
-			for(var i=0; i < scoreAverageDIV.length; i++){
-				var scoreAverage = scoreAverageDIV[i].innerHTML;
-				if(scoreAverage <=3 && scoreAverage>=0){
-					scoreAverageDIV[i].style.backgroundColor = "red";
-				}
-				else if(scoreAverage <=6){
-					scoreAverageDIV[i].style.backgroundColor = "orange";
-				}
-				else if(scoreAverage <=10){
-					scoreAverageDIV[i].style.backgroundColor = "#1aff00";
-				}
-				else if(scoreAverage.equals("")){
-					scoreAverageDIV[i].style.backgroundColor = "#000";
-				}
-			}
-					
-			  var markScore;  
-			  
-			    for(var x=0; x<=10; x++){
-			        var circle = document.querySelectorAll(".ratingCircle")[x];
-			        circle.onmouseover = function(e){
-			            var score = this.innerHTML;
-			            for(var i=0; i <= score; i++) {
-			                if(i<4 ) {
-			                    var id = "ratingCircle_" + i;
-			                    document.getElementById(id).style.backgroundColor = "red";
-			                }else if( i < 7){
-			                    var id = "ratingCircle_" + i;
-			                    document.getElementById(id).style.backgroundColor = "orange";
-			                }else if ( i< 11){
-			                    var id = "ratingCircle_" + i;
-			                    document.getElementById(id).style.backgroundColor = "#1aff00";
-			                }
-			            }
-			        }
-			        circle.onmouseout = function(e){
-			            if(markScore == null){
-			                var score = this.innerHTML;
-			                for(var i=0; i <= score; i++) {
-			                    var id = "ratingCircle_" + i;
-			                    document.getElementById(id).style.backgroundColor = "#555";
-			                }
-			            }else{
-			                for(var i=10; i >markScore; i--){
-			                    var id = "ratingCircle_" + i;
-			                    document.getElementById(id).style.backgroundColor = "#555";
-			                }
-			                
-			            }
-			            console.log("markScore="+markScore);
-			        }
-			        circle.onclick = function(e){
-			            markScore = this.innerHTML;
-			            document.getElementById("markRating").value = markScore;
-			            console.log("markScore="+markScore);
-			        }
-			    }
-			}
-		</script>
 <script>
+
+var deleteReview = function(reviewId, movieId){
+	if(confirm("delete ?") == true){
+		var url= "/view_review/deletion?movieId="+movieId+"&reviewId="+reviewId;
+		console.log("url="+url);
+		location.href= url;
+	}
+	else{
+		return;
+	}	
+};
+
+window.onload = function(){
+	var scoreAverageDIV= document.getElementsByClassName("rating_circle_average");
+	console.log("scoreAverageDIV="+scoreAverageDIV);
+	for(var i=0; i < scoreAverageDIV.length; i++){
+		var scoreAverage = scoreAverageDIV[i].innerHTML;
+		if(scoreAverage <=3 && scoreAverage>=0){
+			scoreAverageDIV[i].style.backgroundColor = "red";
+		}
+		else if(scoreAverage <=6){
+			scoreAverageDIV[i].style.backgroundColor = "orange";
+		}
+		else if(scoreAverage <=10){
+			scoreAverageDIV[i].style.backgroundColor = "#1aff00";
+		}
+		else if(scoreAverage.equals("")){
+			scoreAverageDIV[i].style.backgroundColor = "#000";
+		}
+	}
+			
+	  var markScore;  
+	  
+	    for(var x=0; x<=10; x++){
+	        var circle = document.querySelectorAll(".ratingCircle")[x];
+	        circle.onmouseover = function(e){
+	            var score = this.innerHTML;
+	            for(var i=0; i <= score; i++) {
+	                if(i<4 ) {
+	                    var id = "ratingCircle_" + i;
+	                    document.getElementById(id).style.backgroundColor = "red";
+	                }else if( i < 7){
+	                    var id = "ratingCircle_" + i;
+	                    document.getElementById(id).style.backgroundColor = "orange";
+	                }else if ( i< 11){
+	                    var id = "ratingCircle_" + i;
+	                    document.getElementById(id).style.backgroundColor = "#1aff00";
+	                }
+	            }
+	        }
+	        circle.onmouseout = function(e){
+	            if(markScore == null){
+	                var score = this.innerHTML;
+	                for(var i=0; i <= score; i++) {
+	                    var id = "ratingCircle_" + i;
+	                    document.getElementById(id).style.backgroundColor = "#555";
+	                }
+	            }else{
+	                for(var i=10; i >markScore; i--){
+	                    var id = "ratingCircle_" + i;
+	                    document.getElementById(id).style.backgroundColor = "#555";
+	                }
+	                
+	            }
+	            console.log("markScore="+markScore);
+	        }
+	        circle.onclick = function(e){
+	            markScore = this.innerHTML;
+	            document.getElementById("markRating").value = markScore;
+	            console.log("markScore="+markScore);
+	        }
+	    }
+	}
+
 var ctx = document.getElementById('myChart').getContext('2d');
 var chart = new Chart(ctx, {
 	type:	'horizontalBar',
@@ -421,6 +433,8 @@ var chart = new Chart(ctx, {
         }
     }
 })
+
+
 </script>
 
 

@@ -44,13 +44,16 @@ section[id^=board]{
 	width: 10%;
 	position:absolute;
 	background-color:white;
-}
-#searchResultsListDiv:hover{
-box-shadow : rgba(0,0,0,0.5) 0 0 0 9999px;
-
-z-index : 100;
+	border:1px solid #aaa;
 }
 
+
+
+.resultDiv:hover{ 
+ 	BACKGROUND: #167ADE;
+ 	COLOR: WHITE;
+}
+	
 #searchResultsListDiv span:hover{
 	background:#eee;
 }
@@ -250,14 +253,16 @@ tr,td,th {
 <script type="text/javascript">
 
 	
-function hide(){
+function SCBoxHide(){
     var searchResultsListDiv = document.getElementById("searchResultsListDiv");
     searchResultsListDiv.style.display = "none";
+    document.getElementById("main_wrapper").style.backgroundColor = "rgba(0,0,0,0.0)";
 }
 
-function show(){
+function SCBoxShow(){
     var searchResultsListDiv = document.getElementById("searchResultsListDiv");
     searchResultsListDiv.style.display = "block";
+    document.getElementById("main_wrapper").style.backgroundColor = "rgba(0,0,0,0.5)";
 }
 
 
@@ -288,6 +293,12 @@ $(document).ready(function(){
     	$("#search").blur();
     	
     })
+    
+    $("#site_layout").click(function(){
+    	document.getElementById("main_wrapper").style.backgroundColor = "rgba(0,0,0,0.0)";
+    	SCBoxHide();
+    	
+    })
     $("#search").on("propertychange change keyup paste input", function() {
 		
         var currentVal = $(this).val();
@@ -300,20 +311,23 @@ $(document).ready(function(){
                 data: {"searchKeyword" : currentVal},
                 datatype: 'json',
                 success: function(data){
-                	show();
+                	console.log("len="+data.length);
+                	if(data.length > 0){
+                		SCBoxShow();
+                	}
                     var searchedList = data;
                     var html = "";
                     for(i=0; i<searchedList.length; i++){
-                        html += "<span style='cursor:pointer; line-height:35px;' onclick='location.href=\"/movie_info/view?movieId="+
+                        html += "<div class='resultDiv' style='cursor:pointer; height:20px; padding:0; padding:7px 13px; line-height:15px;' onclick='location.href=\"/movie_info/view?movieId="+
                         		searchedList[i].movieId+"\"'>" +
-                        		searchedList[i].title + "</span><br/>";
+                        		searchedList[i].title + "</div>";
                     }			
                  
                     var searchResultsListDiv = document.getElementById("searchResultsListDiv");
                     searchResultsListDiv.innerHTML = html;
                     
                     if( currentVal === ""){
-                    	hide();	
+                    	SCBoxHide();	
                     }
                     
                 }

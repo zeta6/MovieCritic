@@ -124,7 +124,7 @@ public class MovieInfoController {
 	public List<MovieInfoVO> searchByTitle(@RequestParam(value = "searchKeyword", defaultValue="") String searchKeyword,
 						Model model){
 		
-		searchKeyword = searchKeyword +"%";
+		searchKeyword = "%"+ searchKeyword +"%";
 		log.info("searchKeyword="+searchKeyword);
 
 		List<MovieInfoVO> list = movieInfoService.searchByTitle(searchKeyword);

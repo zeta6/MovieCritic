@@ -16,6 +16,8 @@
 <script src="/resources/jquery/jquery-3.4.1.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
 <style>
 
 #main_write_area{
@@ -62,14 +64,9 @@
 
 </style>
 
-<script>
-$( function() {
-  $( "#datepicker" ).datepicker();
-  	dateFormat: 'yyyy.mm.dd'
-  	showOn: "both"
-  	buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif"
-} );
-</script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 
 </head>
 <body>
@@ -163,10 +160,9 @@ $( function() {
 	
 	<h2 style="text-align:center; margin-top:30px;">게시글 작성</h2>
 
-
 		<div id="main_write_area">		
 
-			<form method="post" enctype="multipart/form-data" action="/write_board?${_csrf.parameterName}=${_csrf.token}">
+			<form method="post" enctype="multipart/form-data" action="/write_board?${_csrf.parameterName}=${_csrf.token}" onsubmit="return checkForm()">
 			<%--컨트롤러에 인자가 안들어오는것 같은데.. csrf값은 확실히 나왔고. --%>
 			
 				<table id="input_table">
@@ -189,12 +185,12 @@ $( function() {
 					</tr>
 					<tr>
 						<td> Runtime  </td>
-						<td><input type="text" name="runtime" pattern="\d{1}\w{1}\s\d{1,2}\w{3}"> </td>
+						<td><input type="text" name="runtime" > </td>
 					</tr>
 					
 					<tr>
 						<td> Release Date  </td>
-						<td><input type="text" name="releaseDate" id="datepicker" pattern="\d{2}\/\d{2}\/\d{4}" autocomplete="off"> </td>
+						<td><input id="datepicker" type="text" name="releaseDate"></td>
 					</tr>
 					<tr>
 						<td> Summary  </td>
@@ -204,24 +200,11 @@ $( function() {
 						<td>
 						<div style="margin: 10px 0;">
  							<label for="poster">Poster</label>
- 							
  							<%= request.getRealPath("/") %>
 						</div>
  						</td>
  						<td>
  							<input type="file" id="poster" name="file" />
- 							<script>
-  								$("#poster").change(function(){
-   									if(this.files && this.files[0]) {
-    									var reader = new FileReader;
-    									reader.onload = function(data) {
-     										$(".select_img img").attr("src", data.target.result).width(50).height(50);
-     										$(".select_img").css("display", "inline-block");
-    									}
-								    	reader.readAsDataURL(this.files[0]);
-   									}
-  								});
- 							</script>
  							<div class="select_img"><img src="" /></div>
  						</td>
  					</tr>
@@ -234,35 +217,7 @@ $( function() {
  						<td>
  							<input multiple="multiple" type="file" id="stillCuts" name="file" />
  							 <!-- for문을 교체!! -->
-							<script>
-  								$("#stillCuts").change(function(){
-   									if(this.files[0] || this.files[1] || this.files[2]) {
-    									var reader1 = new FileReader;
-    									var reader2 = new FileReader;
-    									var reader3 = new FileReader;
-    									reader1.onload = function(data) {
-     										$(".select_img2 img").attr("src", data.target.result).width(50).height(50);
-     										$(".select_img2").css("display", "inline-block");
-     									
-    									}
-    									reader2.onload = function(data) {
-     								
-     										$(".select_img3 img").attr("src", data.target.result).width(50).height(50);
-     										$(".select_img3").css("display", "inline-block");
-    									}
-    									reader3.onload = function(data) {
-     										
-     										
-     										$(".select_img4 img").attr("src", data.target.result).width(50).height(50);
-     										$(".select_img4").css("display", "inline-block");
-    									}
-								    	reader1.readAsDataURL(this.files[0]);
-								    	reader2.readAsDataURL(this.files[1]);
-								    	reader3.readAsDataURL(this.files[2]);
-   									}
-  								});
-  							
- 							</script>
+						
  							<div class="select_img2"><img src="" /></div>
  							<div class="select_img3"><img src="" /></div>
  							<div class="select_img4"><img src="" /></div>
@@ -288,6 +243,65 @@ $( function() {
 	<!--글쓰기 폼 끝-->
 
 </div>
+<script>
+
+$( function() {
+	  $( "#datepicker" ).datepicker();
+	  	dateFormat: 'yyyy.mm.dd'
+	  	showOn: "both"
+	  	buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif"
+	} );
+
+var checkForm = function(){
+	if(document.getElementById('datepicker').value == ""){
+	document.getElementById('datepicker').disabled ='true';
+	}
+	return ture;
+}
+
+
+$(document).ready(function(){
+
+	$("#poster").change(function(){
+			if(this.files && this.files[0]) {
+			var reader = new FileReader;
+			reader.onload = function(data) {
+					$(".select_img img").attr("src", data.target.result).width(50).height(50);
+					$(".select_img").css("display", "inline-block");
+			}
+	    	reader.readAsDataURL(this.files[0]);
+			}
+		});
+	
+	$("#stillCuts").change(function(){
+		if(this.files[0] || this.files[1] || this.files[2]) {
+		var reader1 = new FileReader;
+		var reader2 = new FileReader;
+		var reader3 = new FileReader;
+		reader1.onload = function(data) {
+				$(".select_img2 img").attr("src", data.target.result).width(50).height(50);
+				$(".select_img2").css("display", "inline-block");
+			
+		}
+		reader2.onload = function(data) {
+		
+				$(".select_img3 img").attr("src", data.target.result).width(50).height(50);
+				$(".select_img3").css("display", "inline-block");
+		}
+		reader3.onload = function(data) {
+				
+				
+				$(".select_img4 img").attr("src", data.target.result).width(50).height(50);
+				$(".select_img4").css("display", "inline-block");
+		}
+    	reader1.readAsDataURL(this.files[0]);
+    	reader2.readAsDataURL(this.files[1]);
+    	reader3.readAsDataURL(this.files[2]);
+		}
+	});
+	
+})	
+</script>
 
 </body>
 </html>

@@ -9,6 +9,7 @@
 <title>Sign Up -MovieCritic</title>
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css">
 <script src="/resources/jquery/jquery-3.4.1.min.js"></script>
+<script src="/resources/css/common.js"></script>
 <style>
 
 #login_box{
@@ -371,6 +372,8 @@ $(document).ready(function(){
     	}
 
 	}) 
+	
+	SCBoxActivation();	
 
 })
 

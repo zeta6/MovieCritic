@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="/resources/jquery/jquery-3.4.1.min.js"></script>
+<script src="/resources/css/common.js"></script>
 <title>Browse movie</title>
 <style>
 
@@ -278,7 +279,9 @@ td:nth-of-type(5){
 	
 	
 </div>
-<script>
+
+<script type="text/javascript">
+
 
 var currentPageNum = 0;
 var currentGenre;
@@ -403,7 +406,6 @@ var getpage= function(){
 };
 
 
-
 $(document).ready(function(){
 	$("#genreSelect option[value='${genre}']").attr("selected", "selected");
 	$("#releaseDateCondition option[value='${releaseDate}']").attr("selected", "selected");
@@ -411,103 +413,14 @@ $(document).ready(function(){
 	
 	getpage();
 	coloring();
+	scoreAVGcoloring();
+	SCBoxActivation();	
 
 	$(".select_option").change(function(){
 		getpage();
 	})	
 })
-</script>
-
-<script type="text/javascript">
-
 	
-function SCBoxHide(){
-    var searchResultsListDiv = document.getElementById("searchResultsListDiv");
-    searchResultsListDiv.style.display = "none";
-    document.getElementById("main_wrapper").style.backgroundColor = "rgba(0,0,0,0.0)";
-}
-
-function SCBoxShow(){
-    var searchResultsListDiv = document.getElementById("searchResultsListDiv");
-    searchResultsListDiv.style.display = "block";
-    document.getElementById("main_wrapper").style.backgroundColor = "rgba(0,0,0,0.5)";
-}
-
-function goIndex(){
-	location.href="/";
-}
-
-$(document).ready(function(){
-	
-
-    var oldVal;
-	
-	var scoreAverageDIV= document.getElementsByClassName("rating_circle_average");
-	console.log("scoreAverageDIV="+scoreAverageDIV);
-	for(var i=0; i < scoreAverageDIV.length; i++){
-		var scoreAverage = scoreAverageDIV[i].innerHTML;
-		if(scoreAverage <=3 && scoreAverage >=0){
-			scoreAverageDIV[i].style.backgroundColor = "red";
-		}
-		else if(scoreAverage <=6){
-			scoreAverageDIV[i].style.backgroundColor = "orange";
-		}
-		else if(scoreAverage <=10){
-			scoreAverageDIV[i].style.backgroundColor = "#1aff00";
-		}
-		else if(scoreAverage.equals("")){
-			scoreAverageDIV[i].style.backgroundColor = "#000";
-		}
-	}
-    
-    $("#searchResultsListDiv").mouseover(function(){
-    	$("#search").blur();
-    	
-    })
-    
-    $("#site_layout").click(function(){
-    	document.getElementById("main_wrapper").style.backgroundColor = "rgba(0,0,0,0.0)";
-    	SCBoxHide();
-    	
-    })
-    $("#search").on("propertychange change keyup paste input", function() {
-		
-        var currentVal = $(this).val();
-        if(currentVal == oldVal) {
-            return;
-        }else{
-            $.ajax({
-                url:"movie_list.search",
-                type: "GET",
-                data: {"searchKeyword" : currentVal},
-                datatype: 'json',
-                success: function(data){
-                	console.log("len="+data.length);
-                	if(data.length > 0){
-                		SCBoxShow();
-                	}
-                    var searchedList = data;
-                    var html = "";
-                    for(i=0; i<searchedList.length; i++){
-                        html += "<div class='resultDiv' style='cursor:pointer; margin: 0; padding:10px 13px; border-bottom:0.5px solid rgba(0,0,0,0.3);' onclick='location.href=\"/movie_info/view?movieId="+
-                        		searchedList[i].movieId+"\"'>" +
-                        		searchedList[i].title + "</div>";
-                    }			
-                 
-                    var searchResultsListDiv = document.getElementById("searchResultsListDiv");
-                    searchResultsListDiv.innerHTML = html;
-                    
-                    if( currentVal === ""){
-                    	SCBoxHide();	
-                    }
-                    
-                }
-            })
-    	}
-
-	}) 
-
-})
 
 
 </script>

@@ -13,6 +13,7 @@
 <%-- <meta id="_csrf" name="_csrf" content="${_csrf.token}" /> --%> 
 
 <title> Write Board</title>
+<script src="/resources/css/common.js"></script>
 <script src="/resources/jquery/jquery-3.4.1.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -151,7 +152,7 @@
 
 	<!-- 글쓰기 폼 시작-->
 
-	
+	<div id ="main_wrapper">
 	<h2 style="text-align:center; margin-top:30px;">게시글 작성</h2>
 
 		<div id="main_write_area">		
@@ -235,6 +236,7 @@
 	
 
 	<!--글쓰기 폼 끝-->
+	</div>
 
 </div>
 <script>
@@ -294,7 +296,11 @@ $(document).ready(function(){
 		}
 	});
 	
+	SCBoxActivation();	
+	
 })	
+
+	
 </script>
 
 </body>

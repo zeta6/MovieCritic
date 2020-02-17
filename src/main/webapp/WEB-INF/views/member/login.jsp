@@ -12,6 +12,8 @@
 
 <title>Login -MovieCritic</title>
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css">
+<script src="/resources/css/common.js"></script>
+<script src="/resources/jquery/jquery-3.4.1.min.js"></script>
 <style>
 
 #login_box{
@@ -152,8 +154,8 @@ p {
 	</div>
    </div>
 	<!-- 상단 메뉴 끝-->
-
-<section id="login_box">
+	<div id = "main_wrapper">
+	<section id="login_box">
 	<h3> LOG IN TO OPENCRITIC </h3>
 	<p>Continue with Facebook</p>
 	<div id="or"><span>or</span></div>
@@ -181,9 +183,14 @@ p {
 		<div id="foot"><span>Not a member? </span><a href="${rootPath}/member/sign_up" style=text-decoration:none;>Create an account</a></div>
 	
 	</form>
-</section>
+	</section>
+	</div>
 
 </div>
+
+<script>
+SCBoxActivation();	
+</script>
 
 </body>
 </html>

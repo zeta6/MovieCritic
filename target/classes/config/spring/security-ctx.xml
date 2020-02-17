@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+<import resource="db-ctx.xml"/>
+
+<context:component-scan base-package="org.js.movie.member" use-default-filters="true"></context:component-scan>
+<!-- <security:http pattern="/resources/**" security="none"/> -->
+
+<bean id="defaultHttpFirewall" class="org.springframework.security.web.firewall.DefaultHttpFirewall"/> <!-- 용도? -->
+<bean id="customAuthenticationFailureHandler" class="org.js.movie.member.CustomAuthenticationFailureHandler">
+	<property name="memberId" value="memberId"/>
+	<property name="memberPw" value="memberPw"/>
+	<property name="errorMsg" value="errorMsg"/>
+</bean>
+
+<security:http auto-config="false" use-expressions="true" authentication-manager-ref="authenticationManager" create-session="ifRequired" >
+	<security:form-login login-page="/member/login" 
+				username-parameter="memberId" 
+				password-parameter="memberPw" 
+				login-processing-url="/member/login" 
+				authentication-failure-handler-ref="customAuthenticationFailureHandler" 
+				always-use-default-target="false" /> 
+	
+	<security:intercept-url pattern="/write_board" access="hasRole('ROLE_ADMIN')"/>
+	<security:intercept-url pattern="/view_review" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>
+	<security:intercept-url pattern="/member/my_page" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>			
+	<security:intercept-url pattern="/member/login" access="permitAll" />
+	<security:intercept-url pattern="/member/loginProc" access="permitAll"/>	<!-- 경로 잘못지정한 것 수정.. ${}값이 안나와서 확인해봄. -->
+	<security:intercept-url pattern="/**" access="permitAll"/>
+	
+	<security:csrf disabled="false"/>
+	
+	
+	<security:logout invalidate-session="true" logout-success-url="/" logout-url="/member/logout" /> 
+	
+
+</security:http>
+
+<bean id="customProvider" class="org.js.movie.member.service.CustomProvider"/>
+<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+<bean id="customService" class="org.js.movie.member.dao.CustomService"/>
+
+<security:authentication-manager alias="authenticationManager">
+ 
+	<security:authentication-provider ref="customProvider"/> 
+	<security:authentication-provider user-service-ref="customService">
+		<security:password-encoder hash="bcrypt"/>
+	</security:authentication-provider>
+	
+</security:authentication-manager>
+
+</beans>

@@ -313,7 +313,7 @@ meter{
 			</sec:authorize>	
 			<sec:authorize access="hasRole('ADMIN')">
 				<div id="admin_write" class="right_menu">
-					<a class="top_text2" onclick="editMovie()" style="cursor:pointer;">Write</a>
+					<a class="top_text2" onclick="editMovie()" style="cursor:pointer;">Edit</a>
 				</div>
 			</sec:authorize>
 		</nav>

@@ -326,7 +326,9 @@
 
 <!-- 컨텐츠 끝-->
 </div>
+
 <!-- 전체 레이아웃 끝-->
+
 <script>
 
 var deleteReview = function(reviewId, movieId){

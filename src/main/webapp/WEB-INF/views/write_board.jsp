@@ -258,45 +258,10 @@ var checkForm = function(){
 
 $(document).ready(function(){
 
-	$("#poster").change(function(){
-			if(this.files && this.files[0]) {
-			var reader = new FileReader;
-			reader.onload = function(data) {
-					$(".select_img img").attr("src", data.target.result).width(50).height(50);
-					$(".select_img").css("display", "inline-block");
-			}
-	    	reader.readAsDataURL(this.files[0]);
-			}
-		});
-	
-	$("#stillCuts").change(function(){
-		if(this.files[0] || this.files[1] || this.files[2]) {
-		var reader1 = new FileReader;
-		var reader2 = new FileReader;
-		var reader3 = new FileReader;
-		reader1.onload = function(data) {
-				$(".select_img2 img").attr("src", data.target.result).width(50).height(50);
-				$(".select_img2").css("display", "inline-block");
-			
-		}
-		reader2.onload = function(data) {
 		
-				$(".select_img3 img").attr("src", data.target.result).width(50).height(50);
-				$(".select_img3").css("display", "inline-block");
-		}
-		reader3.onload = function(data) {
-				
-				
-				$(".select_img4 img").attr("src", data.target.result).width(50).height(50);
-				$(".select_img4").css("display", "inline-block");
-		}
-    	reader1.readAsDataURL(this.files[0]);
-    	reader2.readAsDataURL(this.files[1]);
-    	reader3.readAsDataURL(this.files[2]);
-		}
-	});
-	
 	SCBoxActivation();	
+	imagePreview();
+
 	
 })	
 

@@ -352,7 +352,7 @@ meter{
 					</tr>
 					<tr>
 						<td> Starring  </td>
-						<td><textarea name="starring" style="width:80%;"></textarea></td>
+						<td><textarea id = "starring" name="starring" style="width:80%;"></textarea></td>
 					</tr>
 					<tr>
 						<td> Genre  </td>
@@ -376,7 +376,7 @@ meter{
 					</tr>
 					<tr>
 						<td> Summary  </td>
-						<td><textarea cols="70" rows="10" maxlength="500" name="summary"></textarea> </td>
+						<td><textarea id="summary" cols="70" rows="10" maxlength="500" name="summary"></textarea> </td>
 					</tr>
 					<tr>
 						<td>
@@ -388,18 +388,7 @@ meter{
  						</td>
  						<td>
  							<input type="file" id="poster" name="file" />
- 							<script>
-  								$("#poster").change(function(){
-   									if(this.files && this.files[0]) {
-    									var reader = new FileReader;
-    									reader.onload = function(data) {
-     										$(".select_img img").attr("src", data.target.result).width(50).height(50);
-     										$(".select_img").css("display", "inline-block");
-    									}
-								    	reader.readAsDataURL(this.files[0]);
-   									}
-  								});
- 							</script>
+  						
  							<div class="select_img"><img src="" /></div>
  						</td>
  					</tr>
@@ -412,35 +401,6 @@ meter{
  						<td>
  							<input multiple="multiple" type="file" id="stillCuts" name="file" />
  							 <!-- for문을 교체!! -->
-							<script>
-  								$("#stillCuts").change(function(){
-   									if(this.files[0] || this.files[1] || this.files[2]) {
-    									var reader1 = new FileReader;
-    									var reader2 = new FileReader;
-    									var reader3 = new FileReader;
-    									reader1.onload = function(data) {
-     										$(".select_img2 img").attr("src", data.target.result).width(50).height(50);
-     										$(".select_img2").css("display", "inline-block");
-     									
-    									}
-    									reader2.onload = function(data) {
-     								
-     										$(".select_img3 img").attr("src", data.target.result).width(50).height(50);
-     										$(".select_img3").css("display", "inline-block");
-    									}
-    									reader3.onload = function(data) {
-     										
-     										
-     										$(".select_img4 img").attr("src", data.target.result).width(50).height(50);
-     										$(".select_img4").css("display", "inline-block");
-    									}
-								    	reader1.readAsDataURL(this.files[0]);
-								    	reader2.readAsDataURL(this.files[1]);
-								    	reader3.readAsDataURL(this.files[2]);
-   									}
-  								});
-  							
- 							</script>
  							<div class="select_img2"><img src="" /></div>
  							<div class="select_img3"><img src="" /></div>
  							<div class="select_img4"><img src="" /></div>
@@ -623,34 +583,6 @@ meter{
 				</div>
 				<!-- 점수 분포도 -->
 				
-				<script>
-					var ctx = document.getElementById('myChart').getContext('2d');
-					var chart = new Chart(ctx, {
-						type:	'horizontalBar',
-						data:{
-							labels:	['Positive', 'Mixed', 'Negative'],
-							datasets:	[{
-								label : 'Preference Distribution',
-								backgroundColor: [
-									'rgba(50, 255, 50, 1)',
-									'rgba(255, 150, 80, 1)',
-									'rgba(255, 30, 30, 1)'
-									],
-						        borderColor: 'rgb(255, 99, 132)',
-						        data: [${positiveCount}, ${mixedCount}, ${negativeCount}]
-							}]
-						},
-						options: {
-					        scales	: { //X,Y축 옵션
-					            xAxes: [{
-					                ticks: {
-					                    beginAtZero:true  //Y축의 값이 0부터 시작
-					                }
-					            }]
-					        }
-					    }
-					})
-				</script>
 				
 			</div>
 			
@@ -695,11 +627,39 @@ meter{
 		
 <script type="text/javascript">
 
+//점수분포
+var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+	type:	'horizontalBar',
+	data:{
+		labels:	['Positive', 'Mixed', 'Negative'],
+		datasets:	[{
+			label : 'Preference Distribution',
+			backgroundColor: [
+				'rgba(50, 255, 50, 1)',
+				'rgba(255, 150, 80, 1)',
+				'rgba(255, 30, 30, 1)'
+				],
+	        borderColor: 'rgb(255, 99, 132)',
+	        data: [${positiveCount}, ${mixedCount}, ${negativeCount}]
+		}]
+	},
+	options: {
+        scales	: { //X,Y축 옵션
+            xAxes: [{
+                ticks: {
+                    beginAtZero:true  //Y축의 값이 0부터 시작
+                }
+            }]
+        }
+    }
+})
+
 var editMovie = function(){
 	var modalDiv = document.getElementById('modalDiv');
 	var siteDiv = document.getElementById("site_layout");
-	var summaryText = document.getElementsByName("summary");
-	var starringText = document.getElementsByName("starring");
+	var summaryText = document.getElementById("summary");
+	var starringText = document.getElementById("starring");
 	modalDiv.style.display = "block";
 	siteDiv.style.backgroundColor= "rgba(0,0,0,0.5)";
 	summaryText.value = '${view.summary}';
@@ -759,6 +719,7 @@ $(document).ready(function(){
 		
 	SCBoxActivation();
 	coloring();
+	imagePreview();
 
 
 })

@@ -6,13 +6,11 @@ function goIndex(){
 var SCBoxHide = function(){
     var searchResultsListDiv = document.getElementById("searchResultsListDiv");
     searchResultsListDiv.style.display = "none";
-    document.getElementById("main_wrapper").style.backgroundColor = "rgba(0,0,0,0.0)";
 };
 
 var SCBoxShow = function(){
     var searchResultsListDiv = document.getElementById("searchResultsListDiv");
     searchResultsListDiv.style.display = "block";
-    document.getElementById("main_wrapper").style.backgroundColor = "rgba(0,0,0,0.5)";
 };
 
 var SCBoxActivation = function(){
@@ -24,7 +22,6 @@ var SCBoxActivation = function(){
     })
     
     $("#site_layout").click(function(){
-    	document.getElementById("main_wrapper").style.backgroundColor = "rgba(0,0,0,0.0)";
     	SCBoxHide();
     })
     

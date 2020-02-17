@@ -228,13 +228,66 @@ tr,td,th {
 
 <script type="text/javascript">
 
+var SCBoxHide = function(){
+    var searchResultsListDiv = document.getElementById("searchResultsListDiv");
+    searchResultsListDiv.style.display = "none";
+    document.getElementById("main_wrapper").style.backgroundColor = "rgba(0,0,0,0.0)";
+};
+
+var SCBoxShow = function(){
+    var searchResultsListDiv = document.getElementById("searchResultsListDiv");
+    searchResultsListDiv.style.display = "block";
+    document.getElementById("main_wrapper").style.backgroundColor = "rgba(0,0,0,0.5)";
+};
 
 $(document).ready(function(){
-	SCBoxActivation();	
-	coloring();
-})
-	
 
+	var oldVal;
+	  
+	    $("#searchResultsListDiv").mouseover(function(){
+	    	$("#search").blur();
+	    })
+	    
+	    $("#site_layout").click(function(){
+	    	document.getElementById("main_wrapper").style.backgroundColor = "rgba(0,0,0,0.0)";
+	    	SCBoxHide();
+	    })
+	    
+	    $("#search").on("propertychange change keyup paste input", function() {
+			
+	        var currentVal = $(this).val();
+	        if(currentVal == oldVal) {
+	            return;
+	        }else{
+	            $.ajax({
+	 	               url:"/movie_list.search",
+	                type: "GET",
+	                data: {"searchKeyword" : currentVal},
+	                datatype: "json",
+	                success: function(data){
+	                	if(data.length > 0){
+	                		SCBoxShow();
+	                	}
+	                    var searchedList = data;	
+	                    var html = "";
+	                    for(i=0; i<searchedList.length; i++){
+	                        html += "<div class='resultDiv' style='cursor:pointer; margin: 0; padding:10px 13px; border-bottom:0.5px solid rgba(0,0,0,0.3);' onclick='location.href=\"/movie_info/view?movieId="+
+	                        		searchedList[i].movieId+"\"'>" +
+	                        		searchedList[i].title + "</div>";
+	                    }			
+	                 
+	                    var searchResultsListDiv = document.getElementById("searchResultsListDiv");
+	                    searchResultsListDiv.innerHTML = html;
+	                    
+	                    if( currentVal == ""){
+	                    	SCBoxHide();
+	                    }
+	                }
+	            })
+	    	}
+		})
+	coloring();	
+	});	
     
 
 </script>

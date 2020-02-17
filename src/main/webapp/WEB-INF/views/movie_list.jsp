@@ -413,7 +413,6 @@ $(document).ready(function(){
 	
 	getpage();
 	coloring();
-	scoreAVGcoloring();
 	SCBoxActivation();	
 
 	$(".select_option").change(function(){

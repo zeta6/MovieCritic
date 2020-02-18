@@ -39,6 +39,8 @@
 	padding: 8px 18px;
 }
 
+
+/* 리뷰점수선택클래스 */
 .ratingCircle{
     border-radius: 50%;
     height: 28px;
@@ -103,7 +105,7 @@
 	<!--movieCri-->
 	<!-- 상단 메뉴-->
 
-   <div id="top_menu_wrapper">
+    <div id="top_menu_wrapper">
 	<div id="top_menu">
 
 		<nav id="top_menu1">
@@ -342,6 +344,7 @@ var deleteReview = function(reviewId, movieId){
 	}	
 };
 
+//write review form check
 
 var RVFormCheck = function(){
 	if(document.getElementById("markRating").value == ""){
@@ -354,6 +357,7 @@ var RVFormCheck = function(){
 	
 };
 
+//update review form check
 var UPRVFormCheck = function(){
 	if(document.getElementById("updateMarkRating").value == ""){
 		alert("You have not entered a score.");
@@ -403,17 +407,15 @@ var updateReview = function(location){
 	</div>\
 	</div>'
 	content[0].innerHTML = html;
-	RCRavtivation();
+	
+	//update review circle activation
+	URCactivation();
 		
 	
 };
 
 	
-
-
-var updateReviewPost = function(){
-	
-}
+//chart
 
 var ctx = document.getElementById('myChart').getContext('2d');
 
@@ -449,8 +451,13 @@ var chart = new Chart(ctx, {
 
 $(document).ready(function(){
 	
+	//coloring rating_circle_average
 	coloring();
+	
+	//review circle activation
 	RCactivation();
+	
+	//search box activation
 	SCBoxActivation();	
 })
 

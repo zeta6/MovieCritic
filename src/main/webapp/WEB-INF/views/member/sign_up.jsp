@@ -373,6 +373,7 @@ $(document).ready(function(){
 
 	}) 
 	
+	//searchbox activation
 	SCBoxActivation();	
 
 })

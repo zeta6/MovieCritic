@@ -400,6 +400,7 @@ var getpage= function(){
 				
 				$("#tableBoard").html(html);
 				
+				//coloring rating_circle_average
 				coloring();
    		  }
     })
@@ -407,14 +408,22 @@ var getpage= function(){
 
 
 $(document).ready(function(){
+	
+	//selected option
 	$("#genreSelect option[value='${genre}']").attr("selected", "selected");
 	$("#releaseDateCondition option[value='${releaseDate}']").attr("selected", "selected");
 	$("#sortCondition option[value='${sortCondition}']").attr("selected", "selected");
 	
+	//get board page
 	getpage();
+	
+	//coloring rating_circle_average
 	coloring();
+	
+	//searchbox activation
 	SCBoxActivation();	
-
+	
+	//get conditional page
 	$(".select_option").change(function(){
 		getpage();
 	})	

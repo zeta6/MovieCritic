@@ -15,6 +15,8 @@
 <title> Write Board</title>
 <script src="/resources/css/common.js"></script>
 <script src="/resources/jquery/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -241,13 +243,8 @@
 </div>
 <script>
 
-$( function() {
-	  $( "#datepicker" ).datepicker();
-	  	dateFormat: 'yyyy.mm.dd'
-	  	showOn: "both"
-	  	buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif"
-	} );
 
+//check form releaseDate
 var checkForm = function(){
 	if(document.getElementById('datepicker').value == ""){
 	document.getElementById('datepicker').disabled ='true';
@@ -257,9 +254,19 @@ var checkForm = function(){
 
 
 $(document).ready(function(){
+	
+	$("#datepicker").datepicker({
+		changeYear: true,
+		changeMonth: true,
+	  	dateFormat: "yyyy.mm.dd",
+	  	showOn: "both",
+	  	buttonImage: "/resources/image/calendar.gif"
+		});
 
-		
+	//search box activation		
 	SCBoxActivation();	
+	
+	//upload image preview
 	imagePreview();
 
 	

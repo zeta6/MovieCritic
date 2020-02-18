@@ -2,7 +2,7 @@ function goIndex(){
 	location.href="/";
 };
 
-//search box activation
+//SC = searchbox
 var SCBoxHide = function(){
     var searchResultsListDiv = document.getElementById("searchResultsListDiv");
     searchResultsListDiv.style.display = "none";
@@ -83,6 +83,7 @@ var coloring = function(){
 	}
 };
 
+//review circle activation
 var RCactivation = function(){
 
 	var markScore;  
@@ -126,8 +127,8 @@ var RCactivation = function(){
 	}
 };
 
-
-var RCRavtivation = function(){
+//update review circle activation
+var URCactivation = function(){
 	
 	var updateMarkScore;
 	
@@ -172,6 +173,7 @@ var RCRavtivation = function(){
 };
 
 
+//Attachments preview
 var imagePreview = function(){
 	
 	$("#poster").change(function(){

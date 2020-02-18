@@ -189,7 +189,10 @@ p {
 </div>
 
 <script>
+
+//searchbox activation
 SCBoxActivation();	
+
 </script>
 
 </body>

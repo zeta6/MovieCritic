@@ -387,6 +387,7 @@ $(document).ready(function(){
 
 $(document).ready(function(){
 	
+	//searchbox activation
 	SCBoxActivation();	
 
 })

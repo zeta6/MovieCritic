@@ -146,14 +146,11 @@ nav#top_menu2 div a{
 	background-color: #fff;
 	border: 1px solid gray;
 	border-radius: 5px;
-	height:110px;
 }
 
 .left_inner_menu{
 	margin:0;
 	padding:7px;
-	width:85%;
-	height:20%;
 }
 
 .left_inner_menu a{

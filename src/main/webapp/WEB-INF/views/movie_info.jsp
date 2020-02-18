@@ -11,6 +11,8 @@
 <script src="/resources/css/common.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script src="/resources/jquery/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <style>
@@ -653,7 +655,7 @@ var chart = new Chart(ctx, {
             }]
         }
     }
-})
+});
 
 var editMovie = function(){
 	var modalDiv = document.getElementById('modalDiv');
@@ -662,10 +664,11 @@ var editMovie = function(){
 	var starringText = document.getElementById("starring");
 	modalDiv.style.display = "block";
 	siteDiv.style.backgroundColor= "rgba(0,0,0,0.5)";
-	summaryText.value = '${view.summary}';
+	summaryText.value = `${view.summary};`
 	starringText.value = '${view.starring}';
 }
 
+//close edit modal form 
 var closeModal = function(){
 	var modalDiv = document.getElementById('modalDiv');
 	var siteDiv = document.getElementById('site_layout');
@@ -675,6 +678,14 @@ var closeModal = function(){
 
 
 $(document).ready(function(){
+	
+	$("#datepicker").datepicker({
+	changeYear: true,
+	changeMonth: true,
+  	dateFormat: "yyyy.mm.dd",
+  	showOn: "both",
+  	buttonImage: "/resources/image/calendar.gif"
+	});
 	
 	var markScore;  
 	for(var x=0; x<=10; x++){
@@ -717,19 +728,19 @@ $(document).ready(function(){
         }
     }
 		
+	//search box activation
 	SCBoxActivation();
+	
+	//coloring rating_circle_average
 	coloring();
+	
+	//upload Attachments preview
 	imagePreview();
 
 
 })
 
-$( function() {
-		  $( "#datepicker" ).datepicker();
-		  	dateFormat: 'yyyy.mm.dd'
-		  	showOn: "both"
-		  	buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif"
-	} )
+
 
 	
 

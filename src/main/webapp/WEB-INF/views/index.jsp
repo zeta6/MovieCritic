@@ -35,6 +35,7 @@ div[id^=movie]{
 	display:flex;
 	justify-content:center;
 	align-items:center;
+
 }
 
 
@@ -44,6 +45,7 @@ section[id^=board]{
 	width:25%;
 	min-width:340px;
 	height:40%;
+
 }
 
 .line{
@@ -54,7 +56,7 @@ section[id^=board]{
 tr,td,th {
 
 	text-align:left;
-	padding-right:60px;
+	padding-right:20px;
 }
 
 </style>
@@ -161,7 +163,7 @@ tr,td,th {
 
 		<section id="board_now">
 		<h2 class="line">AVAILABLE NOW</h2>
-		<table>			
+		<table>
 			<tbody>
 	
 				<c:forEach items="${list}" var="list">
@@ -171,7 +173,9 @@ tr,td,th {
 								<fmt:formatNumber value="${list.scoreAverage}" pattern="0.0"/>
 							</div>
 						</td>
-						<td><span style="cursor:pointer; margin-right:20px;" onclick="location.href='/movie_info/view?movieId=${list.movieId}'">${list.title}</span></td>
+						<td><div style=" display:block; max-width:280px; overflow:hidden; text-overflow:ellipsis;">
+						<span style="cursor: pointer; margin-right:10px;" onclick="location.href='/movie_info/view?movieId=${list.movieId}'">
+						${list.title}</span></div></td>
 						<td><span style="cursor:pointer;" onclick="location.href='/movie_info/view?movieId=${list.movieId}'"><fmt:formatDate value="${list.releaseDate}" pattern="yyyy.MM.dd"/></span></td>
 					</tr>
 				</c:forEach>
@@ -179,9 +183,9 @@ tr,td,th {
 						<td>
 						</td>
 						<td>
+						<div style="float:right; cursor:pointer;" onclick="location.href='/movie_list?sortCondition=releaseDate'">>view more</div>
 						</td>
 						<td>
-						<div style="float:right; cursor:pointer;" onclick="location.href='/movie_list?sortCondition=releaseDate'">>view more</div>
 						</td>
 					</tr>	
   		 	</tbody>
@@ -195,24 +199,26 @@ tr,td,th {
 				<table>			
 			<tbody>
 	
-				<c:forEach items="${list2}" var="list2">
+				<c:forEach items="${list2}" var="list">
 					<tr>
 						<td>
 							<div class="rating_circle_average" style="margin-right:20px;font-weight:bold;">
-								<fmt:formatNumber value="${list2.scoreAverage}" pattern="0.0"/>
+								<fmt:formatNumber value="${list.scoreAverage}" pattern="0.0"/>
 							</div>
 						</td>
-						<td><span style="cursor:pointer; margin-right:20px;" onclick="location.href='/movie_info/view?movieId=${list2.movieId}'">${list2.title}</span></td>
-						<td><span style="cursor:pointer;" onclick="location.href='/movie_info/view?movieId=${list2.movieId}'"><fmt:formatDate value="${list2.releaseDate}" pattern="yyyy.MM.dd"/></span></td>
+						<td><div style=" display:block; max-width:280px; overflow:hidden; text-overflow:ellipsis;">
+						<span style="cursor: pointer; margin-right:10px;" onclick="location.href='/movie_info/view?movieId=${list.movieId}'">
+						${list.title}</span></div></td>
+						<td><span style="cursor:pointer;" onclick="location.href='/movie_info/view?movieId=${list.movieId}'"><fmt:formatDate value="${list.releaseDate}" pattern="yyyy.MM.dd"/></span></td>
 					</tr>
 				</c:forEach>
 					<tr>
 						<td>
 						</td>
 						<td>
+						<div style="float:right; cursor:pointer;" onclick="location.href='/movie_list?sortCondition=score&releaseDate=last90days'">>view more</div>
 						</td>
 						<td>
-						<div style="float:right; cursor:pointer;" onclick="location.href='/movie_list?sortCondition=score&releaseDate=last90days'">>view more</div>
 						</td>
 					</tr>	
   		 	</tbody>

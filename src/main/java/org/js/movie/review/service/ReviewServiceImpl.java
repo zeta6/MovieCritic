@@ -54,7 +54,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 
 	@Override
-	public void deleteRevieweAll(int movieId) {
+	public void deleteReviewAll(int movieId) {
 		
 		dao.deleteReviewAll(movieId);
 	}
@@ -67,3 +67,4 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	
 }
+	

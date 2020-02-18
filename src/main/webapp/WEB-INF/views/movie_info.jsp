@@ -9,10 +9,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css"/>
 <script src="/resources/css/common.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 <script src="/resources/jquery/jquery-3.4.1.min.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <style>
@@ -112,10 +111,16 @@ div.main_info_text div.rating_circle_average{
 #bottom_area{
 	width:100%;
 	overflow:hidden;
+	display : flex;
+	justify-content: center;
 }
 
 #bottom_area::-webkit-scrollbar, #site_layout::-webkit-scrollbar{
 	display:none;
+}
+
+.goto_view_box{
+	display : flex;
 }
 
 #movie_score{
@@ -164,6 +169,14 @@ meter{
 }
 
 #user_score{
+	margin-top:60px;
+	margin-left:50px;
+	float:left;
+	width: 30%;
+	margin-bottom:10%;
+}
+
+#critic_score{
 	margin-top:60px;
 	margin-left:50px;
 	float:left;
@@ -325,6 +338,18 @@ meter{
 	<!-- 상단 메뉴 끝-->
 	<!-- edit modal -->
 	
+	<!-- write review modal -->
+	<div id="writeRVmodal" style="display:none; position:fixed; z-index:100; width:50%; height:42%; overflow:auto; margin:2% 7% 12% 10%; background:gray; padding-left:30px; padding-top:30px;">
+		<form action="/view_review" method="post" onsubmit="return RVFormCheck()"> 
+			<textarea cols="95" rows="5" maxlength="500" name="content"></textarea>	<%--name에 정해진 값은 변수로 요청에 파라미터를 보냄 --%>
+			<input type="hidden" value="${view.movieId}" name="movieId"/>
+			<input type ="hidden" name="rating" id="markRating" />
+			<input type="submit" value="submit" style="background:#555; color:white; margin-left:85%;"/>
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+		</form>
+	</div>
+		
+	
 	<div id="modalDiv" style="display:none; position:fixed; z-index:100; width:70%; height:70%; overflow:auto; margin:2.5% 13%; background:white;">
 	<!-- 글쓰기 폼 시작-->
 
@@ -350,7 +375,7 @@ meter{
 				<table id="input_table">
 					<tr>
 						<td> Title  </td>
-						<td><input type="text" name="title" style="width:50%;" pattern="\w{1,30}" value="${view.title}" /> </td>
+						<td><input type="text" name="title" style="width:50%;" value="${view.title}" /> </td>
 					</tr>
 					<tr>
 						<td> Starring  </td>
@@ -358,11 +383,11 @@ meter{
 					</tr>
 					<tr>
 						<td> Genre  </td>
-						<td><input type="text" name="genre" pattern="\w{1,20}" value="${view.genre}"> </td>
+						<td><input type="text" name="genre" value="${view.genre}"> </td>
 					</tr>
 					<tr>
 						<td> Director  </td>
-						<td><input type="text" name="director" pattern="\w{1,20}" value="${view.director}"> </td>
+						<td><input type="text" name="director" value="${view.director}"> </td>
 					</tr>
 					<tr>
 						<td> Runtime  </td>
@@ -475,9 +500,9 @@ meter{
 		<div id="main_trailer_area">
 
 <!-- 			<video src="/resources/image/1917-trailer-3_h480p.avi" controls style="width:100%;height:90%;"></video> -->
-			<img class="still_cuts" src="${view.stillCut1}">
-			<img class="still_cuts" src="${view.stillCut2}">
-			<img class="still_cuts" src="${view.stillCut3}">
+			<img class="still_cuts" src="${view.stillCut1}" onerror="this.style.visibility='hidden'">
+			<img class="still_cuts" src="${view.stillCut2}" onerror="this.style.visibility='hidden'">
+			<img class="still_cuts" src="${view.stillCut3}" onerror="this.style.visibility='hidden'">
 
 		</div>
 
@@ -490,7 +515,7 @@ meter{
 	<div id="middle_area">
 
 		<div id="middle_poster_area">
-			<img class="posters" src="${view.poster}">	<%--경로설정을 하지않았는데 들어가는 이유.. 톰캣 metadata? --%> 
+			<img class="posters" src="${view.poster}" onerror="this.style.visibility='hidden'">	<%--경로설정을 하지않았는데 들어가는 이유.. 톰캣 metadata? --%> 
 		</div>	<%-- 프로젝트 내부에 저장하면 배포시 삭제되서 엑박뜸.. 프로젝트 외부에 폴더 만들고 server.xml에서 docBase, path 설정 --%>
 
 		<div id="middle_detail_area">
@@ -528,37 +553,63 @@ meter{
 
 	<div id="bottom_area">
 		<!-- 리뷰점수  -->
-		<div id="movie_score">
-
-			<h3>Movie Score</h3>
-	
-			<!--점수표시 이미지-->
-			<div>
+		<div id="critic_score">
+			<div id="user_score_wrapper" style="display:flex; justify-content:space-between;">
+				<h3>Critic Score</h3> <div id="write_review"><a href="/view_review?movieId=${view.movieId}">Write a Review</a></div>
+			</div>
 			
+			<div id="score_distribution_wrapper" style="display:flex; justify-content:space-between;">
+				
+				<div style="display:flex;flex-direction:column;">
+					<!--점수표시 이미지-->
+					<div class="rating_circle_average" style="margin-top:40px;">
+					${CRscoreAverage}
+					</div>
+					<div style="font-weight:bold;font-size:15px;">
+					Score Average
+					</div>
+					<!--점수표시 이미지 끝-->
+				</div>
+				
+				<!-- 점수 분포도 -->
+				<div class="score_distribution_area">		
+					<canvas id="myChart"></canvas>
+				</div>
+				<!-- 점수 분포도 -->
+				
+				
 			</div>
-			<!--점수표시 이미지 끝-->
-	
-			<!-- Positive ?? 보류-->		
-			<div>
-	
-			</div>
-			<!-- Positive ?? 보류-->	
+			
 
+				
 			<h2>Critic Reviews</h2>
-
-			<div class="critic_reviews">
 			
-			</div>
+			<div id="criticRVwrapper">
+	
+			<c:forEach items="${criticReviewList}" var="reviewList" begin="0" end="5">
 			<div class="critic_reviews">
-		
-			</div>
-			<div class="critic_reviews">
-		
-			</div>
+					<div class="rating_circle_average" style="width:38px;height:38px; font-size:25px;">${reviewList.rating}</div>
+					<div style="display:flex; flex-direction:column; padding:7px 0 0 20px;">
+	  					<div>
+						 	작성자 : ${reviewList.writer}
+						</div>
+						<div>
+	   						<span style="font-size:14px; color:#999;"><fmt:formatDate value="${reviewList.registerDate}" pattern="yyyy.MM.dd"/></span>
+	 					</div>
+ 					</div>
+  
+  					<p style="padding-left:8px;padding-bottom:50px;">${reviewList.content}</p>
+ 			</div>
+ 			</c:forEach>   
 
-			<a href="#">SEE ALL REVIEWS</a>							
+			<div style="text-align:center; font-size:18px; border:1.5px solid #888; padding:10px 0 10px 0; margin: 30px 30px;">
+				<a href="/view_critic_review?movieId=${view.movieId}"
+				style="text-decoration:none; color:black; font-weight:bold;">SEE ALL ${CRtotalCount} REVIEWS</a>
+			</div>							
+		</div>
 
 		</div>
+		<!-- 리뷰점수 -->
 		
 	
 		<div id="user_score">
@@ -581,7 +632,7 @@ meter{
 				
 				<!-- 점수 분포도 -->
 				<div class="score_distribution_area">		
-					<canvas id="myChart"></canvas>
+					<canvas id="myChart2"></canvas>
 				</div>
 				<!-- 점수 분포도 -->
 				
@@ -592,6 +643,7 @@ meter{
 			
 			<h2>User Reviews</h2>
 	
+			<div id="userRVwrapper">
 			<c:forEach items="${reviewList}" var="reviewList" begin="0" end="5">
 			<div class="critic_reviews">
 					<div class="rating_circle_average" style="width:38px;height:38px; font-size:25px;">${reviewList.rating}</div>
@@ -612,7 +664,7 @@ meter{
 				<a href="/view_review?movieId=${view.movieId}"
 				style="text-decoration:none; color:black; font-weight:bold;">SEE ALL ${totalCount} REVIEWS</a>
 			</div>							
-		
+		</div>
 
 		</div>
 		<!-- 리뷰점수 -->
@@ -631,8 +683,36 @@ meter{
 
 //점수분포
 var ctx = document.getElementById('myChart').getContext('2d');
-var chart = new Chart(ctx, {
-	type:	'horizontalBar',
+var myChart = new Chart(ctx, {
+	type: 'horizontalBar',
+	data:{
+		labels:	['Positive', 'Mixed', 'Negative'],
+		datasets:	[{
+			label : 'Preference Distribution',
+			backgroundColor: [
+				'rgba(50, 255, 50, 1)',
+				'rgba(255, 150, 80, 1)',
+				'rgba(255, 30, 30, 1)'
+				],
+	        borderColor: 'rgb(255, 99, 132)',
+	        data: [${CRpositiveCount}, ${CRmixedCount}, ${CRnegativeCount}]
+		}]
+	},
+	options: {
+        scales	: { //X,Y축 옵션
+            xAxes: [{
+                ticks: {
+                    beginAtZero:true  //Y축의 값이 0부터 시작
+                }
+            }]
+        }
+    }
+});
+
+
+var ctx2 = document.getElementById('myChart2').getContext('2d');
+var myChart2 = new Chart(ctx2, {
+	type: 'horizontalBar',
 	data:{
 		labels:	['Positive', 'Mixed', 'Negative'],
 		datasets:	[{
@@ -657,6 +737,7 @@ var chart = new Chart(ctx, {
     }
 });
 
+
 var editMovie = function(){
 	var modalDiv = document.getElementById('modalDiv');
 	var siteDiv = document.getElementById("site_layout");
@@ -676,6 +757,102 @@ var closeModal = function(){
 	modalDiv.style.display = "none";
 }
 
+//reviewmodal avtive
+
+var RVmodalActivation = function(){
+	
+	markScore = this.innerHTML;
+	document.getElementById("markRating").value = markScore;
+	console.log("markScore="+markScore);
+	
+	var html =
+		`<div class="inner_header">
+		
+			<div style="display: flex;justify-content:space-between;">
+				<h5> REVIEW THIS MOVIE</h5>
+ 				<h6 style="margin-right:-70px;"> VOTE NOW </h6>	
+			
+			<div style="display:flex;padding:10px 0;">
+		    <div id="modalCircle_0" class="ratingCircle">0</div>
+		    <div id="modalCircle_1" class="ratingCircle">1</div>
+		    <div id="modalCircle_2" class="ratingCircle">2</div>
+		    <div id="modalCircle_3" class="ratingCircle">3</div>
+		    <div id="modalCircle_4" class="ratingCircle">4</div>
+		    <div id="modalCircle_5" class="ratingCircle">5</div>
+		    <div id="modalCircle_6" class="ratingCircle">6</div>
+		    <div id="modalCircle_7" class="ratingCircle">7</div>
+		    <div id="modalCircle_8" class="ratingCircle">8</div>
+		    <div id="modalCircle_9" class="ratingCircle">9</div>
+		    <div id="modalCircle_10" class="ratingCircle">10</div>
+		</div>
+		<a style="cursor:pointer;">
+		<span id="closeModal2" style="color:#333; float:right; font-size:22px; font-weight:bold; padding:10px;" onclick="closeReviewModal()">
+			X
+		</span>
+		</a>
+
+	</div>
+		
+		
+</div>
+
+<div>
+	<form action="/view_review" method="post" onsubmit="return RVFormCheck()"> 
+		<textarea cols="95" rows="10" maxlength="500" name="content"></textarea>	<%--name에 정해진 값은 변수로 요청에 파라미터를 보냄 --%>
+		<input type="hidden" value="${view.movieId}" name="movieId"/>
+		<input type ="hidden" name="rating" id="markRating" />
+		<input type="submit" value="submit" style="background:#555; color:white; margin-left:85%;"/>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	</form>
+</div>`;
+       
+       document.getElementById("writeRVmodal").style.display = "block";
+       document.getElementById("writeRVmodal").innerHTML = html;
+       
+       for(var x=0; x<=11; x++){
+           var circle = $("[id^='modalCircle_']")[x];
+           circle.onmouseover = function(e){
+               var score = this.innerHTML;
+               for(var i=0; i <= score; i++) {
+                   if(i<4 ) {
+                       var id = "modalCircle_" + i;
+                       document.getElementById(id).style.backgroundColor = "red";
+                   }else if( i < 7){
+                       var id = "modalCircle_" + i;
+                       document.getElementById(id).style.backgroundColor = "orange";
+                   }else if ( i< 11){
+                       var id = "modalCircle_" + i;
+                       document.getElementById(id).style.backgroundColor = "#1aff00";
+                   }
+               }
+           }
+           circle.onmouseout = function(e){
+               if(markScore == null){
+                   var score = this.innerHTML;
+                   for(var i=0; i <= score; i++) {
+                       var id = "modalCircle_" + i;
+                       document.getElementById(id).style.backgroundColor = "#555";
+                   }
+               }else{
+                   for(var i=10; i >markScore; i--){
+                       var id = "modalCircle_" + i;
+                       document.getElementById(id).style.backgroundColor = "#555";
+                   }
+                   
+               }
+           }
+           circle.onclick = function(){
+           	markScore = this.innerHTML;
+               document.getElementById("markRating").value = markScore;
+        	}
+       }
+   }
+   
+var closeReviewModal = function(){
+	document.getElementById("writeRVmodal").style.display = "none";
+} 
+   
+
 
 $(document).ready(function(){
 	
@@ -687,7 +864,9 @@ $(document).ready(function(){
   	buttonImage: "/resources/image/calendar.gif"
 	});
 	
+	
 	var markScore;  
+	
 	for(var x=0; x<=10; x++){
         var circle = document.querySelectorAll(".ratingCircle")[x];
         circle.onmouseover = function(e){
@@ -721,13 +900,10 @@ $(document).ready(function(){
             }
             console.log("markScore="+markScore);
         }
-        circle.onclick = function(e){
-            markScore = this.innerHTML;
-            document.getElementById("markRating").value = markScore;
-            console.log("markScore="+markScore);
+        circle.onclick = function(){
+        	RVmodalActivation();
         }
-    }
-		
+	}
 	//search box activation
 	SCBoxActivation();
 	

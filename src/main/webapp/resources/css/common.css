@@ -174,7 +174,7 @@ nav#top_menu2 div a{
 
 
 #searchResultsListDiv{
-	width: 12%;
+	min-width: 12%;
 	position:absolute;
 	background-color:white;
 	border:1px solid #aaa;
@@ -188,6 +188,7 @@ nav#top_menu2 div a{
 .resultDiv:hover{ 
  	BACKGROUND: #167ADE;
  	COLOR: WHITE;
+ 	border-radius:10px;
 }
 	
 #searchResultsListDiv span:hover{

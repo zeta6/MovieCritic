@@ -29,4 +29,5 @@ public class MovieInfoVO {
 	private String runtime;
 	private String director;
 	private double scoreAverage;
+	private double criticAverage;
 }	

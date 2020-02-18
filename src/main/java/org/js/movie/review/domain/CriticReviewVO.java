@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CriticReviewVO {
-
+	
 	private int reviewId;
 	private int movieId;
 	private String content;

@@ -8,6 +8,7 @@ import org.js.movie.movieinfo.domain.MovieInfoVO;
 import org.js.movie.movieinfo.domain.PageMaker;
 import org.js.movie.movieinfo.service.MovieInfoService;
 import org.js.movie.review.domain.ReviewVO;
+import org.js.movie.review.service.CriticReviewService;
 import org.js.movie.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +27,9 @@ public class ReviewController {
 	@Autowired
 	ReviewService reviewService;
 	
+	@Autowired
+	CriticReviewService criticReviewService;
+
 	@Autowired
 	MovieInfoService movieInfoService;
 	

@@ -247,7 +247,7 @@
 		</div>
 
 		<div>
-			<form action="/view_review" method="post" onsubmit="return RVFormCheck()"> 
+			<form action="/view_critic_review" method="post" onsubmit="return RVFormCheck()"> 
 				<textarea cols="95" rows="5" maxlength="500" name="content"></textarea>	<%--name에 정해진 값은 변수로 요청에 파라미터를 보냄 --%>
 				<input type="hidden" value="${view.movieId}" name="movieId"/>
 				<input type ="hidden" name="rating" id="markRating" />
@@ -396,7 +396,7 @@ var updateReview = function(location){
 		</div>\
 	</div>\
 	<div>\
-		<form action="/view_review.update" method="post" onsubmit="return UPRVFormCheck()"> \
+		<form action="/view_ciritic_review.update" method="post" onsubmit="return UPRVFormCheck()"> \
 			<textarea cols="95" rows="5" maxlength="500" name="content">'+text+'</textarea>\
 			<input type="hidden" value="'+reviewId+'" name="reviewId">\
 			<input type="hidden" value="${view.movieId}" name="movieId"/>\

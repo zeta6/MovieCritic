@@ -166,7 +166,7 @@
 	
 					<tr>
 						<td> Title  </td>
-						<td><input type="text" name="title" style="width:50%;" pattern="\w{1,30}" /> </td>
+						<td><input type="text" name="title" style="width:50%;" /> </td>
 					</tr>
 					<tr>
 						<td> Starring  </td>
@@ -174,11 +174,11 @@
 					</tr>
 					<tr>
 						<td> Genre  </td>
-						<td><input type="text" name="genre" pattern="\w{1,20}"> </td>
+						<td><input type="text" name="genre"> </td>
 					</tr>
 					<tr>
 						<td> Director  </td>
-						<td><input type="text" name="director" pattern="\w{1,20}"> </td>
+						<td><input type="text" name="director"> </td>
 					</tr>
 					<tr>
 						<td> Runtime  </td>

@@ -15,7 +15,9 @@ import org.js.movie.movieinfo.domain.MovieInfoVO;
 import org.js.movie.movieinfo.domain.PageMaker;
 import org.js.movie.movieinfo.service.MovieInfoService;
 import org.js.movie.movieinfo.utils.UploadFileUtils;
+import org.js.movie.review.domain.CriticReviewVO;
 import org.js.movie.review.domain.ReviewVO;
+import org.js.movie.review.service.CriticReviewService;
 import org.js.movie.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,6 +43,9 @@ public class MovieInfoController {
 	@Autowired
 	ReviewService reviewService;
 	
+	@Autowired
+	CriticReviewService criticReviewService;	
+	
 	@Resource(name="uploadPath")
 	private String uploadPath;
 	
@@ -49,7 +54,7 @@ public class MovieInfoController {
 	public String getMovieInfoDeletion(@RequestParam("movieId") int movieId) {
 		
 		log.info("deleteReview All ");
-		reviewService.deleteRevieweAll(movieId);
+		reviewService.deleteReviewAll(movieId);
 		movieInfoService.deleteMovie(movieId);
 		log.info("delete 완료");
 		
@@ -248,6 +253,57 @@ public class MovieInfoController {
 		} else {
 			log.info("reviewList : " + reviewList.toString()); 
 		}
+		
+		
+		
+		
+		List<CriticReviewVO> criticReviewList = criticReviewService.readCriticReview(movieId);
+		log.info("criticReviewList: " + criticReviewList);
+		
+		if(!criticReviewList.equals(null)) {
+//		CR = critic review	
+		int CRtotalCount = criticReviewList.size();
+		log.info("CRtotalCount  : " + CRtotalCount);
+		int CRpositiveCount=0;
+		int CRmixedCount=0;
+		int CRnegativeCount=0;
+		int CRtotalScore=0;
+		
+		for(CriticReviewVO criticrevlist : criticReviewList) {
+			CRtotalScore += criticrevlist.getRating();
+			
+			if(criticrevlist.getRating() < 4) {
+				CRnegativeCount++;
+			}
+			else if(4<=criticrevlist.getRating() && criticrevlist.getRating()<=6) {
+				CRmixedCount++;
+			}
+			else if(7<=criticrevlist.getRating() && criticrevlist.getRating()<=10) {
+				CRpositiveCount++;
+			}
+		}
+		int CRmaxCount = Math.max(CRnegativeCount, Math.max(CRpositiveCount, CRmixedCount));
+		double CRscoreAverage = Math.round((CRtotalScore*10.0/CRtotalCount))/10.0;
+
+		log.info("CRtotalScore : " + CRtotalScore);
+		log.info("CRnegative: " + CRnegativeCount);
+		log.info("CRpositive : " + CRpositiveCount);
+		log.info("CRmixed : " + CRmixedCount);
+		log.info("CRscoreAverage: " + CRscoreAverage);
+		model.addAttribute("CRtotalCount", CRtotalCount);
+		model.addAttribute("CRnegativeCount", CRnegativeCount);
+		model.addAttribute("CRmixedCount", CRmixedCount);
+		model.addAttribute("CRpositiveCount", CRpositiveCount);
+		model.addAttribute("CRmaxCount", CRmaxCount);
+		model.addAttribute("CRscoreAverage", CRscoreAverage);
+		model.addAttribute("criticReviewList", criticReviewList);
+
+		} else {
+			log.info("criticReviewList : " + criticReviewList.toString()); 
+		}
+		
+		
+		
 			
 		return "movie_info";	//page 404로 void에서 string으로 교체
 	}

@@ -866,7 +866,7 @@ $(document).ready(function(){
 	$("#datepicker").datepicker({
 	changeYear: true,
 	changeMonth: true,
-  	dateFormat: "yyyy.mm.dd",
+  	dateFormat: "mm/dd/yy",
   	showOn: "both",
   	buttonImage: "/resources/image/calendar.gif"
 	});

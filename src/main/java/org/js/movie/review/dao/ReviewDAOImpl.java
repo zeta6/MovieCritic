@@ -56,4 +56,11 @@ public class ReviewDAOImpl implements ReviewDAO {
 	public void updateReview(ReviewVO reviewVO) {
 		sql.update("ReviewMapper.updateReview", reviewVO);
 	}
+	
+	@Override
+	public int checkDupe(String memberId) {
+		return sql.selectOne("ReviewMapper.checkDupe", memberId);
+	}
 }
+
+

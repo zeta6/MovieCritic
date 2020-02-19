@@ -1,8 +1,10 @@
 package org.js.movie.review.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
+import org.js.movie.member.domain.CustomMemberVO;
 import org.js.movie.movieinfo.domain.Criteria;
 import org.js.movie.movieinfo.domain.MovieInfoVO;
 import org.js.movie.movieinfo.domain.PageMaker;
@@ -11,12 +13,14 @@ import org.js.movie.review.domain.ReviewVO;
 import org.js.movie.review.service.CriticReviewService;
 import org.js.movie.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,7 +47,14 @@ public class ReviewController {
 	
 	@RequestMapping(value = "/view_review", method=RequestMethod.GET)
 	public String getViewReview(ReviewVO reviewVO, Model model, Criteria criteria) {
+
 		log.info("리뷰 목록 및 작성 페이지 진입");
+		
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		log.info("userId  : " + userId);
+		
+		model.addAttribute("userId", userId);
 		
 		List<ReviewVO> reviewList = reviewService.readReview(reviewVO.getMovieId());
 		if(!reviewList.equals(null)) {
@@ -137,6 +148,23 @@ public class ReviewController {
 		reviewService.updateReview(reviewVO);
 		log.info("?????"+reviewVO);
 		return "redirect:../view_review?movieId="+reviewVO.getMovieId();
+	}
+	
+	@RequestMapping(value = "/review.formCheck", method=RequestMethod.GET)
+	@ResponseBody
+	public int checkDupe(@RequestParam(value = "userId", defaultValue="") String memberId) {
+		
+		log.info("ajax get######");
+		int count = reviewService.checkDupe(memberId);
+		
+		log.info("count="+	count);
+		
+		if(count == 0) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 	
 }

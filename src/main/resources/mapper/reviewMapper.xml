@@ -34,6 +34,12 @@
 	    ]]>
 	</select>
 	
+	<select id="checkDupe" resultType="Integer">
+		select count(review_id)
+		 	from table_review
+		where writer=#{memberId}
+	</select>
+	
 	
 	<insert id="insertReview">
 	
@@ -75,5 +81,6 @@
 		delete from table_review
 			where movie_id=#{movieId}
 	</delete>
+	
 
 </mapper>

@@ -38,9 +38,9 @@
 	<insert id="insertReview">
 	
 		insert into table_critic_review 
-			(movie_id, content, writer, rating)
+			(movie_id, content, writer, rating, authorship)
 		values
-			(#{movieId}, #{content}, #{writer}, #{rating});
+			(#{movieId}, #{content}, #{writer}, #{rating}, #{authorship});
 		
 		update table_movie_info tmi
 		set tmi.critic_average = 

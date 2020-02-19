@@ -326,6 +326,7 @@ meter{
 					<a href="${rootPath}/write_board" class="top_text2">Write</a>
 				</div>
 			</sec:authorize>	
+			
 			<sec:authorize access="hasRole('ADMIN')">
 				<div id="admin_write" class="right_menu">
 					<a class="top_text2" onclick="editMovie()" style="cursor:pointer;">Edit</a>
@@ -554,9 +555,15 @@ meter{
 	<div id="bottom_area">
 		<!-- 리뷰점수  -->
 		<div id="critic_score">
+			
 			<div id="user_score_wrapper" style="display:flex; justify-content:space-between;">
-				<h3>Critic Score</h3> <div id="write_review"><a href="/view_review?movieId=${view.movieId}">Write a Review</a></div>
+
+				<h3>Critic Score</h3>
+				<sec:authorize access="hasRole('ADMIN')">
+					<div id="write_review"><a href="/view_critic_review?movieId=${view.movieId}">Write a Review</a></div>
+				</sec:authorize>
 			</div>
+
 			
 			<div id="score_distribution_wrapper" style="display:flex; justify-content:space-between;">
 				

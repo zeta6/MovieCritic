@@ -64,7 +64,10 @@ public class ReviewServiceImpl implements ReviewService {
 		dao.updateReview(reviewVO);
 	}
 
-	
+	@Override
+	public int checkDupe(String memberId) {
+		return dao.checkDupe(memberId);
+	}
 	
 }
 	

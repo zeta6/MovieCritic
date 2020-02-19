@@ -221,6 +221,7 @@
 	<!-- middle menu end-->
 
 	<!-- 리뷰 입력 -->
+	<sec:authorize access="hasRole('ADMIN')">
 	<div class="review_input_area">
 		<div class="inner_header">
 			
@@ -248,6 +249,8 @@
 
 		<div>
 			<form action="/view_critic_review" method="post" onsubmit="return RVFormCheck()"> 
+				<label>authorship:</label>
+				<input name="authorship" />
 				<textarea cols="95" rows="5" maxlength="500" name="content"></textarea>	<%--name에 정해진 값은 변수로 요청에 파라미터를 보냄 --%>
 				<input type="hidden" value="${view.movieId}" name="movieId"/>
 				<input type ="hidden" name="rating" id="markRating" />
@@ -257,12 +260,13 @@
 		</div>
 
 	</div>
+	</sec:authorize>	
 	<!-- 리뷰 입력 끝 -->
 
 	<!-- 유저 리뷰 목록-->
 	<div class="review_area" style="margin-top:5%;">
 
-			<h2>User Reviews</h2>
+			<h2>Critic Reviews</h2>
 	
 			<c:forEach items="${list}" var="list" varStatus="status">
 			<div class="critic_reviews">
@@ -272,7 +276,7 @@
 					<div class="rating_circle_average" style="width:38px;height:38px; font-size:25px;">${list.rating}</div>
 					<div style="display:flex; flex-direction:column; padding:7px 0 0 20px; width:90%; margin:6px 5px;">
 	  					<div>
-						 	작성자 : ${list.writer} ${list.reviewId}
+						 	authorship : ${list.authorship}
 						 	<sec:authentication property="principal" var="principal"/>
 						 	<c:if test="${list.writer eq principal.memberId}">
 								<a style="display:inline;">
@@ -330,6 +334,7 @@
 </div>
 
 <!-- 전체 레이아웃 끝-->
+
 
 <script>
 

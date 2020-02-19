@@ -272,7 +272,7 @@
 					<div class="rating_circle_average" style="width:38px;height:38px; font-size:25px;">${list.rating}</div>
 					<div style="display:flex; flex-direction:column; padding:7px 0 0 20px; width:90%; margin:6px 5px;">
 	  					<div>
-						 	작성자 : ${list.writer} ${list.reviewId}
+						 	작성자 : ${list.writer}
 						 	<sec:authentication property="principal" var="principal"/>
 						 	<c:if test="${list.writer eq principal.memberId}">
 								<a style="display:inline;">
@@ -331,6 +331,8 @@
 
 <!-- 전체 레이아웃 끝-->
 
+
+
 <script>
 
 var deleteReview = function(reviewId, movieId){
@@ -342,20 +344,47 @@ var deleteReview = function(reviewId, movieId){
 	else{
 		return;
 	}	
-};
+}
 
 //write review form check
 
-var RVFormCheck = function(){
+var RVFormCheck = function(){	
+	
+	var userId = "${userId}";
+	var dupeCheck;
+	
+	$.ajax({
+        url:"/review.formCheck",
+    type: "GET",
+    data: {"userId" : userId},
+    datatype: "integer",
+    //data를 전역변수에 넣을면 비동기화 해야함
+    async:false,
+    success: function(data){
+   	 //1이면 결과없음 0이면 중복
+   	 dupeCheck = data;
+		}
+	,error:function(request,status,error){
+	    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	   }
+	})
+
+	console.log("dupeCheck="+dupeCheck);
+
 	if(document.getElementById("markRating").value == ""){
 		alert("You have not entered a score.");
 		return false;
 	}
+	else if(dupeCheck == 0){
+		//사용자 id ajax 로 전송해서 컨트롤러에서 중복 확인
+		alert("리뷰는 한번만 등록가능");
+		return false;
+	}
 	else{
 		return true;
-	}
-	
-};
+	}	
+	alert("dupecheck="+dupeCheck);
+}
 
 //update review form check
 var UPRVFormCheck = function(){
@@ -366,7 +395,7 @@ var UPRVFormCheck = function(){
 	else{
 		return true;
 	}
-};
+}
 
 var updateReview = function(location){
 	//location this 받아와서 상위요소 하위요소 검색
@@ -444,12 +473,13 @@ var chart = new Chart(ctx, {
             }]
         }
     }
-});
+})
 
 
 
 
 $(document).ready(function(){
+	
 	
 	//coloring rating_circle_average
 	coloring();
@@ -459,6 +489,28 @@ $(document).ready(function(){
 	
 	//search box activation
 	SCBoxActivation();	
+	
+// 	var userId = "${userId}";
+// 	var dupeCheck;
+// 	console.log("userId="+userId);
+	
+// 	$.ajax({
+//         url:"/review.formCheck",
+//     type: "GET",
+//     data: {"userId" : userId},
+//     datatype: "integer",
+//     success: function(da){
+//    	 //0이면 결과없음 1이면 중복
+//    	 alert("da="+da);
+//    	 dupeCheck = da;
+// 		}
+// 	,error:function(request,status,error){
+// 	    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+// 	   }
+// 	})
+
+
+// 	console.log("dupeCheck="+dupeCheck);
 })
 
 </script>

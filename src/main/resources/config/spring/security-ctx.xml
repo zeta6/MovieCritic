@@ -33,6 +33,7 @@
 	
 	<security:intercept-url pattern="/write_board" access="hasRole('ROLE_ADMIN')"/>
 	<security:intercept-url pattern="/view_review" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>
+	<security:intercept-url pattern="/view_critic_review" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>
 	<security:intercept-url pattern="/member/my_page" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>			
 	<security:intercept-url pattern="/member/login" access="permitAll" />
 	<security:intercept-url pattern="/member/loginProc" access="permitAll"/>	<!-- 경로 잘못지정한 것 수정.. ${}값이 안나와서 확인해봄. -->

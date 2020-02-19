@@ -26,4 +26,6 @@ public interface ReviewService {
 	public void deleteReviewAll(int movieId);
 	
 	public void updateReview(ReviewVO reviewVO);
+	
+	public int checkDupe(String memberId);
 }

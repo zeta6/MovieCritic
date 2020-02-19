@@ -26,5 +26,6 @@ public interface CriticReviewService {
 		public void deleteCriticReviewAll(int movieId);
 		
 		public void updateCriticReview(CriticReviewVO criticReviewVO);
+	
 
 }

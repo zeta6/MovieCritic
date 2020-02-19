@@ -27,4 +27,6 @@ public interface ReviewDAO {
 	public void deleteReviewAll(int movieId);
 	
 	public void updateReview(ReviewVO reviewVO);
+	
+	public int checkDupe(String memberId);
 }

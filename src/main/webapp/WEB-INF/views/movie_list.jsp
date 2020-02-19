@@ -388,7 +388,7 @@ var getpage= function(){
 				    }
 				    var release = year+"-"+month+"-"+day;
 							
-					html += "<tr><td><span style='cursor:pointer;line-height:35px;' onclick='location.href=\"/movie_info/view?movieId="+no+
+					html += "<tr><td><span style='cursor:pointer;line-height:35px;' onclick='location.href=\"/movie_info/view?movieId="+data[i].movieId+
 							"\"'>"+no+
 							"</span></td>" +
                         "<td><div class='rating_circle_average' style='margin-right:20px;font-weight:bold;'>" +

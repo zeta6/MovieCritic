@@ -1,5 +1,6 @@
 package org.js.movie.review.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,8 +66,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public int checkDupe(String memberId) {
-		return dao.checkDupe(memberId);
+	public int checkDupe(HashMap<String, String> dupeCheck) {
+		return dao.checkDupe(dupeCheck);
 	}
 	
 }

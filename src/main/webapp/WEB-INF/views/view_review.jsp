@@ -350,13 +350,15 @@ var deleteReview = function(reviewId, movieId){
 
 var RVFormCheck = function(){	
 	
+	var movieId = "${view.movieId}";
 	var userId = "${userId}";
 	var dupeCheck;
+	console.log("movieId="+movieId);
 	
 	$.ajax({
         url:"/review.formCheck",
     type: "GET",
-    data: {"userId" : userId},
+    data: {"userId" : userId, "movieId" : movieId},
     datatype: "integer",
     //data를 전역변수에 넣을면 비동기화 해야함
     async:false,
@@ -490,27 +492,7 @@ $(document).ready(function(){
 	//search box activation
 	SCBoxActivation();	
 	
-// 	var userId = "${userId}";
-// 	var dupeCheck;
-// 	console.log("userId="+userId);
-	
-// 	$.ajax({
-//         url:"/review.formCheck",
-//     type: "GET",
-//     data: {"userId" : userId},
-//     datatype: "integer",
-//     success: function(da){
-//    	 //0이면 결과없음 1이면 중복
-//    	 alert("da="+da);
-//    	 dupeCheck = da;
-// 		}
-// 	,error:function(request,status,error){
-// 	    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-// 	   }
-// 	})
 
-
-// 	console.log("dupeCheck="+dupeCheck);
 })
 
 </script>

@@ -37,7 +37,7 @@
 	<select id="checkDupe" resultType="Integer">
 		select count(review_id)
 		 	from table_review
-		where writer=#{memberId}
+		where writer=#{memberId} and movie_id=#{movieId}
 	</select>
 	
 	

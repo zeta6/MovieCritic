@@ -1,6 +1,7 @@
 package org.js.movie.review.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -152,10 +153,16 @@ public class ReviewController {
 	
 	@RequestMapping(value = "/review.formCheck", method=RequestMethod.GET)
 	@ResponseBody
-	public int checkDupe(@RequestParam(value = "userId", defaultValue="") String memberId) {
+	public int checkDupe(@RequestParam(value = "userId", defaultValue="") String memberId, @RequestParam(value = "movieId", defaultValue="") String movieId) {
 		
 		log.info("ajax get######");
-		int count = reviewService.checkDupe(memberId);
+		
+		HashMap<String, String> dupeCheck = new HashMap<String, String>();
+		dupeCheck.put("memberId", memberId);
+		dupeCheck.put("movieId", movieId);
+		
+		log.info("dupeCheck="+dupeCheck);
+		int count = reviewService.checkDupe(dupeCheck);
 		
 		log.info("count="+	count);
 		

@@ -1,5 +1,6 @@
 package org.js.movie.review.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,5 +29,5 @@ public interface ReviewDAO {
 	
 	public void updateReview(ReviewVO reviewVO);
 	
-	public int checkDupe(String memberId);
+	public int checkDupe(HashMap<String, String> dupeCheck);
 }

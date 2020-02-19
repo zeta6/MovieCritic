@@ -1,5 +1,6 @@
 package org.js.movie.review.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,8 +59,8 @@ public class ReviewDAOImpl implements ReviewDAO {
 	}
 	
 	@Override
-	public int checkDupe(String memberId) {
-		return sql.selectOne("ReviewMapper.checkDupe", memberId);
+	public int checkDupe(HashMap<String, String> dupeCheck) {
+		return sql.selectOne("ReviewMapper.checkDupe", dupeCheck);
 	}
 }
 

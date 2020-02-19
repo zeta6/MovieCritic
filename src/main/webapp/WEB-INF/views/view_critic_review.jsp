@@ -1,7 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page import="java.util.*"%>
+<%
+    request.setCharacterEncoding("UTF-8");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -248,7 +252,7 @@
 		</div>
 
 		<div>
-			<form action="/view_critic_review" method="post" onsubmit="return RVFormCheck()"> 
+			<form accept-charset="utf-8" action="/view_critic_review" method="post" onsubmit="return RVFormCheck()"> 
 				<label>authorship:</label>
 				<input name="authorship" />
 				<textarea cols="95" rows="5" maxlength="500" name="content"></textarea>	<%--name에 정해진 값은 변수로 요청에 파라미터를 보냄 --%>
@@ -340,7 +344,7 @@
 
 var deleteReview = function(reviewId, movieId){
 	if(confirm("delete ?") == true){
-		var url= "/view_review/deletion?movieId="+movieId+"&reviewId="+reviewId;
+		var url= "/view_critic_review/deletion?movieId="+movieId+"&reviewId="+reviewId;
 		console.log("url="+url);
 		location.href= url;
 	}

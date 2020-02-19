@@ -598,7 +598,7 @@ meter{
 					<div class="rating_circle_average" style="width:38px;height:38px; font-size:25px;">${reviewList.rating}</div>
 					<div style="display:flex; flex-direction:column; padding:7px 0 0 20px;">
 	  					<div>
-						 	작성자 : ${reviewList.writer}
+						 	authorship : ${reviewList.authorship}
 						</div>
 						<div>
 	   						<span style="font-size:14px; color:#999;"><fmt:formatDate value="${reviewList.registerDate}" pattern="yyyy.MM.dd"/></span>
@@ -753,7 +753,7 @@ var editMovie = function(){
 	modalDiv.style.display = "block";
 	siteDiv.style.backgroundColor= "rgba(0,0,0,0.5)";
 	summaryText.value = `${view.summary};`
-	starringText.value = '${view.starring}';
+	starringText.value = `${view.starring}`;
 }
 
 //close edit modal form 

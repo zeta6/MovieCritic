@@ -13,6 +13,14 @@
 <script src="/resources/css/common.js"></script>
 <style>
 
+span {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 220px;
+    display: block;
+    overflow: hidden
+}
+
 #posters{
 	display:flex;
 	justify-content:center;
@@ -20,10 +28,9 @@
 }
 
 #posters div{
-	width:200px;
-	height:250px;
+	height:300px;
 	margin: 50px 25px;
-	border:1px solid black;	
+	border:0.3px solid black;
 }
 
 div[id^=movie]{
@@ -150,7 +157,7 @@ tr,td,th {
 		<c:forEach items="${list2}" var="list2" begin="0" end="3">
 			<div>
 			<a href="/movie_info/view?movieId=${list2.movieId}">
-				<img src="${list2.thumbNail}" style="width:100%;height:80%;">
+				<img src="${list2.thumbNail}" style="width:100%;height:100%;">
 			</a>		
 			</div>
 		</c:forEach>

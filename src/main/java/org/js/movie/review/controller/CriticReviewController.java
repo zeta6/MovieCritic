@@ -116,6 +116,8 @@ public class CriticReviewController {
 		//post에서는 input hidden으로 보내는 걸로 함. criticReviewVO에 바인딩됨. 커맨드객체
 		//content도 바인딩, writer는 직접 넣어주고, rating
 		
+		log.info("content :" + criticReviewVO.getContent());
+		
 		criticReviewVO.setWriter(SecurityContextHolder.getContext().getAuthentication().getName());
 		log.info("writer :" + criticReviewVO.getWriter());
 		log.info("criticReviewVO : " + criticReviewVO.toString());

@@ -18,7 +18,7 @@
 	
 	<!-- 일반 이미지 경로 -->
 	<resources mapping="/image/**" location="/resources/image/"/>
-	
+		
 	<!-- 영화 이미지 경로 -->
 	<!-- <resources mapping="/movieImage/**" location="/resourcecs/movieImage/"/> -->
 	<!-- <resources mapping="\movieImage\**" location="C:\movieCritic\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\movieCritic\resources"/> -->
@@ -27,6 +27,7 @@
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
+		<beans:property name="contentType" value="text/html; charset=UTF-8" />
 	</beans:bean>
 	
 
@@ -53,6 +54,7 @@
  	<context:component-scan base-package="org.js.movie.movieinfo.dao"></context:component-scan>
 	<context:component-scan base-package="org.js.movie.movieinfo.service"></context:component-scan> 	
  	<context:component-scan base-package="org.js.movie.movieinfo.domain"></context:component-scan>
+ 	<context:component-scan base-package="org.js.movie.review.**"></context:component-scan>
 	
 
 	

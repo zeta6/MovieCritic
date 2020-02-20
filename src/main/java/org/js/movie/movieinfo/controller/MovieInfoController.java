@@ -204,6 +204,12 @@ public class MovieInfoController {
 	public String getMovieInfo(@RequestParam("movieId") int movieId, Model model) throws Exception {
 		log.info("####movie_info get####");
 		
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		log.info("userId  : " + userId);
+		
+		model.addAttribute("userId", userId);
+		
 		MovieInfoVO vo = movieInfoService.view(movieId);
 		log.info("vo : "+ vo.toString());
 		

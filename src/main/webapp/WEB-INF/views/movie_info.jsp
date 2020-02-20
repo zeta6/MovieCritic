@@ -688,6 +688,48 @@ meter{
 		
 <script type="text/javascript">
 
+//review 폼체크
+var RVFormCheck = function(){	
+	
+	var movieId = "${view.movieId}";
+	var userId = "${userId}";
+	var dupeCheck;
+	console.log("movieId="+movieId);
+	
+	$.ajax({
+        url:"/review.formCheck",
+    type: "GET",
+    data: {"userId" : userId, "movieId" : movieId},
+    datatype: "integer",
+    //data를 전역변수에 넣을면 비동기화 해야함
+    async:false,
+    success: function(data){
+   	 //1이면 결과없음 0이면 중복
+   	 dupeCheck = data;
+		}
+	,error:function(request,status,error){
+	    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	   }
+	})
+
+	console.log("dupeCheck="+dupeCheck);
+
+	if(document.getElementById("markRating").value == ""){
+		alert("You have not entered a score.");
+		return false;
+	}
+	else if(dupeCheck == 0){
+		//사용자 id ajax 로 전송해서 컨트롤러에서 중복 확인
+		alert("리뷰는 한번만 등록가능");
+		return false;
+	}
+	else{
+		return true;
+	}	
+	alert("dupecheck="+dupeCheck);
+}
+
+
 //점수분포
 var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
@@ -766,12 +808,12 @@ var closeModal = function(){
 
 //reviewmodal avtive
 
-var RVmodalActivation = function(){
+var RVmodalActivation = function(markScore){
 	
-	markScore = this.innerHTML;
+	var markScore = markScore;
 	document.getElementById("markRating").value = markScore;
 	console.log("markScore="+markScore);
-	
+
 	var html =
 		`<div class="inner_header">
 		
@@ -807,16 +849,32 @@ var RVmodalActivation = function(){
 	<form action="/view_review" method="post" onsubmit="return RVFormCheck()"> 
 		<textarea cols="95" rows="10" maxlength="500" name="content"></textarea>	<%--name에 정해진 값은 변수로 요청에 파라미터를 보냄 --%>
 		<input type="hidden" value="${view.movieId}" name="movieId"/>
-		<input type ="hidden" name="rating" id="markRating" />
+		<input type ="hidden" name="rating" id="markRating"/>
 		<input type="submit" value="submit" style="background:#555; color:white; margin-left:85%;"/>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	</form>
 </div>`;
        
-       document.getElementById("writeRVmodal").style.display = "block";
-       document.getElementById("writeRVmodal").innerHTML = html;
+	document.getElementById("writeRVmodal").style.display = "block";
+    document.getElementById("writeRVmodal").innerHTML = html;
+    document.getElementById("markRating").value = markScore;
        
-       for(var x=0; x<=11; x++){
+    var score = markScore;
+    console.log("score="+score);
+   	for(var i=0; i <= score; i++) {
+        if(i<4 ) {
+            var id = "modalCircle_" + i;
+            document.getElementById(id).style.backgroundColor = "red";
+        }else if( i < 7){
+            var id = "modalCircle_" + i;
+            document.getElementById(id).style.backgroundColor = "orange";
+        }else if ( i< 11){
+            var id = "modalCircle_" + i;
+            document.getElementById(id).style.backgroundColor = "#1aff00";
+        }
+    }
+       
+       for(var x=0; x<=10; x++){
            var circle = $("[id^='modalCircle_']")[x];
            circle.onmouseover = function(e){
                var score = this.innerHTML;
@@ -908,7 +966,8 @@ $(document).ready(function(){
             console.log("markScore="+markScore);
         }
         circle.onclick = function(){
-        	RVmodalActivation();
+        	markScore = this.innerHTML;
+        	RVmodalActivation(markScore);
         }
 	}
 	//search box activation

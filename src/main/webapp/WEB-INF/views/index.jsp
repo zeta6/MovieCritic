@@ -30,7 +30,7 @@ span {
 #posters div{
 	height:300px;
 	margin: 50px 25px;
-	border:0.3px solid black;
+
 }
 
 div[id^=movie]{
@@ -169,7 +169,7 @@ tr,td,th {
 	<div id="board">
 
 		<section id="board_now">
-		<h2 class="line">AVAILABLE NOW</h2>
+		<h2 style="cursor:pointer;"class="line" onclick="location.href='/movie_list?sortCondition=releaseDate'">AVAILABLE NOW</h2>
 		<table>
 			<tbody>
 	
@@ -202,7 +202,7 @@ tr,td,th {
 		</section>
 		
 		<section id="board_review">
-		<h2 class="line">Recent Most Popular</h2>
+		<h2 style="cursor:pointer;" class="line" onclick="location.href='/movie_list?sortCondition=score&releaseDate=last90days'" >Recent Most Popular</h2>
 				<table>			
 			<tbody>
 	

@@ -347,12 +347,13 @@ var getpage= function(){
   					pno = 1;
   				}
   				
-				for (var i=0; i<9 && pno*10 <= data; i++){
+  				var max = data/10 + 1;
+				for (var i=0; i<9 && pno <= max; i++){
 					html += "<li type=button class='btn btn-default color-blue paging_li' onclick='setPageNum(this.innerHTML)')>"+pno+"</li>";					
 					pno = pno + 1;
 				}
-				if (pno*10 <=data){
-					html += "<li style='margin-left:30px' type=button class='btn btn-default color-blue paging_li' onclick='setPageNum(this.innerHTML)')>"+Math.floor((data/10)+1)+"</li>";		
+				if (pno <= max){
+					html += "<li style='margin-left:30px' type=button class='btn btn-default color-blue paging_li' onclick='setPageNum(this.innerHTML)')>"+Math.floor(max)+"</li>";		
 				}
 				
   			$("#pagingUL").html(html);
